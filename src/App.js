@@ -53,14 +53,14 @@ const handleCreate = (add)=>{
     console.log(response)
     console.log(response.data.id)
     setProducts([...products, response.data])
- 
+
   })
 }
 
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete(herokuURL + '/' + event.target.value) 
+        .delete(herokuURL + '/' + event.target.value)
         .then((response) => {
           getProducts()
 
@@ -76,7 +76,7 @@ const handleUpdate = (updateProduct) => {
       setProducts(products.map((product)=>{
         return product.id !=response.data.id ? product : response.data
       }))
-      
+
     })
 }
 function Copyright() {
@@ -97,7 +97,7 @@ const cards = [];
 const theme = createTheme({
   palette: {
     primary: {
-    
+
       main: '#ff4400',
 
     }
@@ -109,7 +109,7 @@ const theme = createTheme({
     <CssBaseline />
     <AppBar position="relative">
       <Toolbar>
-     
+
         <Typography variant="h6" color="inherit" noWrap>
           Home.
         </Typography>
@@ -145,7 +145,7 @@ const theme = createTheme({
             justifyContent="center"
           >
             <Button variant="contained">Browse Categories</Button>
-            
+
           </Stack>
         </Container>
       </Box>
@@ -179,7 +179,7 @@ const theme = createTheme({
                   <Edit handleUpdate={handleUpdate} id={product.id}/>
                 </CardActions>
               </Card>
-              
+
             </Grid>
           ))}
         </Grid>
@@ -188,7 +188,7 @@ const theme = createTheme({
     {/* Footer */}
     <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
       <Typography variant="h6" align="center" gutterBottom>
-        
+
       </Typography>
       <Typography
         variant="subtitle1"

@@ -36,7 +36,7 @@ const handleSubmit = (event) => {
         <input type="text" name="name" value={product.name} onChange={handleChange}/>
         <br />
         <br />
-       
+
 				<label htmlFor="category">Category: </label>
         <input type="text" name="category" value={product.category} onChange={handleChange}/>
 				<br />
