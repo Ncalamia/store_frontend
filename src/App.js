@@ -1,6 +1,7 @@
 import './App.css';
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import AddUser from './components/AddUser.js'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AppBar from '@mui/material/AppBar';
@@ -24,14 +25,18 @@ const App = () => {
 
 ////States/////
   let [products, setProducts] = useState([])
-
-  const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
+  let [view, setView] = useState('welcome')
+  const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
+
+////Auth States/////
+  let [users, setUsers] = useState([])
+
 
 //////Fetching Data/////////
   const getProducts = () => {
     axios
-    .get(herokuURL)
+    .get(localUrl)
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -47,7 +52,7 @@ const App = () => {
 
 ///////Functions//////////
 const handleCreate = (add)=>{
-  axios.post(herokuURL, add, {headers: {
+  axios.post(localUrl, add, {headers: {
     'content-type': 'multipart/form-data'
   }}).then((response)=>{
     console.log(response)
@@ -60,7 +65,7 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete(herokuURL + '/' + event.target.value) 
+        .delete(localUrl + '/' + event.target.value) 
         .then((response) => {
           getProducts()
 
@@ -70,7 +75,7 @@ const handleCreate = (add)=>{
 const handleUpdate = (updateProduct) => {
     console.log(updateProduct.id)
   axios
-    .put(herokuURL +'/' + updateProduct.id, updateProduct)
+    .put(localUrl +'/' + updateProduct.id, updateProduct)
     .then((response) => {
       getProducts()
       setProducts(products.map((product)=>{
@@ -103,125 +108,234 @@ const theme = createTheme({
     }
   }
 })
-  return (
-    <>
-    <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <AppBar position="relative">
-      <Toolbar>
-     
-        <Typography variant="h6" color="inherit" noWrap>
-          Home.
-        </Typography>
-      </Toolbar>
-    </AppBar>
-    <main>
-      {/* Hero unit */}
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          pt: 8,
-          pb: 6,
-        }}
-      >
-        <Button variant="outlined"><Add handleCreate={handleCreate}/></Button>
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
-            Essentials.
-          </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Welcome!
-          </Typography>
-          <Stack
-            sx={{ pt: 4 }}
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Button variant="contained">Browse Categories</Button>
-            
-          </Stack>
-        </Container>
-      </Box>
-      <Container sx={{ py: 8 }} maxWidth="md">
-        {/* End hero unit */}
-        <Grid container spacing={4}>
-          {products.map((product) => (
-            <Grid item key={product} xs={12} sm={6} md={4}>
-              <Card
-                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-              >
-                <CardMedia
-                  component="img"
-                  sx={{
-                    // 16:9
-                    pt: '56.25%',
-                  }}
-                  image={product.image}
-                  alt="random"
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                  {product.name}
-                  </Typography>
-                  <Typography>
-                    Price: {product.price}$
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                <Button onClick={handleDelete} value={product.id}>Delete</Button>
-                  <Edit handleUpdate={handleUpdate} id={product.id}/>
-                </CardActions>
-              </Card>
-              
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </main>
-    {/* Footer */}
-    <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-      <Typography variant="h6" align="center" gutterBottom>
-        
-      </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="text.secondary"
-        component="p"
-      >
-        Created by Nikki, Jacqueline and Yulia.
-      </Typography>
-      <Copyright />
-    </Box>
 
-  </ThemeProvider>
-  </>
-    // <div className='container'>
-    //   <div >
-    //   <header>HOME</header>
-    //   </div>
-    // <Add handleCreate={handleCreate}/>
-    //   {products.map((product) => {
-    //     return (
-    //       <div className="product" key={product.id}>
-    //         <h4>Name: {product.name}</h4>
-    //         <img src={product.image}/>
-    //         <h4>Category: {product.category}</h4>
-    //         <h4>Price: {product.price}</h4>
-    //         <Edit handleUpdate={handleUpdate} id={product.id}/>
-    //         <button onClick={handleDelete} value={product.id}>DELETE</button>
-    //       </div>
-    //     )
-    //   })}
-    // </div>
-  )
+
+  if (view === 'welcome') {
+    return (
+      <>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AppBar position="relative">
+            <Toolbar>
+
+              <Typography variant="h6" color="inherit" noWrap>
+                Home.
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <main>
+            {/* Hero unit */}
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                pt: 8,
+                pb: 6,
+              }}
+            >
+              <Container maxWidth="sm">
+                <Typography
+                  component="h1"
+                  variant="h2"
+                  align="center"
+                  color="text.primary"
+                  gutterBottom
+                >
+                  Essentials.
+                </Typography>
+                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                  Welcome!
+                </Typography>
+                <Stack
+                  sx={{ pt: 4 }}
+                  direction="row"
+                  spacing={2}
+                  justifyContent="center"
+                >
+                  <Button variant="contained">Browse Categories</Button>
+
+                </Stack>
+              </Container>
+            </Box>
+            <Container sx={{ py: 8 }} maxWidth="md">
+              {/* End hero unit */}
+              <Grid container spacing={4}>
+                {products.map((product) => (
+                  <Grid item key={product} xs={12} sm={6} md={4}>
+                    <Card
+                      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                    >
+                      <CardMedia
+                        component="img"
+                        sx={{
+                          // 16:9
+                          pt: '56.25%',
+                        }}
+                        image={product.image}
+                        alt="random"
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {product.name}
+                        </Typography>
+                        <Typography>
+                          Price: {product.price}$
+                        </Typography>
+                      </CardContent>
+
+                    </Card>
+
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </main>
+          {/* Footer */}
+          <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+            <Typography variant="h6" align="center" gutterBottom>
+
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="text.secondary"
+              component="p"
+            >
+              Created by Nikki, Jacqueline and Yulia.
+            </Typography>
+            <Copyright />
+          </Box>
+
+        </ThemeProvider>
+      </>
+    )
+  } else if (view === 'login') {
+    return (
+      <>
+        <h1>Login</h1>
+        <AddUser/>
+      </>
+    )
+  } else if (view === 'main') {
+    return (
+      <>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AppBar position="relative">
+            <Toolbar>
+
+              <Typography variant="h6" color="inherit" noWrap>
+                Home.
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <main>
+            {/* Hero unit */}
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                pt: 8,
+                pb: 6,
+              }}
+            >
+              <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
+              <Container maxWidth="sm">
+                <Typography
+                  component="h1"
+                  variant="h2"
+                  align="center"
+                  color="text.primary"
+                  gutterBottom
+                >
+                  Essentials.
+                </Typography>
+                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                  Welcome!
+                </Typography>
+                <Stack
+                  sx={{ pt: 4 }}
+                  direction="row"
+                  spacing={2}
+                  justifyContent="center"
+                >
+                  <Button variant="contained">Browse Categories</Button>
+
+                </Stack>
+              </Container>
+            </Box>
+            <Container sx={{ py: 8 }} maxWidth="md">
+              {/* End hero unit */}
+              <Grid container spacing={4}>
+                {products.map((product) => (
+                  <Grid item key={product} xs={12} sm={6} md={4}>
+                    <Card
+                      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                    >
+                      <CardMedia
+                        component="img"
+                        sx={{
+                          // 16:9
+                          pt: '56.25%',
+                        }}
+                        image={product.image}
+                        alt="random"
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {product.name}
+                        </Typography>
+                        <Typography>
+                          Price: {product.price}$
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button onClick={handleDelete} value={product.id}>Delete</Button>
+                        <Edit handleUpdate={handleUpdate} id={product.id} />
+                      </CardActions>
+                    </Card>
+
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </main>
+          {/* Footer */}
+          <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+            <Typography variant="h6" align="center" gutterBottom>
+
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="text.secondary"
+              component="p"
+            >
+              Created by Nikki, Jacqueline and Yulia.
+            </Typography>
+            <Copyright />
+          </Box>
+
+        </ThemeProvider>
+      </>
+      // <div className='container'>
+      //   <div >
+      //   <header>HOME</header>
+      //   </div>
+      // <Add handleCreate={handleCreate}/>
+      //   {products.map((product) => {
+      //     return (
+      //       <div className="product" key={product.id}>
+      //         <h4>Name: {product.name}</h4>
+      //         <img src={product.image}/>
+      //         <h4>Category: {product.category}</h4>
+      //         <h4>Price: {product.price}</h4>
+      //         <Edit handleUpdate={handleUpdate} id={product.id}/>
+      //         <button onClick={handleDelete} value={product.id}>DELETE</button>
+      //       </div>
+      //     )
+      //   })}
+      // </div>
+    )
+  }
 }
 
 export default App;
