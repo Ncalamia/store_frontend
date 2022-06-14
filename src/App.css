@@ -1,3 +1,23 @@
+.product img {
+  height: 250px;
+  width: 250px;
+}
+
+.product {
+  margin: 10px;
+  border: .1rem solid;
+  background-color: rgba(205, 251, 255, 0.233);
+}
+
+.add {
+  margin: 10px;
+  border: .1rem solid;
+  background-color: rgba(255, 203, 203, 0.233);
+}
+
+
+
+
 .App {
   text-align: center;
 }

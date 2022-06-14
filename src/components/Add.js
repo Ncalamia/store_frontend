@@ -3,27 +3,34 @@ import React, { useState, useEffect } from 'react'
 
 const Add = (props) => {
 
-	//////States//////
+	////////////////////////////////////////////////////////////
+  // states
+  ////////////////////////////////////////////////////////////
+
   let emptyProduct = { image: '', name: '', category: '', price: '' }
   const [product, setProduct] = useState(emptyProduct)
 
 
 
-	/////Functions///////
-const handleChange = (event) => {
+  ////////////////////////////////////////////////////////////
+  // functions
+  ////////////////////////////////////////////////////////////
+
+  const handleChange = (event) => {
 	console.log(event);
   	setProduct({ ...product, [event.target.name]: event.target.value })
-}
+  }
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    // console.log(product)
+    props.handleCreate(product)
+    setProduct({ image: '', name: '', category: '', price: '' })
+  }
 
-
-const handleSubmit = (event) => {
-  event.preventDefault()
-  console.log(product)
-  props.handleCreate(product)
-
-	setProduct({image:'', name: '', category: '', price: '' })
-}
+  ////////////////////////////////////////////////////////////
+  // return
+  ////////////////////////////////////////////////////////////
 
   return (
     <>
