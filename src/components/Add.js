@@ -28,7 +28,7 @@ const handleSubmit = (event) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-      <label htmlFor="multi">Image: </label>
+        <label htmlFor="multi">Image: </label>
         <input type="file" id="image" accept="image/*" onChange={(e)=>setProduct({image:e.target.files[0]})}/>
 				<br />
         <br />
