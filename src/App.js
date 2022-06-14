@@ -2,14 +2,14 @@ import './App.css';
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
-
+import Edit from './components/Edit.js'
 const App = () => {
 
 ////States/////
   let [products, setProducts] = useState([])
 
-  const localURL = 'http://localhost:8000/api/products'
   const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
+  const localUrl = 'http://localhost:8000/api/products'
 
 //////Fetching Data/////////
   const getProducts = () => {
@@ -34,20 +34,39 @@ const handleCreate = (add)=>{
     'content-type': 'multipart/form-data'
   }}).then((response)=>{
     console.log(response)
-    setProducts([...products, response.data])
+    setProducts([...products, add])
  
   })
 }
 
     /////////////////DELETE///////////////////////////////
-    const handleDelete = (event, deleted) => {
+    const handleDelete = (event, deletedProduct) => {
       axios
+
         .delete(herokuURL+'/' + event.target.value) 
-        .then((response) => {
+ .then((response) => {
           getProducts()
+
+   
 
         })
     }
+/////////////////Update///////////////////////////////
+const handleUpdate = (editProduct) => {
+  console.log(editProduct)
+  // console.log(editProduct.id)
+  axios
+    .put(herokuURL + '/' + editProduct.id, editProduct, {headers: {
+      'content-type': 'multipart/form-data'
+    }})
+    .then((response) => {
+      setProducts(products.map((product) => {
+        return product.id !== response.data.id ? product :
+          response.data
+      }))
+    })
+}
+
   return (
     <div>
     <Add handleCreate={handleCreate}/>
@@ -58,7 +77,8 @@ const handleCreate = (add)=>{
             <img src={product.image}/>
             <h4>Category: {product.category}</h4>
             <h4>Price: {product.price}</h4>
-            <button onClick={handleDelete} value={product.id}>DELETE</button>
+            <Edit handleUpdate={handleUpdate} product={product}/>
+            <button onClick={()=>{handleDelete(product)}} value={product.id}>DELETE</button>
           </div>
         )
       })}
