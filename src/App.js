@@ -7,8 +7,10 @@ const App = () => {
 
 ////States/////
   let [products, setProducts] = useState([])
+
   const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
+
 //////Fetching Data/////////
   const getProducts = () => {
     axios
@@ -40,9 +42,12 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deletedProduct) => {
       axios
-        .delete(herokuURL + '/' + deletedProduct.id) 
-        .then((response) => {
-          setProducts(products.filter(product => product.id !== deletedProduct.id))
+
+        .delete(herokuURL+'/' + event.target.value) 
+ .then((response) => {
+          getProducts()
+
+   
 
         })
     }
