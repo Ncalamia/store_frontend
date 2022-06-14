@@ -28,21 +28,13 @@ const App = () => {
 
   ///_____SIGN UP________///
 
-  const createUser = (newUser)=>{
-    axios.post('http://localhost:8000/api/products',
-    ).then((response)=>{
-      console.log(response)
-      console.log(response.data.id)
-      setProducts([...products, response.data])
-   
-    })
-  }
+
 
 
   const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
 
-//////Fetching Data/////////
+//////FETCHING DATA/////////
   const getProducts = () => {
     axios
     .get('http://localhost:8000/api/products')
@@ -54,12 +46,12 @@ const App = () => {
   }
 
 
-///////On Page Load////////
+///////ON PAGE LOAD////////
   useEffect(() => {
     getProducts()
   }, [])
 
-///////Functions//////////
+///////CREATE///////////////////////////////
 const handleCreate = (add)=>{
   axios.post('http://localhost:8000/api/products', add
   ).then((response)=>{
@@ -70,7 +62,7 @@ const handleCreate = (add)=>{
   })
 }
 
-    /////////////////DELETE///////////////////////////////
+/////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
         .delete('http://localhost:8000/api/products' + event.target.value) 
@@ -79,7 +71,7 @@ const handleCreate = (add)=>{
 
         })
     }
-/////////////////Update///////////////////////////////
+/////////////////UPDATE///////////////////////////////
 const handleUpdate = (updateProduct) => {
     console.log(updateProduct.id)
   axios
@@ -104,6 +96,8 @@ function Copyright() {
     </Typography>
   );
 }
+
+
 const productsRef = useRef()
 
 const scrollDown = () => {
@@ -112,6 +106,8 @@ const scrollDown = () => {
     behavior: 'smooth',
   });
 };
+
+
 const cards = [];
 
 const theme = createTheme({
@@ -129,68 +125,38 @@ const theme = createTheme({
     <CssBaseline />
     <AppBar position="relative">
       <Toolbar>
-     
         <Typography variant="h6" color="inherit" noWrap>
           Home.
         </Typography>
       </Toolbar>
     </AppBar>
     <main>
-      {/* Hero unit */}
       <Box
-        sx={{
-          bgcolor: 'background.paper',
-          pt: 8,
-          pb: 6,
-        }}
-      >
-        <Button variant="outlined"><Add handleCreate={handleCreate}/></Button>
+        sx={{ bgcolor: 'background.paper', pt: 8, pb: 6,}}>
+        
         <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
+          <Typography component="h1" variant="h2" align="center" color="text.primary"  gutterBottom >
             HomeGoodsStore.
           </Typography>
           <Typography variant="h5" align="center" color="text.secondary" paragraph>
             Welcome! 
-            <p>Here you can find anything your home needs!</p>
+            <p>Pretend you've never heard of Home Goods.</p>
+            <p>Here you can find everything your home needs!</p>
           </Typography>
-          <Stack
-            sx={{ pt: 4 }}
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
+          <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center" >
             <Button onClick={scrollDown} variant="contained">Browse Products</Button>
-            
           </Stack>
         </Container>
       </Box>
-      <Container sx={{ py: 8 }} maxWidth="md">
+      <Container ref={productsRef} sx={{ py: 8 }} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
           {products.map((product) => (
-            <Grid ref={productsRef} item key={product} xs={12} sm={6} md={4}>
-              <Card
-                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-              >
-                <CardMedia
-                  component="img"
-                  sx={{
-                    // 16:9
-                    pt: '56.25%',
-                  }}
-                  image={product.image}
-                  alt="random"
-                />
+            <Grid item key={product} xs={12} sm={6} md={4}>
+              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <CardMedia component="img" sx={{pt: '56.25%',}}image={product.image} alt="products"/>
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                  {product.name}
-                  </Typography>
+                  <Typography gutterBottom variant="h5" component="h2">{product.name}</Typography>
                   <Typography>
                     Price: {product.price}$
                   </Typography>
@@ -205,18 +171,16 @@ const theme = createTheme({
           ))}
         </Grid>
       </Container>
+      <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
+      <Button variant="outlined"><Add handleCreate={handleCreate}/></Button>
+      </Typography>
     </main>
-    {/* Footer */}
+
     <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
       <Typography variant="h6" align="center" gutterBottom>
         
       </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="text.secondary"
-        component="p"
-      >
+      <Typography variant="subtitle1" align="center" color="text.secondary" component="p" >
         Created by Nikki, Jacqueline and Yulia.
       </Typography>
       <Copyright />
