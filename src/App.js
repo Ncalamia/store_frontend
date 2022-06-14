@@ -24,8 +24,10 @@ const App = () => {
 
 ////States/////
   let [products, setProducts] = useState([])
+
   const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
+
 //////Fetching Data/////////
   const getProducts = () => {
     axios
