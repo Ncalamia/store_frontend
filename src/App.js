@@ -31,7 +31,7 @@ const App = () => {
 //////Fetching Data/////////
   const getProducts = () => {
     axios
-    .get(localUrl)
+    .get(herokuURL)
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -47,7 +47,7 @@ const App = () => {
 
 ///////Functions//////////
 const handleCreate = (add)=>{
-  axios.post(localUrl, add, {headers: {
+  axios.post(herokuURL, add, {headers: {
     'content-type': 'multipart/form-data'
   }}).then((response)=>{
     console.log(response)
@@ -60,7 +60,7 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete(localUrl + '/' + event.target.value) 
+        .delete(herokuURL + '/' + event.target.value) 
         .then((response) => {
           getProducts()
 
@@ -70,7 +70,7 @@ const handleCreate = (add)=>{
 const handleUpdate = (updateProduct) => {
     console.log(updateProduct.id)
   axios
-    .put('http://localhost:8000/api/products/' + updateProduct.id, updateProduct)
+    .put(herokuURL +'/' + updateProduct.id, updateProduct)
     .then((response) => {
       getProducts()
       setProducts(products.map((product)=>{
