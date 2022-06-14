@@ -42,7 +42,7 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete(herokuURL + event.target.value) 
+        .delete(herokuURL+'/' + event.target.value) 
         .then((response) => {
           getProducts()
 
