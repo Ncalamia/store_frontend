@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react'
 const Edit = (props) => {
 
 	//////States//////
-  let emptyProduct = { image: '', name: '', category: '', price: '' }
-  const [product, setProduct] = useState({...props.product})
+  let emptyProduct = { id: props.id, image: '', name: '', category: '', price: '' }
+  const [product, setProduct] = useState(emptyProduct)
 
 
 
@@ -19,20 +19,17 @@ const handleChange = (event) => {
 
 const handleSubmit = (event) => {
   event.preventDefault()
-  console.log(product)
   props.handleUpdate(product)
-
-	setProduct({image:'', name: '', category: '', price: '' })
 }
 
   return (
     <>
     <details>
 
-    <summary>Edit</summary>
+    <summary>EDIT</summary>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="multi">Image: </label>
-        <input type="file" id="image" accept="image/*" onChange={(e)=>setProduct({image:e.target.files[0]})}/>
+        <label htmlFor="image">Image: </label>
+        <input type="url" name="image" value={product.image} onChange={handleChange}/>
 				<br />
         <br />
         <label htmlFor="name">Name: </label>

@@ -27,9 +27,11 @@ const handleSubmit = (event) => {
 
   return (
     <>
+    <details>
+      <summary>Add</summary>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="multi">Image: </label>
-        <input type="file" id="image" accept="image/*" onChange={(e)=>setProduct({image:e.target.files[0]})}/>
+        <label htmlFor="image">Image: </label>
+        <input type="url" name="image" value={product.image} onChange={handleChange}/>
 				<br />
         <br />
         <label htmlFor="name">Name: </label>
@@ -45,6 +47,7 @@ const handleSubmit = (event) => {
         <input type="number" name="price" value={product.price} onChange={handleChange}/>
         <input type="submit"/>
       </form>
+      </details>
     </>
   )
 }
