@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
@@ -24,6 +24,20 @@ const App = () => {
 
 ////States/////
   let [products, setProducts] = useState([])
+  let[users, setUsers] = useState([])
+
+  ///_____SIGN UP________///
+
+  const createUser = (newUser)=>{
+    axios.post('http://localhost:8000/api/products',
+    ).then((response)=>{
+      console.log(response)
+      console.log(response.data.id)
+      setProducts([...products, response.data])
+   
+    })
+  }
+
 
   const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
@@ -31,7 +45,7 @@ const App = () => {
 //////Fetching Data/////////
   const getProducts = () => {
     axios
-    .get(herokuURL)
+    .get('http://localhost:8000/api/products')
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -47,9 +61,8 @@ const App = () => {
 
 ///////Functions//////////
 const handleCreate = (add)=>{
-  axios.post(herokuURL, add, {headers: {
-    'content-type': 'multipart/form-data'
-  }}).then((response)=>{
+  axios.post('http://localhost:8000/api/products', add
+  ).then((response)=>{
     console.log(response)
     console.log(response.data.id)
     setProducts([...products, response.data])
@@ -60,7 +73,7 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete(herokuURL + '/' + event.target.value) 
+        .delete('http://localhost:8000/api/products' + event.target.value) 
         .then((response) => {
           getProducts()
 
@@ -70,7 +83,7 @@ const handleCreate = (add)=>{
 const handleUpdate = (updateProduct) => {
     console.log(updateProduct.id)
   axios
-    .put(herokuURL +'/' + updateProduct.id, updateProduct)
+    .put('http://localhost:8000/api/products' + updateProduct.id, updateProduct)
     .then((response) => {
       getProducts()
       setProducts(products.map((product)=>{
@@ -83,15 +96,22 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+       HomeGoodsStore
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
 }
+const productsRef = useRef()
 
+const scrollDown = () => {
+  window.scrollTo({
+    top: productsRef.current.offsetTop,
+    behavior: 'smooth',
+  });
+};
 const cards = [];
 
 const theme = createTheme({
@@ -133,10 +153,11 @@ const theme = createTheme({
             color="text.primary"
             gutterBottom
           >
-            Essentials.
+            HomeGoodsStore.
           </Typography>
           <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Welcome!
+            Welcome! 
+            <p>Here you can find anything your home needs!</p>
           </Typography>
           <Stack
             sx={{ pt: 4 }}
@@ -144,7 +165,7 @@ const theme = createTheme({
             spacing={2}
             justifyContent="center"
           >
-            <Button variant="contained">Browse Categories</Button>
+            <Button onClick={scrollDown} variant="contained">Browse Products</Button>
             
           </Stack>
         </Container>
@@ -153,7 +174,7 @@ const theme = createTheme({
         {/* End hero unit */}
         <Grid container spacing={4}>
           {products.map((product) => (
-            <Grid item key={product} xs={12} sm={6} md={4}>
+            <Grid ref={productsRef} item key={product} xs={12} sm={6} md={4}>
               <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
               >
