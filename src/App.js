@@ -12,7 +12,7 @@ const App = () => {
 //////Fetching Data/////////
   const getProducts = () => {
     axios
-    .get('https://arcane-sea-71685.herokuapp.com/api/products')
+    .get('http://localhost:8000/api/products')
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -27,16 +27,25 @@ const App = () => {
   }, [])
 
 ///////Functions//////////
-  const handleCreate = (addProduct) => {
-    console.log(addProduct);
-    axios
-      .post('https://arcane-sea-71685.herokuapp.com/api/products', addProduct)
-      .then((response) => {
-        console.log(response)
-        setProducts([...products,addProduct])
-      })
-  }
+const handleCreate = (add)=>{
+  axios.post('http://localhost:8000/api/products', add, {headers: {
+    'content-type': 'multipart/form-data'
+  }}).then((response)=>{
+    console.log(response)
+    setProducts([...products, response.data])
+ 
+  })
+}
 
+    /////////////////DELETE///////////////////////////////
+    const handleDelete = (event, deleted) => {
+      axios
+        .delete('http://localhost:8000/api/products/' + event.target.value) 
+        .then((response) => {
+          getProducts()
+
+        })
+    }
   return (
     <div>
     <Add handleCreate={handleCreate}/>
@@ -47,6 +56,7 @@ const App = () => {
             <img src={product.image}/>
             <h4>Category: {product.category}</h4>
             <h4>Price: {product.price}</h4>
+            <button onClick={handleDelete} value={product.id}>DELETE</button>
           </div>
         )
       })}

@@ -4,11 +4,10 @@ import React, { useState, useEffect } from 'react'
 const Add = (props) => {
 
 	//////States//////
-  let emptyProduct = { image: 'https://arcane-sea-71685.herokuapp.com/products/products/', name: '', category: '', price: '' }
+  let emptyProduct = { image: '', name: '', category: '', price: '' }
   const [product, setProduct] = useState(emptyProduct)
 
-	// let emptyFile = { image: 'https://arcane-sea-71685.herokuapp.com/products/products/', name: '', category: '', price: '' }
-	// const [file, setFile] = useState(emptyFile)
+
 
 	/////Functions///////
 const handleChange = (event) => {
@@ -16,31 +15,28 @@ const handleChange = (event) => {
   	setProduct({ ...product, [event.target.name]: event.target.value })
 }
 
-// const handleImageChange = (event) => {
-// 	setFile(event.target.file)
-// }
-// const handleImageChange = (event) => {
-// setProduct({ ...product, [event.target.name]: event.target.file[0] })
-// }
+
 
 const handleSubmit = (event) => {
   event.preventDefault()
+  console.log(product)
   props.handleCreate(product)
-	console.log(product);
-	setProduct({image: '', name: '', category: '', price: '' })
+
+	setProduct({image:'', name: '', category: '', price: '' })
 }
 
   return (
     <>
-      <form encType="multipart/form-data" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+      <label htmlFor="multi">Image: </label>
+        <input type="file" id="image" accept="image/*" onChange={(e)=>setProduct({image:e.target.files[0]})}/>
+				<br />
+        <br />
         <label htmlFor="name">Name: </label>
         <input type="text" name="name" value={product.name} onChange={handleChange}/>
         <br />
         <br />
-        <label htmlFor="multi">Image: </label>
-        <input type="file" name="image" accept="image/*" multiple onChange={handleChange}/>
-				<br />
-        <br />
+       
 				<label htmlFor="category">Category: </label>
         <input type="text" name="category" value={product.category} onChange={handleChange}/>
 				<br />
