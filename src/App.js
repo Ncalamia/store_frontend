@@ -8,11 +8,13 @@ const App = () => {
 ////States/////
   let [products, setProducts] = useState([])
 
+  const localURL = 'http://localhost:8000/api/products'
+  const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
 
 //////Fetching Data/////////
   const getProducts = () => {
     axios
-    .get('http://localhost:8000/api/products')
+    .get(herokuURL)
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -28,7 +30,7 @@ const App = () => {
 
 ///////Functions//////////
 const handleCreate = (add)=>{
-  axios.post('http://localhost:8000/api/products', add, {headers: {
+  axios.post(herokuURL, add, {headers: {
     'content-type': 'multipart/form-data'
   }}).then((response)=>{
     console.log(response)
@@ -40,7 +42,7 @@ const handleCreate = (add)=>{
     /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete('http://localhost:8000/api/products/' + event.target.value) 
+        .delete(herokuURL + event.target.value) 
         .then((response) => {
           getProducts()
 
