@@ -35,7 +35,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 const Welcome = (props) => {
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('welcome')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
 
@@ -77,15 +76,9 @@ const Welcome = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-<<<<<<< HEAD
-        axios.post(herokuUrl, add, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }).then((response) => {
-=======
-        axios.post(localUrl, add).then((response) => {
->>>>>>> d1bfc0cfbceaae490afbfaa78fb4a7e6be97d678
+        axios
+        .post(herokuUrl, add)
+        .then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -137,11 +130,11 @@ const Welcome = (props) => {
 
     ////Login view - returning user OR new sign-in /////
     const userLogin = () => {
-        setView('login')
+        props.setView('login')
     }
 
     const oldLogin = () => {
-        setAccounts('old')
+        props.setAccounts('old')
     }
 
     //////////////////////////////////////////////
@@ -191,11 +184,11 @@ const Welcome = (props) => {
     //////////////////////////////////////////////
 
     useEffect(() => {
-        if (view === 'login') {
+        if (props.view === 'login') {
             getUsers()
-        } else if (view === 'main') {
+        } else if (props.view === 'main') {
             getProducts()
-        } else if (view === 'welcome') {
+        } else if (props.view === 'welcome') {
             getProducts()
         }
     }, [])
@@ -206,7 +199,7 @@ const Welcome = (props) => {
     //////////////////////////////////////////////
 
 
-    if (view === 'welcome') {
+    if (props.view === 'welcome') {
         return (
             <>
                 <ThemeProvider theme={theme}>
@@ -245,10 +238,10 @@ const Welcome = (props) => {
                                 </Typography>
                                 {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    
+
                                    Pretend you've never heard of Home Goods.
                                     Here you can find everything your home needs!
-                                    
+
                                 </Typography> */}
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -314,7 +307,7 @@ const Welcome = (props) => {
                 </ThemeProvider>
             </>
         )
-    } else if (view === 'login') {
+    } else if (props.view === 'login') {
         return (
             <>
 
@@ -322,7 +315,7 @@ const Welcome = (props) => {
 
             </>
         )
-    } else if (view === 'main') {
+    } else if (props.view === 'main') {
         return (
             <>
                 <Main />

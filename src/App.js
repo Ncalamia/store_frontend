@@ -83,14 +83,14 @@ const App = () => {
     return (
       <>
 
-        <Login />
+        <Login view={view} setView={setView}/>
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main />
+        <Main view={view} setView={setView}/>
       </>
     )
   }

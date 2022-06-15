@@ -4,7 +4,6 @@ const AddUser = (props) => {
   //////States//////
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
-  let [view, setView] = useState('login')
   let [accounts, setAccounts] = useState('new')
   /////Functions///////
   const handleChange = (event) => {
@@ -16,15 +15,9 @@ const AddUser = (props) => {
     console.log(user)
     props.userSignup(user)
     setUser({ email: '', password: '' })
-    setView('main')
+    props.setView('main')
   }
-  if (view === 'main') {
-    return (
-      <>
-        <Main />
-      </>
-    )
-  } else if (view === 'login') {
+
     return (
       <>
         <form onSubmit={handleSubmit}>
@@ -41,8 +34,5 @@ const AddUser = (props) => {
       </>
     )
   }
-}
+
 export default AddUser
-
-
-
