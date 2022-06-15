@@ -264,25 +264,33 @@ const Login = (props) => {
                         <Container sx={{ py: 8 }} maxWidth="md">
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                 {accounts === 'old' ?
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                        <OldUser />
-                                        <br />
+                                    <div className='old'>
+                                        <CardContent sx={{ flexGrow: 1 }}>
+                                            <OldUser />
+                                            <br />
+                                        </CardContent>
+
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"
                                             color="text.secondary">
                                             Don't have an account? <Button variant="text" onClick={userSignup}>Sign up</Button>
                                         </Typography>
-                                    </CardContent> :
-
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                        <AddUser />
-                                        <br />
+                                    </div>
+                                    
+                                    
+                                    :
+                                    <div className='new'>
+                                        <CardContent sx={{ flexGrow: 1 }}>
+                                            <AddUser />
+                                            <br />
+                                        </CardContent>
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"
                                             color="text.secondary">
                                             Have an account already? <Button variant="text" onClick={oldLogin}>Log in</Button>
                                         </Typography>
-                                    </CardContent>
+                                    </div>
+
                                 }
 
                             </Card>

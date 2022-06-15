@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
+
 import Login from './Login.js'
 import Welcome from './Welcome.js'
 
@@ -40,7 +41,7 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('welcome')
+    let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
 
