@@ -95,11 +95,7 @@ const getUsers = () => {
 
 ///////CREATE PRODUCT//////////
 const handleCreate = (add) => {
-    axios.post(localUrl, add, {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    }).then((response) => {
+    axios.post(localUrl, add).then((response) => {
         console.log(response)
         console.log(response.data.id)
         setUsers([...users, response.data])

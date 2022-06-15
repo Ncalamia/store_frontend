@@ -77,11 +77,7 @@ const Welcome = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-        axios.post(localUrl, add, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }).then((response) => {
+        axios.post(localUrl, add).then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -239,11 +235,13 @@ const Welcome = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    <p>Pretend you've never heard of Home Goods.</p>
-                                    <p>Here you can find everything your home needs!</p>
-                                </Typography>
+                                    
+                                   Pretend you've never heard of Home Goods.
+                                    Here you can find everything your home needs!
+                                    
+                                </Typography> */}
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
