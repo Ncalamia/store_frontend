@@ -37,7 +37,7 @@ const App = () => {
 //////FETCHING DATA/////////
   const getProducts = () => {
     axios
-    .get('http://localhost:8000/api/products')
+    .get('https://arcane-sea-71685.herokuapp.com/api/products')
     .then(
       (response) => setProducts(response.data),
       (err) => console.error(err)
@@ -53,7 +53,7 @@ const App = () => {
 
 ///////CREATE///////////////////////////////
 const handleCreate = (add)=>{
-  axios.post('http://localhost:8000/api/products', add
+  axios.post('https://arcane-sea-71685.herokuapp.com/api/products', add
   ).then((response)=>{
     console.log(response)
     console.log(response.data.id)
@@ -65,7 +65,7 @@ const handleCreate = (add)=>{
 /////////////////DELETE///////////////////////////////
     const handleDelete = (event, deleted) => {
       axios
-        .delete('http://localhost:8000/api/products' + event.target.value) 
+        .delete('https://arcane-sea-71685.herokuapp.com/api/products' + event.target.value) 
         .then((response) => {
           getProducts()
 
@@ -75,7 +75,7 @@ const handleCreate = (add)=>{
 const handleUpdate = (updateProduct) => {
     console.log(updateProduct.id)
   axios
-    .put('http://localhost:8000/api/products' + updateProduct.id, updateProduct)
+    .put('https://arcane-sea-71685.herokuapp.com/api/products' + updateProduct.id, updateProduct)
     .then((response) => {
       getProducts()
       setProducts(products.map((product)=>{
