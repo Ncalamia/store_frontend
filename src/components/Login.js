@@ -81,11 +81,7 @@ const Login = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-        axios.post(localUrl, add, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }).then((response) => {
+        axios.post(localUrl, add).then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -98,8 +94,8 @@ const Login = (props) => {
         axios
             .post(localUsersUrl, addUser)
             .then((response) => {
-                // console.log(response)
-                // console.log(response.data.id)
+                console.log(response)
+                console.log(response.data.id)
                 setUsers([...users, response.data])
 
             })
@@ -275,7 +271,8 @@ const Login = (props) => {
                                     </CardContent> :
 
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <AddUser />
+                                     <AddUser userSignup={userSignup} /> 
+                                     
                                         <br />
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"

@@ -82,11 +82,9 @@ const Main = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-        axios.post(herokuUrl, add, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }).then((response) => {
+        axios
+        .post(herokuUrl, add)
+        .then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -99,8 +97,8 @@ const Main = (props) => {
         axios
             .post(herokuUsersUrl, addUser)
             .then((response) => {
-                // console.log(response)
-                // console.log(response.data.id)
+                console.log(response)
+                console.log(response.data.id)
                 setUsers([...users, response.data])
 
             })
@@ -254,11 +252,13 @@ const Main = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
+                                    <div>
                                     <p>Pretend you've never heard of Home Goods.</p>
                                     <p>Here you can find everything your home needs!</p>
-                                </Typography>
+                                    </div>
+                                </Typography> */}
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"

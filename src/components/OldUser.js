@@ -20,7 +20,7 @@ const OldUser = (props) => {
     const handleSubmit = (event) => {
       event.preventDefault()
       console.log(user)
-      props.handleCreate(user)
+      props.handl(user)
       setUser({ email: '', password: ''  })
     }
 
