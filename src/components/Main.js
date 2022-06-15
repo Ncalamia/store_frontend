@@ -179,13 +179,12 @@ const Main = (props) => {
     useEffect(() => {
         if (view === 'login') {
             getUsers()
-        } else {
+        } else if (view === 'main') {
+            getProducts()
+        } else if (view === 'welcome') {
             getProducts()
         }
     }, [])
-
-
-
 
 
     //////////////////////////////////////////////
