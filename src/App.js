@@ -5,7 +5,7 @@ import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-
+import {FaHome} from 'react-icons/fa';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -121,12 +121,15 @@ const theme = createTheme({
 })
   return (
     <>
+    
     <ThemeProvider theme={theme}>
     <CssBaseline />
     <AppBar position="relative">
       <Toolbar>
-        <Typography variant="h6" color="inherit" noWrap>
-          Home.
+        <Typography variant="h6" color="inherit" noWrap >
+        < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{fontSize: 40}} >
+       < FaHome/>
+      </Link>
         </Typography>
       </Toolbar>
     </AppBar>

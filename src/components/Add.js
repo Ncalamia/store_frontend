@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Button from '@mui/material/Button'
 
 
 const Add = (props) => {
@@ -45,7 +46,7 @@ const handleSubmit = (event) => {
         <br />
 				<label htmlFor="price">Price: </label>
         <input type="number" name="price" value={product.price} onChange={handleChange}/>
-        <input type="submit"/>
+        <Button type="submit">submit</Button>
       </form>
       </details>
     </>
