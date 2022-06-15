@@ -19,8 +19,8 @@ const App = () => {
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
-  // let [view, setView] = useState('welcome')
-  let [view, setView] = useState('main')
+  let [view, setView] = useState('welcome')
+  // let [view, setView] = useState('main')
   // let [view, setView] = useState('login')
 
   // deplpoy with herokuURLs

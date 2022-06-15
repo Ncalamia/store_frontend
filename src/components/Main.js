@@ -40,7 +40,7 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('welcome')
+    let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
 
@@ -95,8 +95,8 @@ const Main = (props) => {
         axios
             .post(localUsersUrl, addUser)
             .then((response) => {
-                // console.log(response)
-                // console.log(response.data.id)
+                console.log(response)
+                console.log(response.data.id)
                 setUsers([...users, response.data])
 
             })
