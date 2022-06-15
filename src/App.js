@@ -19,8 +19,8 @@ const App = () => {
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
+  // let [view, setView] = useState('welcome')
   let [view, setView] = useState('welcome')
-  // let [view, setView] = useState('main')
   // let [view, setView] = useState('login')
 
   // deplpoy with herokuURLs
@@ -31,13 +31,13 @@ const App = () => {
 
 
   //////////////////////////////////////////////
-  // fetching the data from the backend 
+  // fetching the data from the backend
   //////////////////////////////////////////////
 
   //////Fetching products/////////
   const getProducts = () => {
     axios
-      .get(localUrl)
+      .get(herokuUrl)
       .then(
         (response) => setProducts(response.data),
         (err) => console.error(err)
@@ -48,7 +48,7 @@ const App = () => {
   //////Fetching users/////////
   const getUsers = () => {
     axios
-      .get(localUsersUrl)
+      .get(herokuUsersUrl)
       .then(
         (response) => setUsers(response.data),
         (err) => console.error(err)
@@ -76,7 +76,7 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome />
+        <Welcome view={view} setView={setView}/>
       </>
     )
   } else if (view === 'login') {
