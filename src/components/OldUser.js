@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 
-const AddUser = (props) => {
+const OldUser = (props) => {
 
 	//////States//////
   let emptyUser = { email: '', password: '' }
@@ -13,14 +13,14 @@ const AddUser = (props) => {
 
     const handleChange = (event) => {
         console.log(event);
-        setUser({ ...user, [event.target.name]: event.target.value })
+          setUser({ ...user, [event.target.name]: event.target.value })
     }
     
     
     const handleSubmit = (event) => {
       event.preventDefault()
       console.log(user)
-      props.userSignup(user)
+      props.handleCreate(user)
       setUser({ email: '', password: ''  })
     }
 
@@ -42,4 +42,4 @@ const AddUser = (props) => {
   )
 }
 
-export default AddUser
+export default OldUser
