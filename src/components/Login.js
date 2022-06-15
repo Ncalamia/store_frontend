@@ -39,7 +39,6 @@ const Login = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('login')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
 
@@ -50,7 +49,7 @@ const Login = (props) => {
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
     //////////////////////////////////////////////
-    // fetching the data from the backend 
+    // fetching the data from the backend
     //////////////////////////////////////////////
 
     //////Fetching products/////////
@@ -133,7 +132,7 @@ const Login = (props) => {
 
     ////Login view - returning user OR new sign-in /////
     const userLogin = () => {
-        setView('login')
+        props.setView('login')
     }
 
     const oldLogin = () => {
@@ -187,11 +186,11 @@ const Login = (props) => {
     //////////////////////////////////////////////
 
     useEffect(() => {
-        if (view === 'login') {
+        if (props.view === 'login') {
             getUsers()
-        } else if (view === 'main') {
+        } else if (props.view === 'main') {
             getProducts()
-        } else if (view === 'welcome') {
+        } else if (props.view === 'welcome') {
             getProducts()
         }
     }, [])
@@ -202,13 +201,13 @@ const Login = (props) => {
     //////////////////////////////////////////////
 
 
-    if (view === 'welcome') {
+    if (props.view === 'welcome') {
         return (
             <>
                 <Welcome />
             </>
         )
-    } else if (view === 'login') {
+    } else if (props.view === 'login') {
         return (
             <>
                 <ThemeProvider theme={theme}>
@@ -261,7 +260,7 @@ const Login = (props) => {
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                 {accounts === 'old' ?
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <OldUser />
+                                        <OldUser view={props.view} setView={props.setView}/>
                                         <br />
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"
@@ -271,8 +270,8 @@ const Login = (props) => {
                                     </CardContent> :
 
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                     <AddUser userSignup={userSignup} /> 
-                                     
+                                     <AddUser view={props.view} setView={props.setView} userSignup={userSignup} />
+
                                         <br />
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"
@@ -306,7 +305,7 @@ const Login = (props) => {
 
             </>
         )
-    } else if (view === 'main') {
+    } else if (props.view === 'main') {
         return (
             <>
                 <Main />

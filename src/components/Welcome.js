@@ -35,7 +35,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 const Welcome = (props) => {
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('welcome')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
 
@@ -46,13 +45,13 @@ const Welcome = (props) => {
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
     //////////////////////////////////////////////
-    // fetching the data from the backend 
+    // fetching the data from the backend
     //////////////////////////////////////////////
 
     //////Fetching products/////////
     const getProducts = () => {
         axios
-            .get(localUrl)
+            .get(herokuUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -63,7 +62,7 @@ const Welcome = (props) => {
     //////Fetching users/////////
     const getUsers = () => {
         axios
-            .get(localUsersUrl)
+            .get(herokuUsersUrl)
             .then(
                 (response) => setUsers(response.data),
                 (err) => console.error(err)
@@ -77,7 +76,9 @@ const Welcome = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-        axios.post(localUrl, add).then((response) => {
+        axios
+        .post(herokuUrl, add)
+        .then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -88,7 +89,7 @@ const Welcome = (props) => {
     const userSignup = (addUser) => {
         setAccounts('new')
         axios
-            .post(localUsersUrl, addUser)
+            .post(herokuUsersUrl, addUser)
             .then((response) => {
                 // console.log(response)
                 // console.log(response.data.id)
@@ -101,7 +102,7 @@ const Welcome = (props) => {
     const handleUpdate = (updateProduct) => {
         console.log(updateProduct.id)
         axios
-            .put(localUrl + '/' + updateProduct.id, updateProduct)
+            .put(herokuUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -115,7 +116,7 @@ const Welcome = (props) => {
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
-            .delete(localUrl + '/' + event.target.value)
+            .delete(herokuUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })
@@ -129,11 +130,11 @@ const Welcome = (props) => {
 
     ////Login view - returning user OR new sign-in /////
     const userLogin = () => {
-        setView('login')
+        props.setView('login')
     }
 
     const oldLogin = () => {
-        setAccounts('old')
+        props.setAccounts('old')
     }
 
     //////////////////////////////////////////////
@@ -183,11 +184,11 @@ const Welcome = (props) => {
     //////////////////////////////////////////////
 
     useEffect(() => {
-        if (view === 'login') {
+        if (props.view === 'login') {
             getUsers()
-        } else if (view === 'main') {
+        } else if (props.view === 'main') {
             getProducts()
-        } else if (view === 'welcome') {
+        } else if (props.view === 'welcome') {
             getProducts()
         }
     }, [])
@@ -198,7 +199,7 @@ const Welcome = (props) => {
     //////////////////////////////////////////////
 
 
-    if (view === 'welcome') {
+    if (props.view === 'welcome') {
         return (
             <>
                 <ThemeProvider theme={theme}>
@@ -237,10 +238,10 @@ const Welcome = (props) => {
                                 </Typography>
                                 {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    
+
                                    Pretend you've never heard of Home Goods.
                                     Here you can find everything your home needs!
-                                    
+
                                 </Typography> */}
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -306,7 +307,7 @@ const Welcome = (props) => {
                 </ThemeProvider>
             </>
         )
-    } else if (view === 'login') {
+    } else if (props.view === 'login') {
         return (
             <>
 
@@ -314,7 +315,7 @@ const Welcome = (props) => {
 
             </>
         )
-    } else if (view === 'main') {
+    } else if (props.view === 'main') {
         return (
             <>
                 <Main />

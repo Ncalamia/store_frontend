@@ -51,13 +51,13 @@ const Main = (props) => {
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
     //////////////////////////////////////////////
-    // fetching the data from the backend 
+    // fetching the data from the backend
     //////////////////////////////////////////////
 
     //////Fetching products/////////
     const getProducts = () => {
         axios
-            .get(localUrl)
+            .get(herokuUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -68,7 +68,7 @@ const Main = (props) => {
     //////Fetching users/////////
     const getUsers = () => {
         axios
-            .get(localUsersUrl)
+            .get(herokuUsersUrl)
             .then(
                 (response) => setUsers(response.data),
                 (err) => console.error(err)
@@ -82,7 +82,9 @@ const Main = (props) => {
 
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
-        axios.post(localUrl, add).then((response) => {
+        axios
+        .post(herokuUrl, add)
+        .then((response) => {
             console.log(response)
             console.log(response.data.id)
             setUsers([...users, response.data])
@@ -93,7 +95,7 @@ const Main = (props) => {
     const userSignup = (addUser) => {
         setAccounts('new')
         axios
-            .post(localUsersUrl, addUser)
+            .post(herokuUsersUrl, addUser)
             .then((response) => {
                 console.log(response)
                 console.log(response.data.id)
@@ -106,7 +108,7 @@ const Main = (props) => {
     const handleUpdate = (updateProduct) => {
         console.log(updateProduct.id)
         axios
-            .put(localUrl + '/' + updateProduct.id, updateProduct)
+            .put(herokuUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -120,7 +122,7 @@ const Main = (props) => {
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
-            .delete(localUrl + '/' + event.target.value)
+            .delete(herokuUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })

@@ -15,13 +15,14 @@ const OldUser = (props) => {
         console.log(event);
           setUser({ ...user, [event.target.name]: event.target.value })
     }
-    
-    
+
+
     const handleSubmit = (event) => {
       event.preventDefault()
       console.log(user)
-      props.handl(user)
+      // props.handle(user)
       setUser({ email: '', password: ''  })
+      props.setView('main')
     }
 
 
