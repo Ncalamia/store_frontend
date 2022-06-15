@@ -2,7 +2,7 @@
 //import
 //////////////////////////////////////////////
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
 import Login from './Login.js'
@@ -14,6 +14,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
+import {FaHome} from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -140,6 +141,18 @@ const Welcome = (props) => {
     }
 
     //////////////////////////////////////////////
+    // functions - related to scroll
+    //////////////////////////////////////////////
+
+    const productsRef = useRef()
+    const scrollDown = () => {
+        window.scrollTo({
+            top: productsRef.current.offsetTop,
+            behavior: 'smooth',
+        });
+    };
+
+    //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
 
@@ -198,7 +211,9 @@ const Welcome = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                Home.
+                                < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
+                                    < FaHome />
+                                </Link>
                             </Typography>
 
                             <Button varient="text" color="inherit" onClick={userLogin}>Login</Button>
@@ -226,6 +241,8 @@ const Welcome = (props) => {
                                 </Typography>
                                 <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
+                                    <p>Pretend you've never heard of Home Goods.</p>
+                                    <p>Here you can find everything your home needs!</p>
                                 </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -233,12 +250,12 @@ const Welcome = (props) => {
                                     spacing={2}
                                     justifyContent="center"
                                 >
-                                    <Button variant="contained">Browse Categories</Button>
+                                    <Button onClick={scrollDown} variant="contained">Browse Products</Button>
 
                                 </Stack>
                             </Container>
                         </Box>
-                        <Container sx={{ py: 8 }} maxWidth="md">
+                        <Container ref={productsRef} sx={{ py: 8 }} maxWidth="md">
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (

@@ -2,7 +2,7 @@
 //import
 //////////////////////////////////////////////
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
 import Welcome from './Welcome.js'
@@ -14,6 +14,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
+import {FaHome} from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -144,6 +145,18 @@ const Login = (props) => {
     }
 
     //////////////////////////////////////////////
+    // functions - related to scroll
+    //////////////////////////////////////////////
+
+    const productsRef = useRef()
+    const scrollDown = () => {
+        window.scrollTo({
+            top: productsRef.current.offsetTop,
+            behavior: 'smooth',
+        });
+    };
+
+    //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
 
@@ -208,7 +221,9 @@ const Login = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                Home.
+                                < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
+                                    < FaHome />
+                                </Link>
                             </Typography>
 
                             <Button varient="text" color="inherit" onClick={userLogin}>Login</Button>
