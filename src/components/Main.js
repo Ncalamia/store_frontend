@@ -30,7 +30,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
+import Modal from '@mui/material/Modal'
 
 const Main = (props) => {
 
@@ -165,6 +165,21 @@ const Main = (props) => {
           0
         );
       }
+
+      const [open, setOpen] = React.useState(false);
+      const handleOpen = () => setOpen(true);
+      const handleClose = () => setOpen(false);
+      const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -271,13 +286,47 @@ const Main = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    <div>
-                                    <p>Pretend you've never heard of Home Goods.</p>
-                                    <p>Here you can find everything your home needs!</p>
+                                    Pretend you've never heard of Home Goods.
+                                    Here you can find everything your home needs!
+                                  
+                                </Typography>
+                                <Container>
+                        <Button onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+                            <Modal
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                        Shopping Cart
+                                    </Typography>
+                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    <ol>
+                        {cart.map((items)=>{
+                                return(
+                                    <>
+                                    <div key={items.id}>
+                                        <li>{items.name}</li>
                                     </div>
-                                </Typography> */}
+
+                                    
+                                    </>
+
+                                )
+                            })}
+                            </ol>
+                            <div>Total Cost: ${getTotalSum()} </div>
+                                    </Typography>
+                                </Box>
+                            </Modal>
+                          
+                        
+                       
+                        </Container>
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
@@ -293,8 +342,8 @@ const Main = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product.id} xs={12} sm={6} md={4}>
-                                        <Card
+                                    <Grid key={product.id} item xs={12} sm={6} md={4}>
+                                        <Card 
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
@@ -326,24 +375,7 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                        <Container>
-                           Test Shopping cart.
-                            <ol>
-                        {cart.map((items)=>{
-                                return(
-                                    <>
-                                    <div key ={items.id}>
-                                        <li>{items.name}</li>
-                                    </div>
-
-                                    
-                                    </>
-
-                                )
-                            })}
-                            </ol>
-                        <div>Total Cost: ${getTotalSum()} </div>
-                        </Container>
+                      
                         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
                         </Typography>

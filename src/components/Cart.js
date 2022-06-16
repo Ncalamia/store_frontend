@@ -39,7 +39,14 @@ const Cart = (props) => {
 
   const [cart, setCart] = useState([])
   const [product, setProduct] = useState([])  
-  let [view, setView] = useState('cart')
+  let [view, setView] = useState('')
+  const getTotalSum = () => {
+    return cart.reduce(
+      (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
+                                         //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+      0
+    );
+  }
 
   function Copyright() {
     return (
@@ -115,7 +122,24 @@ if (view === 'main') {
                                     justifyContent="center"
                                 >
                                     <Button  onClick={()=>setView('main')} variant="contained">Back to browsing</Button>
-                           
+                                    <Container>
+                           Test Shopping cart.
+                            <ol>
+                        {cart.map((items)=>{
+                                return(
+                                    <>
+                                    <div key={items.id}>
+                                        <li>{items.name}</li>
+                                    </div>
+
+                                    
+                                    </>
+
+                                )
+                            })}
+                            </ol>
+                        <div>Total Cost: ${getTotalSum()} </div>
+                        </Container>
                                 </Stack>
                             </Container>
                            
