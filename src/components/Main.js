@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import Login from './Login.js'
 import Welcome from './Welcome.js'
-
+import Cart from './Cart.js'
 import Add from './Add.js'
 import Edit from './Edit.js'
 
@@ -43,6 +43,7 @@ const Main = (props) => {
     let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
     let [accounts, setAccounts] = useState('old')
+    const [cart, setCart] = useState([])
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -57,7 +58,7 @@ const Main = (props) => {
     //////Fetching products/////////
     const getProducts = () => {
         axios
-            .get(herokuUrl)
+            .get(localUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -68,7 +69,7 @@ const Main = (props) => {
     //////Fetching users/////////
     const getUsers = () => {
         axios
-            .get(herokuUsersUrl)
+            .get(localUrl)
             .then(
                 (response) => setUsers(response.data),
                 (err) => console.error(err)
@@ -83,7 +84,7 @@ const Main = (props) => {
     ///////CREATE PRODUCT//////////
     const handleCreate = (add) => {
         axios
-        .post(herokuUrl, add)
+        .post(localUrl, add)
         .then((response) => {
             console.log(response)
             console.log(response.data.id)
@@ -95,7 +96,7 @@ const Main = (props) => {
     const userSignup = (addUser) => {
         setAccounts('new')
         axios
-            .post(herokuUsersUrl, addUser)
+            .post(localUrl, addUser)
             .then((response) => {
                 console.log(response)
                 console.log(response.data.id)
@@ -108,7 +109,7 @@ const Main = (props) => {
     const handleUpdate = (updateProduct) => {
         console.log(updateProduct.id)
         axios
-            .put(herokuUrl + '/' + updateProduct.id, updateProduct)
+            .put(localUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -122,7 +123,7 @@ const Main = (props) => {
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
-            .delete(herokuUrl + '/' + event.target.value)
+            .delete(localUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })
@@ -153,6 +154,17 @@ const Main = (props) => {
         });
     };
 
+    //////////////////////////////////////////////
+    // functions - related to add to cart
+    //////////////////////////////////////////////
+
+    const getTotalSum = () => {
+        return cart.reduce(
+          (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
+                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+          0
+        );
+      }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -209,6 +221,12 @@ const Main = (props) => {
                 <Welcome />
             </>
         )
+    } else if (view === 'cart'){
+        return (
+            <>
+            < Cart/>
+            </>
+        )
     } else if (view === 'login') {
         return (
             <>
@@ -226,9 +244,10 @@ const Main = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
+                                < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
+                                <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button>
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -274,7 +293,7 @@ const Main = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product} xs={12} sm={6} md={4}>
+                                    <Grid item key={product.id} xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
@@ -290,6 +309,7 @@ const Main = (props) => {
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
+                                                    <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
@@ -298,12 +318,31 @@ const Main = (props) => {
                                             <CardActions>
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
+                                                
                                             </CardActions>
                                         </Card>
 
                                     </Grid>
                                 ))}
                             </Grid>
+                        </Container>
+                        <Container>
+                           Test Shopping cart.
+                            <ol>
+                        {cart.map((items)=>{
+                                return(
+                                    <>
+                                    <div key ={items.id}>
+                                        <li>{items.name}</li>
+                                    </div>
+
+                                    
+                                    </>
+
+                                )
+                            })}
+                            </ol>
+                        <div>Total Cost: ${getTotalSum()} </div>
                         </Container>
                         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>

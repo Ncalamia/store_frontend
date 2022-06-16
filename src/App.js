@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import Cart from './components/Cart.js'
 import Welcome from './components/Welcome.js'
 import Login from './components/Login.js'
 import Main from './components/Main.js'
@@ -20,7 +20,7 @@ const App = () => {
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
   // let [view, setView] = useState('welcome')
-  let [view, setView] = useState('welcome')
+  let [view, setView] = useState('main')
   // let [view, setView] = useState('login')
 
   // deplpoy with herokuURLs

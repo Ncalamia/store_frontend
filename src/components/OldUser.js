@@ -22,7 +22,7 @@ const OldUser = (props) => {
       console.log(user)
       // props.handle(user)
       setUser({ email: '', password: ''  })
-      props.setView('main')
+      // props.setView('main')
     }
 
 
