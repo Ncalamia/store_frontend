@@ -11,7 +11,7 @@ const Add = (props) => {
 
 	/////Functions///////
 const handleChange = (event) => {
-	console.log(event);
+	// console.log(event);
   	setProduct({ ...product, [event.target.name]: event.target.value })
 }
 
@@ -19,7 +19,7 @@ const handleChange = (event) => {
 
 const handleSubmit = (event) => {
   event.preventDefault()
-  console.log(product)
+  // console.log(product)
   props.handleCreate(product)
 
 	setProduct({image:'', name: '', category: '', price: '' })
@@ -38,7 +38,7 @@ const handleSubmit = (event) => {
         <input type="text" name="name" value={product.name} onChange={handleChange}/>
         <br />
         <br />
-       
+
 				<label htmlFor="category">Category: </label>
         <input type="text" name="category" value={product.category} onChange={handleChange}/>
 				<br />
