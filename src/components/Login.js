@@ -40,6 +40,7 @@ const Login = (props) => {
     // general states
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
+    let [logins, setLogins] = useState([])
     let [accounts, setAccounts] = useState('old')
 
     // local vs heroku links - deploy with heroku
@@ -47,6 +48,7 @@ const Login = (props) => {
     const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUrl = 'http://localhost:8000/api/products'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
+    const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
     //////////////////////////////////////////////
     // fetching the data from the backend
@@ -69,6 +71,18 @@ const Login = (props) => {
             .get(localUsersUrl)
             .then(
                 (response) => setUsers(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+
+
+    //////Fetching login /////////
+    const getLogins = () => {
+        axios
+            .get(localLoginUrl)
+            .then(
+                (response) => setLogins(response.data),
                 (err) => console.error(err)
             )
             .catch((error) => console.error(error))
@@ -111,6 +125,17 @@ const Login = (props) => {
                     return product.id != response.data.id ? product : response.data
                 }))
 
+            })
+    }
+
+
+    ///////UPDATE USER //////////
+    const handleUpdateUser = (updateUser) => {
+        console.log(updateUser)
+        axios
+            .put(localLoginUrl)
+            .then((response) => {
+                getUsers()
             })
     }
 
@@ -186,8 +211,10 @@ const Login = (props) => {
     //////////////////////////////////////////////
 
     useEffect(() => {
-        if (props.view === 'login') {
+        if (props.view === 'login' && accounts === 'new') {
             getUsers()
+        } else if (props.view === 'login' && accounts === 'old') {
+            getLogins()    
         } else if (props.view === 'main') {
             getProducts()
         } else if (props.view === 'welcome') {
@@ -260,7 +287,7 @@ const Login = (props) => {
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                 {accounts === 'old' ?
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <OldUser view={props.view} setView={props.setView}/>
+                                        <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser}/>
                                         <br />
                                         <Typography gutterBottom component="h2"
                                             variant="subtitle1"

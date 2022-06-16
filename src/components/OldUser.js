@@ -6,8 +6,7 @@ const OldUser = (props) => {
 	//////States//////
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
-
-
+  let [accounts, setAccounts] = useState('old')
 
 	/////Functions///////
 
@@ -18,11 +17,12 @@ const OldUser = (props) => {
 
 
     const handleSubmit = (event) => {
+
       event.preventDefault()
       console.log(user)
-      // props.handle(user)
-      setUser({ email: '', password: ''  })
-      props.setView('main')
+      props.handleUpdateUser(user)
+      // props.setView('main')
+      
     }
 
 
@@ -34,7 +34,7 @@ const OldUser = (props) => {
                   <br />
                   <br />
                   <label htmlFor="password">Password: </label>
-                  <input type="text" name="password" value={user.password} onChange={handleChange} />
+                  <input type="password" name="password" value={user.password} onChange={handleChange} />
                   <br />
                   <br />
                   <input type="submit" />

@@ -26,7 +26,7 @@ const AddUser = (props) => {
           <br />
           <br />
           <label htmlFor="password">Password: </label>
-          <input type="text" name="password" value={user.password} onChange={handleChange} />
+          <input type="password" name="password" value={user.password} onChange={handleChange} />
           <br />
           <br />
           <input type="submit" />
