@@ -11,7 +11,7 @@ const Edit = (props) => {
 
 	/////Functions///////
 const handleChange = (event) => {
-	console.log(event);
+	// console.log(event);
   	setProduct({ ...product, [event.target.name]: event.target.value })
 }
 

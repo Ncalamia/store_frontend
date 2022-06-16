@@ -1,48 +1,87 @@
 import './App.css';
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Add from './components/Add.js'
-import Edit from './components/Edit.js'
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Welcome from './components/Welcome.js'
+import Login from './components/Login.js'
+import Signup from './components/Signup.js'
+import Main from './components/Main.js'
+
 
 const App = () => {
 
-////States/////
-  let [products, setProducts] = useState([])
+  //////////////////////////////////////////////
+  //states
+  //////////////////////////////////////////////
 
-  const herokuURL = 'https://arcane-sea-71685.herokuapp.com/api/products'
+  // general states
+  let [products, setProducts] = useState([])
+  let [users, setUsers] = useState([])
+  let [regulars, setRegulars] = useState([])
+
+
+  // view states
+  //change views without navigating - testing purposes only (deploy view at welcome)
+  // let [view, setView] = useState('main')
+  // let [view, setView] = useState('login')
+  // let [view, setView] = useState('signup')
+  let [view, setView] = useState('welcome')
+
+  // local vs heroku links - deploy with heroku
+  const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
   const localUrl = 'http://localhost:8000/api/products'
 
-//////Fetching Data/////////
+  const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
+  const localUsersUrl = 'http://localhost:8000/api/useraccount'
+
+  const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
+  const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+
+  //////////////////////////////////////////////
+  // fetching the data from the backend
+  //////////////////////////////////////////////
+
+  //////Fetching products/////////
   const getProducts = () => {
     axios
-    .get(herokuURL)
-    .then(
-      (response) => setProducts(response.data),
-      (err) => console.error(err)
-    )
-    .catch((error) => console.error(error))
+      // .get(localUrl)
+      .get(herokuUrl)
+      .then(
+        (response) => setProducts(response.data),
+        (err) => console.error(err)
+      )
+      .catch((error) => console.error(error))
+  }
+
+  //////Fetching users/////////
+  const getUsers = () => {
+    axios
+      // .get(localUsersUrl)
+      .get(herokuUsersUrl)
+      .then(
+        (response) => setUsers(response.data),
+        (err) => console.error(err)
+      )
+      .catch((error) => console.error(error))
   }
 
 
-///////On Page Load////////
+  //////////////////////////////////////////////
+  // useEffect
+  //////////////////////////////////////////////
+
   useEffect(() => {
-    getProducts()
+    if (view === 'signup') {
+      getUsers()
+    } else if (view === 'main') {
+      getProducts()
+    } else if (view === 'welcome') {
+      getProducts()
+    }
+    else {
+      getUsers()
+    }
   }, [])
 
 ///////Functions//////////
@@ -91,16 +130,44 @@ function Copyright() {
     </Typography>
   );
 }
+  //////////////////////////////////////////////
+  // the return - skeleton
+  //////////////////////////////////////////////
 
-const cards = [];
+
+  if (view === 'welcome') {
+    return (
+      <>
+        <Welcome view={view} setView={setView} />
+      </>
+    )
+  } else if (view === 'login') {
+    return (
+      <>
+
+        <Login view={view} setView={setView} />
 
 const theme = createTheme({
   palette: {
     primary: {
 
       main: '#ff4400',
+      </>
+    )
+  } else if (view === 'signup') {
+    return (
+      <>
 
-    }
+        <Signup view={view} setView={setView} />
+
+      </>
+    )
+  } else if (view === 'main') {
+    return (
+      <>
+        <Main view={view} setView={setView} />
+      </>
+    )
   }
 })
   return (
