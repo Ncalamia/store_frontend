@@ -4,7 +4,9 @@ import axios from 'axios'
 
 import Welcome from './components/Welcome.js'
 import Login from './components/Login.js'
+import Signup from './components/Signup.js'
 import Main from './components/Main.js'
+
 
 const App = () => {
 
@@ -15,19 +17,29 @@ const App = () => {
   // general states
   let [products, setProducts] = useState([])
   let [users, setUsers] = useState([])
+<<<<<<< HEAD
   
+=======
+  let [regulars, setRegulars] = useState([])
+
+>>>>>>> 3973bd51aea7879033fea930ef69d9302faaf5ee
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
-  // let [view, setView] = useState('welcome')
-  let [view, setView] = useState('welcome')
+  // let [view, setView] = useState('main')
   // let [view, setView] = useState('login')
+  // let [view, setView] = useState('signup')
+  let [view, setView] = useState('welcome')
 
-  // deplpoy with herokuURLs
+  // local vs heroku links - deploy with heroku
   const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
-  const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
   const localUrl = 'http://localhost:8000/api/products'
+
+  const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
   const localUsersUrl = 'http://localhost:8000/api/useraccount'
+
+  const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
+  const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
 
   //////////////////////////////////////////////
@@ -37,7 +49,8 @@ const App = () => {
   //////Fetching products/////////
   const getProducts = () => {
     axios
-      .get(herokuUrl)
+      .get(localUrl)
+      // .get(herokuUrl)
       .then(
         (response) => setProducts(response.data),
         (err) => console.error(err)
@@ -48,7 +61,8 @@ const App = () => {
   //////Fetching users/////////
   const getUsers = () => {
     axios
-      .get(herokuUsersUrl)
+      .get(localUsersUrl)
+      // .get(herokuUsersUrl)
       .then(
         (response) => setUsers(response.data),
         (err) => console.error(err)
@@ -56,15 +70,21 @@ const App = () => {
       .catch((error) => console.error(error))
   }
 
+
   //////////////////////////////////////////////
   // useEffect
   //////////////////////////////////////////////
 
   useEffect(() => {
-    if (view === 'login') {
+    if (view === 'signup') {
       getUsers()
-    } else {
+    } else if (view === 'main') {
       getProducts()
+    } else if (view === 'welcome') {
+      getProducts()
+    }
+    else {
+      getUsers()
     }
   }, [])
 
@@ -76,21 +96,29 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome view={view} setView={setView}/>
+        <Welcome view={view} setView={setView} />
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-        <Login view={view} setView={setView}/>
+        <Login view={view} setView={setView} />
+
+      </>
+    )
+  } else if (view === 'signup') {
+    return (
+      <>
+
+        <Signup view={view} setView={setView} />
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} setView={setView}/>
+        <Main view={view} setView={setView} />
       </>
     )
   }
