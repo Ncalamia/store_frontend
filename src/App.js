@@ -17,12 +17,9 @@ const App = () => {
   // general states
   let [products, setProducts] = useState([])
   let [users, setUsers] = useState([])
-<<<<<<< HEAD
-  
-=======
+
   let [regulars, setRegulars] = useState([])
 
->>>>>>> 3973bd51aea7879033fea930ef69d9302faaf5ee
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
