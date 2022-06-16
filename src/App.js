@@ -45,8 +45,8 @@ const App = () => {
   //////Fetching products/////////
   const getProducts = () => {
     axios
-      .get(localUrl)
-      // .get(herokuUrl)
+      // .get(localUrl)
+      .get(herokuUrl)
       .then(
         (response) => setProducts(response.data),
         (err) => console.error(err)
@@ -57,8 +57,8 @@ const App = () => {
   //////Fetching users/////////
   const getUsers = () => {
     axios
-      .get(localUsersUrl)
-      // .get(herokuUsersUrl)
+      // .get(localUsersUrl)
+      .get(herokuUsersUrl)
       .then(
         (response) => setUsers(response.data),
         (err) => console.error(err)
