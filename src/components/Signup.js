@@ -5,8 +5,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
+import Welcome from './Welcome.js'
 import Login from './Login.js'
-import Signup from './Signup.js'
 import Main from './Main.js'
 
 import Add from './Add.js'
@@ -33,7 +33,11 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 
-const Welcome = (props) => {
+const Signup = (props) => {
+    //////////////////////////////////////////////
+    //states
+    //////////////////////////////////////////////
+
     // general states
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
@@ -250,6 +254,20 @@ const Welcome = (props) => {
     if (props.view === 'welcome') {
         return (
             <>
+                <Welcome />
+            </>
+        )
+    } else if (props.view === 'login') {
+        return (
+            <>
+
+                <Login />
+
+            </>
+        )
+    } else if (props.view === 'signup') {
+        return (
+            <>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <AppBar position="relative">
@@ -284,56 +302,39 @@ const Welcome = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-
-                                   Pretend you've never heard of Home Goods.
-                                    Here you can find everything your home needs!
-
-                                </Typography> */}
+                                </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
                                     spacing={2}
                                     justifyContent="center"
                                 >
-                                    <Button onClick={scrollDown} variant="contained">Browse Products</Button>
-
                                 </Stack>
                             </Container>
                         </Box>
-                        <Container ref={productsRef} sx={{ py: 8 }} maxWidth="md">
-                            {/* End hero unit */}
-                            <Grid container spacing={4}>
-                                {products.map((product) => (
-                                    <Grid item key={product} xs={12} sm={6} md={4}>
-                                        <Card
-                                            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                                        >
-                                            <CardMedia
-                                                component="img"
-                                                sx={{
-                                                    // 16:9
-                                                    pt: '56.25%',
-                                                }}
-                                                image={product.image}
-                                                alt="random"
-                                            />
-                                            <CardContent sx={{ flexGrow: 1 }}>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {product.name}
-                                                </Typography>
-                                                <Typography>
-                                                    Price: {product.price}$
-                                                </Typography>
-                                            </CardContent>
+                        <Container sx={{ py: 8 }} maxWidth="md">
+                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
-                                        </Card>
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography variant="h5" color="text.secondary" paragraph>
+                                        Sign Up
+                                    </Typography>
+                                    <AddUser view={props.view} setView={props.setView} userSignup={userSignup} />
 
-                                    </Grid>
-                                ))}
-                            </Grid>
+                                    <br />
+                                    <Typography gutterBottom component="h2"
+                                        variant="subtitle1"
+                                        color="text.secondary">
+                                        Have an account already? <Button variant="text" onClick={oldLogin}>Log in</Button>
+                                    </Typography>
+                                </CardContent>
+
+
+                            </Card>
                         </Container>
+
                     </main>
                     {/* Footer */}
                     <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
@@ -351,24 +352,7 @@ const Welcome = (props) => {
                         <Copyright />
                     </Box>
 
-
                 </ThemeProvider>
-            </>
-        )
-    } else if (props.view === 'login') {
-        return (
-            <>
-
-                <Login />
-
-            </>
-        )
-    } else if (props.view === 'signup') {
-        return (
-            <>
-
-                <Signup />
-
             </>
         )
     } else if (props.view === 'main') {
@@ -381,4 +365,4 @@ const Welcome = (props) => {
 
 }
 
-export default Welcome
+export default Signup

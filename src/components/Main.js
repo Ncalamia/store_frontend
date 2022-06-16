@@ -7,6 +7,8 @@ import axios from 'axios'
 
 import Login from './Login.js'
 import Welcome from './Welcome.js'
+import Signup from './Signup.js'
+
 
 import Add from './Add.js'
 import Edit from './Edit.js'
@@ -14,7 +16,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
-import {FaHome} from 'react-icons/fa';
+import { FaHome } from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -40,24 +42,31 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [view, setView] = useState('main')
+    // let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
+    let [regulars, setRegulars] = useState([])
     let [accounts, setAccounts] = useState('old')
+
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
-    const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUrl = 'http://localhost:8000/api/products'
+
+    const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
-    //////////////////////////////////////////////
-    // fetching the data from the backend
-    //////////////////////////////////////////////
+    const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
+    const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - PRODUCTS (api/products)
+    ////////////////////////////////////////////////////////////
 
     //////Fetching products/////////
     const getProducts = () => {
         axios
-            .get(herokuUrl)
+            .get(localUrl)
+            // .get(herokuUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -65,42 +74,15 @@ const Main = (props) => {
             .catch((error) => console.error(error))
     }
 
-    //////Fetching users/////////
-    const getUsers = () => {
-        axios
-            .get(herokuUsersUrl)
-            .then(
-                (response) => setUsers(response.data),
-                (err) => console.error(err)
-            )
-            .catch((error) => console.error(error))
-    }
-
-    ////////////////////////////////////////////////////////////
-    // CRUD Functionality
-    ////////////////////////////////////////////////////////////
-
     ///////CREATE PRODUCT//////////
-    const handleCreate = (add) => {
+    const handleCreate = (addProduct) => {
         axios
-        .post(herokuUrl, add)
-        .then((response) => {
-            console.log(response)
-            console.log(response.data.id)
-            setUsers([...users, response.data])
-        })
-    }
-
-    ///////CREATE USER//////////
-    const userSignup = (addUser) => {
-        setAccounts('new')
-        axios
-            .post(herokuUsersUrl, addUser)
+            .post(localUrl, addProduct)
+            // .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
-                console.log(response.data.id)
-                setUsers([...users, response.data])
-
+                // getProducts()
+                setProducts([...products, addProduct])
             })
     }
 
@@ -108,7 +90,8 @@ const Main = (props) => {
     const handleUpdate = (updateProduct) => {
         console.log(updateProduct.id)
         axios
-            .put(herokuUrl + '/' + updateProduct.id, updateProduct)
+            .put(localUrl + '/' + updateProduct.id, updateProduct)
+            // .put(herokuUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -122,23 +105,107 @@ const Main = (props) => {
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
-            .delete(herokuUrl + '/' + event.target.value)
+            .delete(localUrl + '/' + event.target.value)
+            // .delete(herokuUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })
     }
 
+
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount)
+    //      // new user login
+    ////////////////////////////////////////////////////////////
+
+
+    //////Fetching users/////////
+    const getUsers = () => {
+        axios
+            .get(localUsersUrl)
+            // .get(herokuUsersUrl)
+            .then(
+                (response) => setUsers(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+
+
+    ///////CREATE USER - new user login //////////
+    const userSignup = (addUser) => {
+        axios
+            .post(localUsersUrl, addUser)
+            // .post(herokuUsersUrl, addUser)
+            .then((response) => {
+                console.log(response)
+                // getUsers()
+                setUsers([...users, addUser])
+                props.setView('login')
+            })
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount/login)
+    //      // returning user login
+    ////////////////////////////////////////////////////////////
+
+    // returning user login
+    const handleUpdateUser = (userAccount) => {
+        axios
+            .put(localLoginUrl, userAccount)
+            // .put(herokuLoginUrl, userAccount)
+            .catch((error) => {
+                if (error) {
+                    // console.log('wrong')
+                    alert("Email or password does not match records")
+                }
+            })
+            .then((response) => {
+                // console.log(userAccount)
+                // console.log(response.data)
+                // setRegulars(response.data)
+                props.setView('main')
+            })
+    }
+
+    //////////////////////////////////////////////
+    // useEffect
+    //////////////////////////////////////////////
+
+    useEffect(() => {
+        if (props.view === 'signup') {
+            getUsers()
+        } else if (props.view === 'main') {
+            getProducts()
+        } else if (props.view === 'welcome') {
+            getProducts()
+        }
+        else {
+            getUsers()
+        }
+    }, [])
+
+
     //////////////////////////////////////////////
     // functions - related to login
     //////////////////////////////////////////////
 
-    ////Login view - returning user OR new sign-in /////
+    ////Welcome to Login view - returning user/////
     const userLogin = () => {
-        setView('login')
+        props.setView('login')
     }
 
+    ////Login to Signup view - new user/////
+    const newSignup = () => {
+        props.setView('signup')
+    }
+
+    ////Signup to Login view - returning user/////
     const oldLogin = () => {
-        setAccounts('old')
+        props.setView('login')
     }
 
     //////////////////////////////////////////////
@@ -183,33 +250,19 @@ const Main = (props) => {
     })
 
 
-    //////////////////////////////////////////////
-    // useEffect
-    //////////////////////////////////////////////
-
-    useEffect(() => {
-        if (view === 'login') {
-            getUsers()
-        } else if (view === 'main') {
-            getProducts()
-        } else if (view === 'welcome') {
-            getProducts()
-        }
-    }, [])
-
 
     //////////////////////////////////////////////
     // the return - skeleton
     //////////////////////////////////////////////
 
 
-    if (view === 'welcome') {
+    if (props.view === 'welcome') {
         return (
             <>
                 <Welcome />
             </>
         )
-    } else if (view === 'login') {
+    } else if (props.view === 'login') {
         return (
             <>
 
@@ -217,7 +270,15 @@ const Main = (props) => {
 
             </>
         )
-    } else if (view === 'main') {
+    } else if (props.view === 'signup') {
+        return (
+            <>
+
+                <Signup />
+
+            </>
+        )
+    } else if (props.view === 'main') {
         return (
             <>
                 <ThemeProvider theme={theme}>
