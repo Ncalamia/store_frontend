@@ -155,14 +155,14 @@ const Login = (props) => {
             .catch((error) => {
                 if (error) {
                     // console.log('wrong')
-                    alert("Email or password does not match records")
+                    return alert("Email or password does not match records")
+                    props.setView('welcome')
                 }
             })
             .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
+             
                 props.setView('main')
+              
             })
     }
 
