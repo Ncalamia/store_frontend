@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import Main from './Main.js'
+
+
 const AddUser = (props) => {
+
+
   //////States//////
+
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
-  let [accounts, setAccounts] = useState('new')
+
+
+
   /////Functions///////
+
   const handleChange = (event) => {
     console.log(event);
     setUser({ ...user, [event.target.name]: event.target.value })
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(user)
+    // console.log(user)
     props.userSignup(user)
     setUser({ email: '', password: '' })
-    props.setView('main')
+    props.setView('login')
   }
 
     return (

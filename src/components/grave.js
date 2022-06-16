@@ -19,7 +19,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
+import Welcome from './Welcome.js'
 import Login from './Login.js'
+import Main from './Main.js'
 
 import Add from './Add.js'
 import Edit from './Edit.js'
@@ -51,191 +53,244 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 // general states
 let [products, setProducts] = useState([])
-let [view, setView] = useState('welcome')
 let [users, setUsers] = useState([])
+let [regulars, setRegulars] = useState([])
 let [accounts, setAccounts] = useState('old')
 
-// local vs heroku links
+// local vs heroku links - deploy with heroku
 const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
-const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
 const localUrl = 'http://localhost:8000/api/products'
+
+const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
 const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
+const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
+const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
 
-//////////////////////////////////////////////
-// fetching the data from the backend 
-//////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////
+    // CRUD Functionality - PRODUCTS (api/products)
+    ////////////////////////////////////////////////////////////
 
-//////Fetching products/////////
-const getProducts = () => {
-    axios
-        .get(localUrl)
-        .then(
-            (response) => setProducts(response.data),
-            (err) => console.error(err)
-        )
-        .catch((error) => console.error(error))
-}
+    //////Fetching products/////////
+    const getProducts = () => {
+        axios
+            .get(localUrl)
+            // .get(herokuUrl)
+            .then(
+                (response) => setProducts(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
 
-//////Fetching users/////////
-const getUsers = () => {
-    axios
-        .get(localUsersUrl)
-        .then(
-            (response) => setUsers(response.data),
-            (err) => console.error(err)
-        )
-        .catch((error) => console.error(error))
-}
+    ///////CREATE PRODUCT//////////
+    const handleCreate = (addProduct) => {
+        axios
+            .post(localUrl, addProduct)
+            // .post(herokuUrl, addProduct)
+            .then((response) => {
+                console.log(response)
+                // getProducts()
+                setProducts([...products, addProduct])
+            })
+    }
 
-////////////////////////////////////////////////////////////
-// CRUD Functionality
-////////////////////////////////////////////////////////////
+    ///////UPDATE PRODUCT//////////
+    const handleUpdate = (updateProduct) => {
+        console.log(updateProduct.id)
+        axios
+            .put(localUrl + '/' + updateProduct.id, updateProduct)
+            // .put(herokuUrl + '/' + updateProduct.id, updateProduct)
+            .then((response) => {
+                getProducts()
+                setProducts(products.map((product) => {
+                    return product.id != response.data.id ? product : response.data
+                }))
 
-///////CREATE PRODUCT//////////
-const handleCreate = (add) => {
-    axios.post(localUrl, add).then((response) => {
-        console.log(response)
-        console.log(response.data.id)
-        setUsers([...users, response.data])
+            })
+    }
+
+
+    ///////DELETE PRODUCT//////////
+    const handleDelete = (event, deleted) => {
+        axios
+            .delete(localUrl + '/' + event.target.value)
+            // .delete(herokuUrl + '/' + event.target.value)
+            .then((response) => {
+                getProducts()
+            })
+    }
+
+
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount)
+    //      // new user login
+    ////////////////////////////////////////////////////////////
+
+
+    //////Fetching users/////////
+    const getUsers = () => {
+        axios
+            .get(localUsersUrl)
+            // .get(herokuUsersUrl)
+            .then(
+                (response) => setUsers(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+
+
+    ///////CREATE USER - new user login //////////
+    const userSignup = (addUser) => {
+        axios
+            .post(localUsersUrl, addUser)
+            // .post(herokuUsersUrl, addUser)
+            .then((response) => {
+                console.log(response)
+                // getUsers()
+                setUsers([...users, addUser])
+                props.setView('login')
+            })
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount/login)
+    //      // returning user login
+    ////////////////////////////////////////////////////////////
+
+    // returning user login
+    const handleUpdateUser  = (userAccount) => {
+        axios
+            .put(localLoginUrl, userAccount)
+            // .put(herokuLoginUrl, userAccount)
+                .catch((error) => {
+                    if (error) {
+                        // console.log('wrong')
+                        alert("Email or password does not match records")
+                    }   
+            })
+            .then((response) => {
+                // console.log(userAccount)
+                // console.log(response.data)
+                // setRegulars(response.data)
+                props.setView('main')
+            })
+    }
+
+    //////////////////////////////////////////////
+    // useEffect
+    //////////////////////////////////////////////
+
+    useEffect(() => {
+        if (props.view === 'signup') {
+            getUsers()
+        } else if (props.view === 'main') {
+            getProducts()
+        } else if (props.view === 'welcome') {
+            getProducts()
+        }
+        else {
+            getUsers()
+        }
+    }, [])
+
+
+    //////////////////////////////////////////////
+    // functions - related to login
+    //////////////////////////////////////////////
+
+    ////Welcome to Login view - returning user/////
+    const userLogin = () => {
+        props.setView('login')
+    }
+
+    ////Login to Signup view - new user/////
+    const newSignup = () => {
+        props.setView('signup')
+    }
+
+    ////Signup to Login view - returning user/////
+    const oldLogin = () => {
+        props.setView('login')
+    }
+
+    //////////////////////////////////////////////
+    // functions - related to scroll
+    //////////////////////////////////////////////
+
+    const productsRef = useRef()
+    const scrollDown = () => {
+        window.scrollTo({
+            top: productsRef.current.offsetTop,
+            behavior: 'smooth',
+        });
+    };
+
+    //////////////////////////////////////////////
+    // functions - related to styling
+    //////////////////////////////////////////////
+
+    function Copyright() {
+        return (
+            <Typography variant="body2" color="text.secondary" align="center">
+                {'Copyright © '}
+                <Link color="inherit" href="https://mui.com/">
+                    Your Website
+                </Link>{' '}
+                {new Date().getFullYear()}
+                {'.'}
+            </Typography>
+        );
+    }
+
+    const cards = [];
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+
+                main: '#ff4400',
+
+            }
+        }
     })
-}
 
-///////CREATE USER//////////
-const userSignup = (addUser) => {
-    setAccounts('new')
-    axios
-        .post(localUsersUrl, addUser)
-        .then((response) => {
-            // console.log(response)
-            // console.log(response.data.id)
-            setUsers([...users, response.data])
-
-        })
-}
-
-///////UPDATE PRODUCT//////////
-const handleUpdate = (updateProduct) => {
-    console.log(updateProduct.id)
-    axios
-        .put(localUrl + '/' + updateProduct.id, updateProduct)
-        .then((response) => {
-            getProducts()
-            setProducts(products.map((product) => {
-                return product.id != response.data.id ? product : response.data
-            }))
-
-        })
-}
+  //////////////////////////////////////////////
+  // the return - skeleton
+  //////////////////////////////////////////////
 
 
-///////DELETE PRODUCT//////////
-const handleDelete = (event, deleted) => {
-    axios
-        .delete(localUrl + '/' + event.target.value)
-        .then((response) => {
-            getProducts()
-        })
-}
-    
-
-
-//////////////////////////////////////////////
-// functions - related to login
-//////////////////////////////////////////////
-
-////Login view - returning user OR new sign-in /////
-const userLogin = () => {
-    setView('login')
-}
-
-const oldLogin = () => {
-    setAccounts('old')
-}
-
-//////////////////////////////////////////////
-// functions - related to scroll
-//////////////////////////////////////////////
-
-const productsRef = useRef()
-const scrollDown = () => {
-  window.scrollTo({
-    top: productsRef.current.offsetTop,
-    behavior: 'smooth',
-  });
-};
-
-//////////////////////////////////////////////
-// functions - related to styling
-//////////////////////////////////////////////
-
-function Copyright() {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center">
-        {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-}
-
-const cards = [];
-
-const theme = createTheme({
-    palette: {
-      primary: {
-
-        main: '#ff4400',
-
-      }
-    }
-})
-
-
-//////////////////////////////////////////////
-// useEffect
-//////////////////////////////////////////////
-
-useEffect(() => {
-    if (view === 'login') {
-        getUsers()
-    } else if (view === 'main') {
-        getProducts()
-    } else if (view === 'welcome') {
-        getProducts()
-    }
-}, [])
-
-
-//////////////////////////////////////////////
-// the return - skeleton
-//////////////////////////////////////////////
-
-
-// if (view === 'welcome') {
+//   if (view === 'welcome') {
 //     return (
 //       <>
-//         <Welcome/>
+//         <Welcome view={view} setView={setView} />
 //       </>
 //     )
 //   } else if (view === 'login') {
 //     return (
 //       <>
 
-//       <Login/>
+//         <Login view={view} setView={setView} />
+
+//       </>
+//     )
+//   } else if (view === 'signup') {
+//     return (
+//       <>
+
+//         <Signup view={view} setView={setView} />
 
 //       </>
 //     )
 //   } else if (view === 'main') {
 //     return (
 //       <>
-//         <Main/>
+//         <Main view={view} setView={setView} />
 //       </>
 //     )
 //   }
-
 

@@ -14,7 +14,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
-import {FaHome} from 'react-icons/fa';
+import { FaHome } from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -40,24 +40,28 @@ const Login = (props) => {
     // general states
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
-    let [logins, setLogins] = useState([])
-    let [accounts, setAccounts] = useState('old')
+    let [regulars, setRegulars] = useState([])
+    const [loginAlert, setLoginAlert] = useState(false)
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
-    const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUrl = 'http://localhost:8000/api/products'
+
+    const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
+
+    const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
     const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
-    //////////////////////////////////////////////
-    // fetching the data from the backend
-    //////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - PRODUCTS (api/products)
+    ////////////////////////////////////////////////////////////
 
     //////Fetching products/////////
     const getProducts = () => {
         axios
             .get(localUrl)
+            // .get(herokuUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -65,52 +69,15 @@ const Login = (props) => {
             .catch((error) => console.error(error))
     }
 
-    //////Fetching users/////////
-    const getUsers = () => {
-        axios
-            .get(localUsersUrl)
-            .then(
-                (response) => setUsers(response.data),
-                (err) => console.error(err)
-            )
-            .catch((error) => console.error(error))
-    }
-
-
-    //////Fetching login /////////
-    const getLogins = () => {
-        axios
-            .get(localLoginUrl)
-            .then(
-                (response) => setLogins(response.data),
-                (err) => console.error(err)
-            )
-            .catch((error) => console.error(error))
-    }
-
-    ////////////////////////////////////////////////////////////
-    // CRUD Functionality
-    ////////////////////////////////////////////////////////////
-
     ///////CREATE PRODUCT//////////
-    const handleCreate = (add) => {
-        axios.post(localUrl, add).then((response) => {
-            console.log(response)
-            console.log(response.data.id)
-            setUsers([...users, response.data])
-        })
-    }
-
-    ///////CREATE USER//////////
-    const userSignup = (addUser) => {
-        setAccounts('new')
+    const handleCreate = (addProduct) => {
         axios
-            .post(localUsersUrl, addUser)
+            .post(localUrl, addProduct)
+            // .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
-                console.log(response.data.id)
-                setUsers([...users, response.data])
-
+                // getProducts()
+                setProducts([...products, addProduct])
             })
     }
 
@@ -119,6 +86,7 @@ const Login = (props) => {
         console.log(updateProduct.id)
         axios
             .put(localUrl + '/' + updateProduct.id, updateProduct)
+            // .put(herokuUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -129,21 +97,11 @@ const Login = (props) => {
     }
 
 
-    ///////UPDATE USER //////////
-    const handleUpdateUser = (updateUser) => {
-        console.log(updateUser)
-        axios
-            .put(localLoginUrl)
-            .then((response) => {
-                getUsers()
-            })
-    }
-
-
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
             .delete(localUrl + '/' + event.target.value)
+            // .delete(herokuUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })
@@ -151,17 +109,98 @@ const Login = (props) => {
 
 
 
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount)
+    //      // new user login
+    ////////////////////////////////////////////////////////////
+
+
+    //////Fetching users/////////
+    const getUsers = () => {
+        axios
+            .get(localUsersUrl)
+            // .get(herokuUsersUrl)
+            .then(
+                (response) => setUsers(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+
+
+    ///////CREATE USER - new user login //////////
+    const userSignup = (addUser) => {
+        axios
+            .post(localUsersUrl, addUser)
+            // .post(herokuUsersUrl, addUser)
+            .then((response) => {
+                console.log(response)
+                // getUsers()
+                setUsers([...users, addUser])
+                props.setView('login')
+            })
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - USERS (api/useraccount/login)
+    //      // returning user login
+    ////////////////////////////////////////////////////////////
+
+    // returning user login
+    const handleUpdateUser = (userAccount) => {
+        axios
+            .put(localLoginUrl, userAccount)
+            // .put(herokuLoginUrl, userAccount)
+            .catch((error) => {
+                if (error) {
+                    // console.log('wrong')
+                    alert("Email or password does not match records")
+                }
+            })
+            .then((response) => {
+                // console.log(userAccount)
+                // console.log(response.data)
+                // setRegulars(response.data)
+                props.setView('main')
+            })
+    }
+
+    //////////////////////////////////////////////
+    // useEffect
+    //////////////////////////////////////////////
+
+    useEffect(() => {
+        if (props.view === 'signup') {
+            getUsers()
+        } else if (props.view === 'main') {
+            getProducts()
+        } else if (props.view === 'welcome') {
+            getProducts()
+        }
+        else {
+            getUsers()
+        }
+    }, [])
+
+
     //////////////////////////////////////////////
     // functions - related to login
     //////////////////////////////////////////////
 
-    ////Login view - returning user OR new sign-in /////
+    ////Welcome to Login view - returning user/////
     const userLogin = () => {
         props.setView('login')
     }
 
+    ////Login to Signup view - new user/////
+    const newSignup = () => {
+        props.setView('signup')
+    }
+
+    ////Signup to Login view - returning user/////
     const oldLogin = () => {
-        setAccounts('old')
+        props.setView('login')
     }
 
     //////////////////////////////////////////////
@@ -205,22 +244,6 @@ const Login = (props) => {
         }
     })
 
-
-    //////////////////////////////////////////////
-    // useEffect
-    //////////////////////////////////////////////
-
-    useEffect(() => {
-        if (props.view === 'login' && accounts === 'new') {
-            getUsers()
-        } else if (props.view === 'login' && accounts === 'old') {
-            getLogins()    
-        } else if (props.view === 'main') {
-            getProducts()
-        } else if (props.view === 'welcome') {
-            getProducts()
-        }
-    }, [])
 
 
     //////////////////////////////////////////////
@@ -272,7 +295,7 @@ const Login = (props) => {
                                     Essentials.
                                 </Typography>
                                 <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                                    Login
+                                    Welcome back!
                                 </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -285,30 +308,30 @@ const Login = (props) => {
                         </Box>
                         <Container sx={{ py: 8 }} maxWidth="md">
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                {accounts === 'old' ?
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                        <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser}/>
-                                        <br />
-                                        <Typography gutterBottom component="h2"
-                                            variant="subtitle1"
-                                            color="text.secondary">
-                                            Don't have an account? <Button variant="text" onClick={userSignup}>Sign up</Button>
-                                        </Typography>
-                                    </CardContent> :
 
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                     <AddUser view={props.view} setView={props.setView} userSignup={userSignup} />
-
-                                        <br />
-                                        <Typography gutterBottom component="h2"
-                                            variant="subtitle1"
-                                            color="text.secondary">
-                                            Have an account already? <Button variant="text" onClick={oldLogin}>Log in</Button>
-                                        </Typography>
-                                    </CardContent>
-                                }
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography variant="h5" color="text.secondary" paragraph>
+                                        Login
+                                    </Typography>
+                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} />
+                                    <br />
+                                    <Typography gutterBottom component="h2"
+                                        variant="subtitle1"
+                                        color="text.secondary">
+                                        Don't have an account? <Button variant="text" onClick={newSignup}>Sign up</Button>
+                                    </Typography>
+                                </CardContent>
 
                             </Card>
+                            {loginAlert ?
+                                <Typography gutterBottom component="h2"
+                                    variant="subtitle1"
+                                    color="text.secondary">
+                                    Oops, wrong email or password!
+                                </Typography>
+                                :
+                                null
+                            }
                         </Container>
 
                     </main>
