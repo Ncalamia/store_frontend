@@ -41,9 +41,10 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
+    const [loggedIn, setLoggedIn] = useState(false)
     const [loginAlert, setLoginAlert] = useState(false)
-    // const [loggedIn, setLoggedIn] = useState(false)
-    let [loginError, setLoginError] = useState(false)
+
+    // let [loginError, setLoginError] = useState(false)
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -149,6 +150,7 @@ const Login = (props) => {
     //      // returning user login
     ////////////////////////////////////////////////////////////
 
+
     // returning user login
     const handleUpdateUser = (userAccount) => {
         axios
@@ -156,24 +158,11 @@ const Login = (props) => {
             .put(herokuLoginUrl, userAccount)
             .catch((error) => {
                 if (error) {
-                    // console.log('wrong')
-                    setLoginError(true)
-                    alert("Email or password does not match records")
+                  alert("Email or password does not match records")
                 }
             })
             .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
-                // console.log("is this working");
-                if (loginError === true) {
-                  console.log("this is true");
-                  props.setView('welcome')
-                } else if (loginError === false) {
-                  props.setView('main')
-                  console.log("this is false");
-
-                }
+              
             })
     }
 

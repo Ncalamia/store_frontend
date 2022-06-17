@@ -20,6 +20,7 @@ const App = () => {
   let [regulars, setRegulars] = useState([])
 
 
+
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
   // let [view, setView] = useState('main')
@@ -99,7 +100,7 @@ const App = () => {
     return (
       <>
 
-        <Login view={view} setView={setView} />
+        <Login view={view} setView={setView}/>
 
       </>
     )
