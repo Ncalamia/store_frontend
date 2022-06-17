@@ -46,8 +46,6 @@ const Main = (props) => {
  
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let [accounts, setAccounts] = useState('old')
-    const [cart, setCart] = useState([])
 
 
     // local vs heroku links - deploy with heroku
@@ -388,6 +386,9 @@ const Main = (props) => {
                         
                        
                        <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
+                            </Typography>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                Welcome, {props.currentUser}
                             </Typography>
                         </Toolbar>
                     </AppBar>
