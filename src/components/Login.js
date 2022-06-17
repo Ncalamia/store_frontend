@@ -152,18 +152,13 @@ const Login = (props) => {
         axios
             // .put(localLoginUrl, userAccount)
             .put(herokuLoginUrl, userAccount)
-            .catch((error) => {
-                if (error) {
-                    // console.log('wrong')
-                    alert("Email or password does not match records")
-                }
-            })
-            .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
+            
+            .then((response, error) => {
+                if(error){
+                    return
+                } else{
                 props.setView('main')
-            })
+          } })
     }
 
     //////////////////////////////////////////////

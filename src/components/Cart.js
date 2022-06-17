@@ -37,11 +37,11 @@ const Cart = (props) => {
 
 	//////States//////
 
-  const [cart, setCart] = useState([])
+  
   const [product, setProduct] = useState([])  
   let [view, setView] = useState('')
   const getTotalSum = () => {
-    return cart.reduce(
+    return props.cart?.reduce(
       (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
                                          //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
       0
@@ -121,11 +121,11 @@ if (view === 'main') {
                                     spacing={2}
                                     justifyContent="center"
                                 >
-                                    <Button  onClick={()=>setView('main')} variant="contained">Back to browsing</Button>
+                                    <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
                                     <Container>
                            Test Shopping cart.
                             <ol>
-                        {cart.map((items)=>{
+                        {props.cart?.map((items)=>{
                                 return(
                                     <>
                                     <div key={items.id}>
@@ -144,39 +144,7 @@ if (view === 'main') {
                             </Container>
                            
                         </Box>
-                        <Grid container spacing={4}>
-                                {cart.map((items) => (
-                                    <Grid item key={items.id} xs={12} sm={6} md={4}>
-                                        <Card
-                                            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                                        >
-                                            <CardMedia
-                                                component="img"
-                                                sx={{
-                                                    // 16:9
-                                                    pt: '56.25%',
-                                                }}
-                                                image={items.image}
-                                                alt="random"
-                                            />
-                                            <CardContent sx={{ flexGrow: 1 }}>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {items.name}
-                                                    <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
-                                                </Typography>
-                                                <Typography>
-                                                    Price: {items.price}$
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                               
-                                                
-                                            </CardActions>
-                                        </Card>
-
-                                    </Grid>
-                                ))}
-                                </Grid>
+                      
 
                         <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                         <Typography variant="h6" align="center" gutterBottom>

@@ -43,7 +43,7 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    // let [view, setView] = useState('main')
+ 
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
     let [accounts, setAccounts] = useState('old')
@@ -149,29 +149,6 @@ const Main = (props) => {
     }
 
 
-    ////////////////////////////////////////////////////////////
-    // CRUD Functionality - USERS (api/useraccount/login)
-    //      // returning user login
-    ////////////////////////////////////////////////////////////
-
-    // returning user login
-    const handleUpdateUser = (userAccount) => {
-        axios
-            // .put(localLoginUrl, userAccount)
-            .put(herokuLoginUrl, userAccount)
-            .catch((error) => {
-                if (error) {
-                    // console.log('wrong')
-                    alert("Email or password does not match records")
-                }
-            })
-            .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
-                props.setView('main')
-            })
-    }
 
     //////////////////////////////////////////////
     // useEffect
@@ -234,10 +211,13 @@ const Main = (props) => {
         );
       }
 
-      const [open, setOpen] = React.useState(false);
-      const handleOpen = () => setOpen(true);
+      const [open, setOpen] = useState(false);
+      const handleOpen = () => {
+      
+        setOpen(true);
+      }
       const handleClose = () => setOpen(false);
-      const style = {
+      const style = {  
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -248,6 +228,18 @@ const Main = (props) => {
         boxShadow: 24,
         p: 4,
       };
+
+
+      const [checkout, setCheckout] = useState(false)
+
+      const openCheck = () =>{
+          setOpen(false)
+          setCheckout(true)
+      }
+      const closeCheck = () =>{
+        setOpen(true)
+        setCheckout(false)
+    }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -290,10 +282,10 @@ const Main = (props) => {
                 <Welcome />
             </>
         )
-    } else if (view === 'cart'){
+    } else if (props.view === 'cart'){
         return (
             <>
-            < Cart/>
+            < Cart view={props.view} setView={props.setView} cart={cart}/>
             </>
         )
     
@@ -325,7 +317,77 @@ const Main = (props) => {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-                                <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button>
+                                {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
+                             
+                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+                            <Modal
+                                open={open - checkout}
+                                 
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={{...style, width:500, height: 600}}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                        Shopping Cart
+                                    </Typography>
+                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    <ol>
+                        {cart.map((items)=>{
+                                return(
+                                    <>
+                                    <div key={items.id}>
+                                        <li >{items.name}</li>
+                                        {/* <img style={{width:'20%', display:'flex'}} src={items.image}/> */}
+                                    </div>
+
+                                    
+                                    </>
+
+                                )
+                            })}
+                            </ol>
+                            <div>Total Cost: ${getTotalSum()} </div>
+                            <Button onClick={openCheck}>Checkout</Button>
+                            <Button onClick={handleClose}>Close</Button>
+                            
+                                            <Modal
+                                                hideBackdrop
+                                                open={checkout}
+                                                onClose={closeCheck}
+                                                aria-labelledby="child-modal-title"
+                                                aria-describedby="child-modal-description"
+                                            >
+                                                <Box sx={{ ...style, width:300, height: 400 }}>
+                                                    <h2 id="child-modal-title">Your total is : ${getTotalSum()}</h2>
+                                                 <form>
+                                                        <label>Name</label>
+                                                        <input type='text'/>
+                                                        <label>Last Name</label>
+                                                        <input type='text'/>
+                                                        <label>Credit card namber</label>
+                                                        <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
+                                                        <label for="expmonth">Exp Month</label>
+                                                        <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
+                                                        <label for="expyear">Exp Year</label>
+                                                        <input type="text" id="expyear" name="expyear" placeholder="2018"/>
+                                                
+                                                        <label for="cvv">CVV</label>
+                                                        <input type="text" id="cvv" name="cvv" placeholder="352"/>
+                                                        <Button onClick={handleClose}>Checkout</Button>
+                                                        </form>
+                                                    
+                                                    <Button onClick={closeCheck}>Back to Cart</Button>
+                                                    
+                                                </Box>
+                                            </Modal>
+                                    </Typography>
+                                </Box>
+                            </Modal>
+                          
+                        
+                       
+                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -355,41 +417,7 @@ const Main = (props) => {
                                     Here you can find everything your home needs!
                                   
                                 </Typography>
-                                <Container>
-                        <Button onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
-                            <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box sx={style}>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Shopping Cart
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    <ol>
-                        {cart.map((items)=>{
-                                return(
-                                    <>
-                                    <div key={items.id}>
-                                        <li>{items.name}</li>
-                                    </div>
-
-                                    
-                                    </>
-
-                                )
-                            })}
-                            </ol>
-                            <div>Total Cost: ${getTotalSum()} </div>
-                                    </Typography>
-                                </Box>
-                            </Modal>
-                          
-                        
-                       
-                        </Container>
+                               
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"

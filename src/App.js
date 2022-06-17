@@ -117,7 +117,12 @@ const App = () => {
         <Main view={view} setView={setView} />
       </>
     )
-  }
+  } else if (view === 'cart') {
+    return (
+      <>
+        <Cart view={view} setView={setView} />
+      </>
+    )}
 }
 
 export default App;
