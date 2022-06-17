@@ -17,15 +17,8 @@ const OldUser = (props) => {
 
     const handleSubmit = (event) => {
       event.preventDefault()
-<<<<<<< HEAD
-      console.log(user)
-      // props.handle(user)
-      setUser({ email: '', password: ''  })
-      // props.setView('main')
-=======
       // console.log(regular)
       props.handleUpdateUser(regular)
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
     }
 
 

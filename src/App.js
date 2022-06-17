@@ -22,12 +22,7 @@ const App = () => {
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
-<<<<<<< HEAD
-  // let [view, setView] = useState('welcome')
-  let [view, setView] = useState('main')
-=======
   // let [view, setView] = useState('main')
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
   // let [view, setView] = useState('login')
   // let [view, setView] = useState('signup')
   let [view, setView] = useState('welcome')
@@ -50,10 +45,7 @@ const App = () => {
   //////Fetching products/////////
   const getProducts = () => {
     axios
-<<<<<<< HEAD
-=======
       // .get(localUrl)
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
       .get(herokuUrl)
       .then(
         (response) => setProducts(response.data),
@@ -65,10 +57,7 @@ const App = () => {
   //////Fetching users/////////
   const getUsers = () => {
     axios
-<<<<<<< HEAD
-=======
       // .get(localUsersUrl)
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
       .get(herokuUsersUrl)
       .then(
         (response) => setUsers(response.data),
@@ -103,20 +92,13 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-<<<<<<< HEAD
-        <Welcome view={view} setView={setView}/>
-=======
         <Welcome view={view} setView={setView} />
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-<<<<<<< HEAD
-        <Login view={view} setView={setView}/>
-=======
         <Login view={view} setView={setView} />
 
       </>
@@ -126,18 +108,13 @@ const App = () => {
       <>
 
         <Signup view={view} setView={setView} />
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-<<<<<<< HEAD
-        <Main view={view} setView={setView}/>
-=======
         <Main view={view} setView={setView} />
->>>>>>> 7f490d0d2bbf97ece1fe2a82b7ae94f99fff02da
       </>
     )
   }
