@@ -43,7 +43,6 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [cart, setCart] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
 
@@ -202,7 +201,7 @@ const Main = (props) => {
     //////////////////////////////////////////////
 
     const getTotalSum = () => {
-        return cart.reduce(
+        return props.cart.reduce(
           (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
                                              //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
           0
@@ -283,7 +282,7 @@ const Main = (props) => {
     } else if (props.view === 'cart'){
         return (
             <>
-            < Cart view={props.view} setView={props.setView} cart={cart}/>
+            < Cart view={props.view} setView={props.setView} cart={props.cart}/>
             </>
         )
 
@@ -317,7 +316,7 @@ const Main = (props) => {
                                 </Link>
                                 {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
 
-                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({props.cart.length})</Button>
                             <Modal
                                 open={open - checkout}
 
@@ -331,7 +330,7 @@ const Main = (props) => {
                                     </Typography>
                                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     <ol>
-                        {cart.map((items)=>{
+                        {props.cart.map((items)=>{
                                 return(
                                     <>
                                     <div key={items.id}>
@@ -450,7 +449,7 @@ const Main = (props) => {
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
-                                                    <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
+                                                    <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
