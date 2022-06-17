@@ -41,10 +41,19 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
+<<<<<<< HEAD
     const [loggedIn, setLoggedIn] = useState(false)
     const [loginAlert, setLoginAlert] = useState(false)
 
     // let [loginError, setLoginError] = useState(false)
+=======
+
+    const [loginError, setLoginError] = useState(false)
+    // const [currentUser, setCurrentUser]= useState()
+ 
+   
+
+>>>>>>> 77f3f3dd72c7b240a85a3ea8f92b9870f955e475
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -158,11 +167,26 @@ const Login = (props) => {
             .put(herokuLoginUrl, userAccount)
             .catch((error) => {
                 if (error) {
+<<<<<<< HEAD
                   alert("Email or password does not match records")
                 }
             })
             .then((response) => {
               
+=======
+                    // console.log('wrong')
+                    setLoginError(true)
+                    alert("Email or password does not match records")
+                    setLoginError(true)
+                }
+            })
+            .then((response) => {
+                // console.log(userAccount)
+                console.log(response.data.email)
+                props.setCurrentUser(response.data.email)
+                props.setView('main')
+
+>>>>>>> 77f3f3dd72c7b240a85a3ea8f92b9870f955e475
             })
     }
 
@@ -323,7 +347,7 @@ const Login = (props) => {
                                 </CardContent>
 
                             </Card>
-                            {loginAlert ?
+                            {loginError ?
                                 <Typography gutterBottom component="h2"
                                     variant="subtitle1"
                                     color="text.secondary">
