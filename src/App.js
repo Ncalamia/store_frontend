@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import Cart from './components/Cart.js'
 import Welcome from './components/Welcome.js'
 import Login from './components/Login.js'
 import Signup from './components/Signup.js'
@@ -119,7 +119,12 @@ const App = () => {
         <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
       </>
     )
-  }
+  } else if (view === 'cart') {
+    return (
+      <>
+        <Cart view={view} setView={setView} />
+      </>
+    )}
 }
 
 export default App;
