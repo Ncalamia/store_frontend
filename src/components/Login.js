@@ -168,7 +168,7 @@ const Login = (props) => {
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
                 props.setView('main')
-          } })
+           })
     }
 
     //////////////////////////////////////////////
@@ -249,7 +249,7 @@ const Login = (props) => {
         }
     })
 
-   
+
 
 
     //////////////////////////////////////////////

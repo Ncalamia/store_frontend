@@ -43,7 +43,7 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
- 
+    let [cart, setCart] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
 
@@ -204,18 +204,18 @@ const Main = (props) => {
     const getTotalSum = () => {
         return cart.reduce(
           (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
-                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
           0
         );
       }
 
       const [open, setOpen] = useState(false);
       const handleOpen = () => {
-      
+
         setOpen(true);
       }
       const handleClose = () => setOpen(false);
-      const style = {  
+      const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -286,7 +286,7 @@ const Main = (props) => {
             < Cart view={props.view} setView={props.setView} cart={cart}/>
             </>
         )
-    
+
     } else if (props.view === 'login') {
         return (
             <>
@@ -316,11 +316,11 @@ const Main = (props) => {
                                     < FaHome />
                                 </Link>
                                 {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
-                             
+
                         <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
                             <Modal
                                 open={open - checkout}
-                                 
+
                                 onClose={handleClose}
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
@@ -339,7 +339,7 @@ const Main = (props) => {
                                         {/* <img style={{width:'20%', display:'flex'}} src={items.image}/> */}
                                     </div>
 
-                                    
+
                                     </>
 
                                 )
@@ -348,7 +348,7 @@ const Main = (props) => {
                             <div>Total Cost: ${getTotalSum()} </div>
                             <Button onClick={openCheck}>Checkout</Button>
                             <Button onClick={handleClose}>Close</Button>
-                            
+
                                             <Modal
                                                 hideBackdrop
                                                 open={checkout}
@@ -369,22 +369,22 @@ const Main = (props) => {
                                                         <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
                                                         <label for="expyear">Exp Year</label>
                                                         <input type="text" id="expyear" name="expyear" placeholder="2018"/>
-                                                
+
                                                         <label for="cvv">CVV</label>
                                                         <input type="text" id="cvv" name="cvv" placeholder="352"/>
                                                         <Button onClick={handleClose}>Checkout</Button>
                                                         </form>
-                                                    
+
                                                     <Button onClick={closeCheck}>Back to Cart</Button>
-                                                    
+
                                                 </Box>
                                             </Modal>
                                     </Typography>
                                 </Box>
                             </Modal>
-                          
-                        
-                       
+
+
+
                        <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
                             </Typography>
                             <Typography variant="h6" color="inherit" noWrap>
@@ -416,9 +416,9 @@ const Main = (props) => {
                                     Welcome!
                                     Pretend you've never heard of Home Goods.
                                     Here you can find everything your home needs!
-                                  
+
                                 </Typography>
-                               
+
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
@@ -435,7 +435,7 @@ const Main = (props) => {
                             <Grid container spacing={4}>
                                 {products.map((product) => (
                                     <Grid key={product.id} item xs={12} sm={6} md={4}>
-                                        <Card 
+                                        <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
@@ -459,7 +459,7 @@ const Main = (props) => {
                                             <CardActions>
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
-                                                
+
                                             </CardActions>
                                         </Card>
 
@@ -467,7 +467,7 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                      
+
                         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
                         </Typography>
