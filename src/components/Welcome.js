@@ -38,7 +38,7 @@ const Welcome = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let [accounts, setAccounts] = useState('old')
+
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -57,8 +57,8 @@ const Welcome = (props) => {
     //////Fetching products/////////
     const getProducts = () => {
         axios
-            .get(localUrl)
-            // .get(herokuUrl)
+            // .get(localUrl)
+            .get(herokuUrl)
             .then(
                 (response) => setProducts(response.data),
                 (err) => console.error(err)
@@ -69,8 +69,8 @@ const Welcome = (props) => {
     ///////CREATE PRODUCT//////////
     const handleCreate = (addProduct) => {
         axios
-            .post(localUrl, addProduct)
-            // .post(herokuUrl, addProduct)
+            // .post(localUrl, addProduct)
+            .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
                 // getProducts()
@@ -82,8 +82,8 @@ const Welcome = (props) => {
     const handleUpdate = (updateProduct) => {
         console.log(updateProduct.id)
         axios
-            .put(localUrl + '/' + updateProduct.id, updateProduct)
-            // .put(herokuUrl + '/' + updateProduct.id, updateProduct)
+            // .put(localUrl + '/' + updateProduct.id, updateProduct)
+            .put(herokuUrl + '/' + updateProduct.id, updateProduct)
             .then((response) => {
                 getProducts()
                 setProducts(products.map((product) => {
@@ -97,8 +97,8 @@ const Welcome = (props) => {
     ///////DELETE PRODUCT//////////
     const handleDelete = (event, deleted) => {
         axios
-            .delete(localUrl + '/' + event.target.value)
-            // .delete(herokuUrl + '/' + event.target.value)
+            // .delete(localUrl + '/' + event.target.value)
+            .delete(herokuUrl + '/' + event.target.value)
             .then((response) => {
                 getProducts()
             })
@@ -115,8 +115,8 @@ const Welcome = (props) => {
     //////Fetching users/////////
     const getUsers = () => {
         axios
-            .get(localUsersUrl)
-            // .get(herokuUsersUrl)
+            // .get(localUsersUrl)
+            .get(herokuUsersUrl)
             .then(
                 (response) => setUsers(response.data),
                 (err) => console.error(err)
@@ -128,8 +128,8 @@ const Welcome = (props) => {
     ///////CREATE USER - new user login //////////
     const userSignup = (addUser) => {
         axios
-            .post(localUsersUrl, addUser)
-            // .post(herokuUsersUrl, addUser)
+            // .post(localUsersUrl, addUser)
+            .post(herokuUsersUrl, addUser)
             .then((response) => {
                 console.log(response)
                 // getUsers()
@@ -147,8 +147,8 @@ const Welcome = (props) => {
     // returning user login
     const handleUpdateUser = (userAccount) => {
         axios
-            .put(localLoginUrl, userAccount)
-            // .put(herokuLoginUrl, userAccount)
+            // .put(localLoginUrl, userAccount)
+            .put(herokuLoginUrl, userAccount)
             .catch((error) => {
                 if (error) {
                     // console.log('wrong')

@@ -17,8 +17,9 @@ const App = () => {
   // general states
   let [products, setProducts] = useState([])
   let [users, setUsers] = useState([])
-
   let [regulars, setRegulars] = useState([])
+  const [currentUser, setCurrentUser]= useState([])
+
 
 
   // view states
@@ -46,8 +47,8 @@ const App = () => {
   //////Fetching products/////////
   const getProducts = () => {
     axios
-      .get(localUrl)
-      // .get(herokuUrl)
+      // .get(localUrl)
+      .get(herokuUrl)
       .then(
         (response) => setProducts(response.data),
         (err) => console.error(err)
@@ -58,8 +59,8 @@ const App = () => {
   //////Fetching users/////////
   const getUsers = () => {
     axios
-      .get(localUsersUrl)
-      // .get(herokuUsersUrl)
+      // .get(localUsersUrl)
+      .get(herokuUsersUrl)
       .then(
         (response) => setUsers(response.data),
         (err) => console.error(err)
@@ -93,14 +94,14 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome view={view} setView={setView} />
+        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-        <Login view={view} setView={setView} />
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
 
       </>
     )
@@ -108,14 +109,14 @@ const App = () => {
     return (
       <>
 
-        <Signup view={view} setView={setView} />
+        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} setView={setView} />
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
       </>
     )
   }
