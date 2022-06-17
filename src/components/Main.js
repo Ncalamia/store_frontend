@@ -34,6 +34,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Modal from '@mui/material/Modal'
+import { FormControl, FormLabel } from '@mui/material'
 
 const Main = (props) => {
 
@@ -43,15 +44,9 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
- 
+    let [cart, setCart] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-<<<<<<< HEAD
-    let [accounts, setAccounts] = useState('old')
-    const [cart, setCart] = useState([])
-=======
-
->>>>>>> 40cf114cfe7734ec83d0dcbb5f3c87fc8ba3a392
 
 
     // local vs heroku links - deploy with heroku
@@ -244,6 +239,12 @@ const Main = (props) => {
         setOpen(true)
         setCheckout(false)
     }
+
+    const closeAll = ()=>{
+        setCheckout(false)
+        setOpen(false)
+        setCart([])
+    }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -321,9 +322,13 @@ const Main = (props) => {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
+                                </Typography>  
+                                <Typography variant="h6" color="inherit" sx={{marginLeft: 5}}>
+                                    Welcome, {props.currentUser}
+                                </Typography>
                                 {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
                              
-                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+                        <Button variant="h6" color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
                             <Modal
                                 open={open - checkout}
                                  
@@ -331,7 +336,7 @@ const Main = (props) => {
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
                             >
-                                <Box sx={{...style, width:500, height: 600}}>
+                                <Box sx={{...style, width:'100vw', height: '80vh'}}>
                                     <Typography id="modal-modal-title" variant="h6" component="h2">
                                         Shopping Cart
                                     </Typography>
@@ -362,27 +367,28 @@ const Main = (props) => {
                                                 aria-labelledby="child-modal-title"
                                                 aria-describedby="child-modal-description"
                                             >
-                                                <Box sx={{ ...style, width:300, height: 400 }}>
-                                                    <h2 id="child-modal-title">Your total is : ${getTotalSum()}</h2>
-                                                 <form>
-                                                        <label>Name</label>
+                                                <Box sx={{ ...style, width:'80vw', height: '80vh' }}>
+                                                    
+                                                 <FormControl>
+                                                        <FormLabel>Name</FormLabel>
                                                         <input type='text'/>
-                                                        <label>Last Name</label>
+                                                        <FormLabel>Last Name</FormLabel>
                                                         <input type='text'/>
-                                                        <label>Credit card namber</label>
+                                                        <FormLabel>Credit card namber</FormLabel>
                                                         <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
-                                                        <label for="expmonth">Exp Month</label>
+                                                        <FormLabel for="expmonth">Exp Month</FormLabel>
                                                         <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
-                                                        <label for="expyear">Exp Year</label>
+                                                        <FormLabel for="expyear">Exp Year</FormLabel>
                                                         <input type="text" id="expyear" name="expyear" placeholder="2018"/>
                                                 
-                                                        <label for="cvv">CVV</label>
+                                                        <FormLabel for="cvv">CVV</FormLabel>
                                                         <input type="text" id="cvv" name="cvv" placeholder="352"/>
-                                                        <Button onClick={handleClose}>Checkout</Button>
-                                                        </form>
+                                                        <h4 id="child-modal-title">Your total is : ${getTotalSum()}</h4>
+                                                        <Button onClick={closeAll}>Checkout</Button>
+                                                        <Button onClick={closeCheck}>Back to Cart</Button>
                                                     
-                                                    <Button onClick={closeCheck}>Back to Cart</Button>
-                                                    
+                                                        </FormControl>
+                                                  
                                                 </Box>
                                             </Modal>
                                     </Typography>
@@ -392,10 +398,8 @@ const Main = (props) => {
                         
                        
                        <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
-                            </Typography>
-                            <Typography variant="h6" color="inherit" noWrap>
-                                Welcome, {props.currentUser}
-                            </Typography>
+                            
+                          
                         </Toolbar>
                     </AppBar>
                     <main>

@@ -124,10 +124,12 @@ if (view === 'main') {
                                     <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
                                     <Container>
                            Test Shopping cart.
+                           {console.log(props.cart)}
                             <ol>
                         {props.cart?.map((items)=>{
                                 return(
                                     <>
+                                    
                                     <div key={items.id}>
                                         <li>{items.name}</li>
                                     </div>
