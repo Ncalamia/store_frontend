@@ -7,6 +7,7 @@ import axios from 'axios'
 
 import Login from './Login.js'
 import Welcome from './Welcome.js'
+import Cart from './Cart.js'
 import Signup from './Signup.js'
 
 
@@ -32,7 +33,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
+import Modal from '@mui/material/Modal'
 
 const Main = (props) => {
 
@@ -42,10 +43,9 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    // let [view, setView] = useState('main')
+ 
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-
 
 
     // local vs heroku links - deploy with heroku
@@ -147,29 +147,6 @@ const Main = (props) => {
     }
 
 
-    ////////////////////////////////////////////////////////////
-    // CRUD Functionality - USERS (api/useraccount/login)
-    //      // returning user login
-    ////////////////////////////////////////////////////////////
-
-    // returning user login
-    const handleUpdateUser = (userAccount) => {
-        axios
-            // .put(localLoginUrl, userAccount)
-            .put(herokuLoginUrl, userAccount)
-            .catch((error) => {
-                if (error) {
-                    // console.log('wrong')
-                    alert("Email or password does not match records")
-                }
-            })
-            .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
-                props.setView('main')
-            })
-    }
 
     //////////////////////////////////////////////
     // useEffect
@@ -221,6 +198,47 @@ const Main = (props) => {
     };
 
     //////////////////////////////////////////////
+    // functions - related to add to cart
+    //////////////////////////////////////////////
+
+    const getTotalSum = () => {
+        return cart.reduce(
+          (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
+                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+          0
+        );
+      }
+
+      const [open, setOpen] = useState(false);
+      const handleOpen = () => {
+      
+        setOpen(true);
+      }
+      const handleClose = () => setOpen(false);
+      const style = {  
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
+
+
+      const [checkout, setCheckout] = useState(false)
+
+      const openCheck = () =>{
+          setOpen(false)
+          setCheckout(true)
+      }
+      const closeCheck = () =>{
+        setOpen(true)
+        setCheckout(false)
+    }
+    //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
 
@@ -262,6 +280,13 @@ const Main = (props) => {
                 <Welcome />
             </>
         )
+    } else if (props.view === 'cart'){
+        return (
+            <>
+            < Cart view={props.view} setView={props.setView} cart={cart}/>
+            </>
+        )
+    
     } else if (props.view === 'login') {
         return (
             <>
@@ -287,9 +312,80 @@ const Main = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
+                                < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
+                                {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
+                             
+                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+                            <Modal
+                                open={open - checkout}
+                                 
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={{...style, width:500, height: 600}}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                        Shopping Cart
+                                    </Typography>
+                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    <ol>
+                        {cart.map((items)=>{
+                                return(
+                                    <>
+                                    <div key={items.id}>
+                                        <li >{items.name}</li>
+                                        {/* <img style={{width:'20%', display:'flex'}} src={items.image}/> */}
+                                    </div>
+
+                                    
+                                    </>
+
+                                )
+                            })}
+                            </ol>
+                            <div>Total Cost: ${getTotalSum()} </div>
+                            <Button onClick={openCheck}>Checkout</Button>
+                            <Button onClick={handleClose}>Close</Button>
+                            
+                                            <Modal
+                                                hideBackdrop
+                                                open={checkout}
+                                                onClose={closeCheck}
+                                                aria-labelledby="child-modal-title"
+                                                aria-describedby="child-modal-description"
+                                            >
+                                                <Box sx={{ ...style, width:300, height: 400 }}>
+                                                    <h2 id="child-modal-title">Your total is : ${getTotalSum()}</h2>
+                                                 <form>
+                                                        <label>Name</label>
+                                                        <input type='text'/>
+                                                        <label>Last Name</label>
+                                                        <input type='text'/>
+                                                        <label>Credit card namber</label>
+                                                        <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
+                                                        <label for="expmonth">Exp Month</label>
+                                                        <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
+                                                        <label for="expyear">Exp Year</label>
+                                                        <input type="text" id="expyear" name="expyear" placeholder="2018"/>
+                                                
+                                                        <label for="cvv">CVV</label>
+                                                        <input type="text" id="cvv" name="cvv" placeholder="352"/>
+                                                        <Button onClick={handleClose}>Checkout</Button>
+                                                        </form>
+                                                    
+                                                    <Button onClick={closeCheck}>Back to Cart</Button>
+                                                    
+                                                </Box>
+                                            </Modal>
+                                    </Typography>
+                                </Box>
+                            </Modal>
+                          
+                        
+                       
+                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
                             </Typography>
                             <Typography variant="h6" color="inherit" noWrap>
                                 Welcome, {props.currentUser}
@@ -316,13 +412,13 @@ const Main = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    <div>
-                                    <p>Pretend you've never heard of Home Goods.</p>
-                                    <p>Here you can find everything your home needs!</p>
-                                    </div>
-                                </Typography> */}
+                                    Pretend you've never heard of Home Goods.
+                                    Here you can find everything your home needs!
+                                  
+                                </Typography>
+                               
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
@@ -338,8 +434,8 @@ const Main = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product} xs={12} sm={6} md={4}>
-                                        <Card
+                                    <Grid key={product.id} item xs={12} sm={6} md={4}>
+                                        <Card 
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
@@ -354,6 +450,7 @@ const Main = (props) => {
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
+                                                    <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
@@ -362,6 +459,7 @@ const Main = (props) => {
                                             <CardActions>
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
+                                                
                                             </CardActions>
                                         </Card>
 
@@ -369,6 +467,7 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
+                      
                         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
                         </Typography>

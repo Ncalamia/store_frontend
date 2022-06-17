@@ -156,6 +156,7 @@ const Login = (props) => {
         axios
             // .put(localLoginUrl, userAccount)
             .put(herokuLoginUrl, userAccount)
+
             .catch((error) => {
                 if (error) {
                   alert("Email or password does not match records")
@@ -167,7 +168,7 @@ const Login = (props) => {
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
                 props.setView('main')
-            })
+          } })
     }
 
     //////////////////////////////////////////////
@@ -248,6 +249,7 @@ const Login = (props) => {
         }
     })
 
+   
 
 
     //////////////////////////////////////////////
