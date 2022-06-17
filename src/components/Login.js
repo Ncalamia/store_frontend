@@ -162,13 +162,6 @@ const Login = (props) => {
                 }
             })
             .then((response) => {
-                    // console.log('wrong')
-                    setLoginError(true)
-                    alert("Email or password does not match records")
-                    setLoginError(true)
-                }
-            })
-            .then((response) => {
                 // console.log(userAccount)
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
