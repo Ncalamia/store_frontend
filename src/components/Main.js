@@ -17,7 +17,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaShoppingCart } from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -219,9 +219,9 @@ const Main = (props) => {
         return (
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    Your Website
-                </Link>{' '}
+                <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+                It's basically homegoods.
+            </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
@@ -240,7 +240,7 @@ const Main = (props) => {
         }
     })
 
-
+    
 
     //////////////////////////////////////////////
     // the return - skeleton
@@ -288,20 +288,15 @@ const Main = (props) => {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-                                </Typography>  
-                                <Typography variant="h6" color="inherit" sx={{marginLeft: 5}}>
-                                    Welcome, {props.currentUser}
                                 </Typography>
-                                {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
-
-                       
-                               
-
-
-
-                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart({props.cart.length})</Button>
-                            
-                          
+                                <Typography sx={{ fontSize: 20, ml: 2, float: 'right'}} >
+                                <FaShoppingCart  color="inherit" onClick={()=>props.setView('cart')}/>({props.cart.length})
+                                </Typography>  
+                                <Typography variant="h6" align="center" color="inherit" sx={{marginLeft: 5}}>
+                                    Welcome, {props.currentUser}
+    
+                          </Typography>
+                        
                         </Toolbar>
                     </AppBar>
                     <main>

@@ -47,13 +47,13 @@ const Cart = (props) => {
       0
     );
   }
-
+ 
   function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+                It's basically homegoods.
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -78,7 +78,17 @@ const handleOpen = () => {
 
   setOpen(true);
 }
-const handleClose = () => setOpen(false);
+const handleClose = () => {
+    setOpen(false)
+    
+}
+
+const handleCheckout = ()=>{
+    props.cart.length = 0
+    props.setView('main')
+    
+}
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -90,7 +100,9 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
+// const removeItem = (e) =>{
+//     props.setCart([...props.cart, e.target.id])
+// }
 if (props.view === 'main') {
     return (
         <>
@@ -111,7 +123,7 @@ if (props.view === 'main') {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-
+                                
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -131,7 +143,7 @@ if (props.view === 'main') {
                                     color="text.primary"
                                     gutterBottom
                                 >
-                                   Welcome to your Cart.
+                                   Welcome to Your Cart.
                                 </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -155,7 +167,7 @@ if (props.view === 'main') {
                             {props.cart.map((item) => {
                               return (
                                 <Grid key={item.id} sx={{ bgcolor: 'background.paper', p: 2}}>
-                                   
+                                   {/* <button onClick={(e)=>props.setCart([...props.cart, e.target.id])}>Remove</button> */}
                                   <img style={{width: 50, height: 'auto'}} src={item.image}/>
                                    <li>{item.name}</li>
                                    
@@ -199,8 +211,8 @@ if (props.view === 'main') {
                                               </form>
 
                             <h3>Total: ${getTotalSum()} </h3>
-                            <Button onClick={handleClose}>Checkout</Button>
-                            <Button onClick={handleClose}>Close</Button>
+                            <Button onClick={handleCheckout}>Checkout</Button>
+                            <Button onClick={handleClose}>Back to cart</Button>
                                
                                 </Box>
                             </Modal>
