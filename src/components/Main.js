@@ -46,6 +46,7 @@ const Main = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
+    let[cart, setCart] = useState([])
 
 
     // local vs heroku links - deploy with heroku
@@ -209,41 +210,7 @@ const Main = (props) => {
         );
       }
 
-      const [open, setOpen] = useState(false);
-      const handleOpen = () => {
 
-        setOpen(true);
-      }
-      const handleClose = () => setOpen(false);
-      const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
-
-
-      const [checkout, setCheckout] = useState(false)
-
-      const openCheck = () =>{
-          setOpen(false)
-          setCheckout(true)
-      }
-      const closeCheck = () =>{
-        setOpen(true)
-        setCheckout(false)
-    }
-
-    const closeAll = ()=>{
-        setCheckout(false)
-        setOpen(false)
-        setCart([])
-    }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -327,75 +294,12 @@ const Main = (props) => {
                                 </Typography>
                                 {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
 
-                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({props.cart.length})</Button>
-                            <Modal
-                                open={open - checkout}
-
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box sx={{...style, width:'100vw', height: '80vh'}}>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Shopping Cart
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    <ol>
-                        {props.cart.map((items)=>{
-                                return(
-                                    <>
-                                    <div key={items.id}>
-                                        <li >{items.name}</li>
-                                        {/* <img style={{width:'20%', display:'flex'}} src={items.image}/> */}
-                                    </div>
-
-
-                                    </>
-
-                                )
-                            })}
-                            </ol>
-                            <div>Total Cost: ${getTotalSum()} </div>
-                            <Button onClick={openCheck}>Checkout</Button>
-                            <Button onClick={handleClose}>Close</Button>
-
-                                            <Modal
-                                                hideBackdrop
-                                                open={checkout}
-                                                onClose={closeCheck}
-                                                aria-labelledby="child-modal-title"
-                                                aria-describedby="child-modal-description"
-                                            >
-                                                <Box sx={{ ...style, width:'80vw', height: '80vh' }}>
-                                                    <form>
-                                              
-                                                        <FormLabel>Name</FormLabel>
-                                                        <input type='text'/>
-                                                        <FormLabel>Last Name</FormLabel>
-                                                        <input type='text'/>
-                                                        <FormLabel>Credit card namber</FormLabel>
-                                                        <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
-                                                        <FormLabel for="expmonth">Exp Month</FormLabel>
-                                                        <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
-                                                        <FormLabel for="expyear">Exp Year</FormLabel>
-                                                        <input type="text" id="expyear" name="expyear" placeholder="2018"/>
-
-                                                        <label for="cvv">CVV</label>
-                                                        <input type="text" id="cvv" name="cvv" placeholder="352"/>
-                                                        <Button onClick={handleClose}>Checkout</Button>
-                                                        </form>
-
-                                                    <Button onClick={closeCheck}>Back to Cart</Button>
-
-                                                </Box>
-                                            </Modal>
-                                    </Typography>
-                                </Box>
-                            </Modal>
+                       
+                               
 
 
 
-                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
+                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart({props.cart.length})</Button>
                             
                           
                         </Toolbar>
@@ -455,7 +359,7 @@ const Main = (props) => {
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
-                                                    <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
+                                                    
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
@@ -465,6 +369,7 @@ const Main = (props) => {
                                                 
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
+                                                <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
                                             </CardActions>
                                         </Card>
 

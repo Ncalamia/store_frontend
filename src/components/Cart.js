@@ -26,7 +26,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
+import Modal from '@mui/material/Modal'
+import { FormControl, FormLabel, OutlinedInput } from '@mui/material'
 
 const Cart = (props) => {
 
@@ -72,6 +73,24 @@ const theme = createTheme({
     }
 })
 
+const [open, setOpen] = useState(false);
+const handleOpen = () => {
+
+  setOpen(true);
+}
+const handleClose = () => setOpen(false);
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 if (props.view === 'main') {
     return (
         <>
@@ -104,7 +123,7 @@ if (props.view === 'main') {
                             }}
                         >
 
-                            <Container maxWidth="sm">
+                            <Container >
                                 <Typography
                                     component="h1"
                                     variant="h2"
@@ -121,27 +140,80 @@ if (props.view === 'main') {
                                     justifyContent="center"
                                 >
                                     <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
-                                    <Container>
-                                    Shopping cart
-                                    {console.log(props.cart)}
+                                   
+                                    </Stack>
+                                    <Box sx={{ bgcolor: 'background.paper', p: 6 }}>
+                                    <ol>
+                                    <Stack
+                                    sx={{ pt: 4 }}
+                                    direction="row"
+                                    spacing={5}
+                                    justifyContent="center"
+                                    flexWrap={'wrap'}
+                                > 
+                                
                             {props.cart.map((item) => {
                               return (
-                               <div key={item.id}>
-                                   <p>{item.name}</p>
-                              </div>
+                                <Grid key={item.id} sx={{ bgcolor: 'background.paper', p: 2}}>
+                                   
+                                  <img style={{width: 50, height: 'auto'}} src={item.image}/>
+                                   <li>{item.name}</li>
+                                   
+                                  </Grid>
+                           
                             )
                             })}
+                            <Container>
+                                   <h3>Total Cost: ${getTotalSum()} </h3>
+                                   <Button  variant="contained" onClick={handleOpen}>CHECKOUT({props.cart.length})</Button>
+                                   </Container>
+                                  
+                            <Modal
+                                open={open}
 
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={{...style, width:'50vw', height: 'auto'}}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                        Shopping Cart
+                                    </Typography>
+                                   
+                                    <form>
+                                              <FormControl >
+                                              <FormLabel>First Name</FormLabel>
+                                              <OutlinedInput sx={{height: 30}} type='text'/>
+                                              <FormLabel>Last Name</FormLabel>
+                                              <OutlinedInput sx={{height: 30, width: 300}}  type='text'/>
+                                              <FormLabel>Credit card namber</FormLabel>
+                                              <OutlinedInput sx={{height: 30}}  type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
+                                              <FormLabel for="expmonth">Exp Month</FormLabel>
+                                              <OutlinedInput sx={{height: 30}}  type="text" id="expmonth" name="expmonth" placeholder="September"/>
+                                              <FormLabel for="expyear">Exp Year</FormLabel>
+                                              <OutlinedInput sx={{height: 30, width: 100}}  type="text" id="expyear" name="expyear" placeholder="2022"/>
 
-                        <div>Total Cost: ${getTotalSum()} </div>
-                        </Container>
-                                </Stack>
+                                              <FormLabel for="cvv">CVV</FormLabel>
+                                              <OutlinedInput sx={{height: 30, width: 70}} type="text" id="cvv" name="cvv" placeholder="352"/>
+                                              </FormControl>
+                                              </form>
+
+                            <h3>Total: ${getTotalSum()} </h3>
+                            <Button onClick={handleClose}>Checkout</Button>
+                            <Button onClick={handleClose}>Close</Button>
+                               
+                                </Box>
+                            </Modal>
+                        
+                      
+                            </Stack>
+                            </ol>
+                            </Box>
                             </Container>
-
                         </Box>
 
 
-                        <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+                        <Box sx={{ bgcolor: 'background.paper', p: 6 }}>
                         <Typography variant="h6" align="center" gutterBottom>
 
                         </Typography>
