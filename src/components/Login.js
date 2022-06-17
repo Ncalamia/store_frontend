@@ -158,13 +158,10 @@ const Login = (props) => {
             .put(herokuLoginUrl, userAccount)
             .catch((error) => {
                 if (error) {
-<<<<<<< HEAD
                   alert("Email or password does not match records")
                 }
             })
             .then((response) => {
-
-=======
                     // console.log('wrong')
                     setLoginError(true)
                     alert("Email or password does not match records")
@@ -176,8 +173,6 @@ const Login = (props) => {
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
                 props.setView('main')
-
->>>>>>> 77f3f3dd72c7b240a85a3ea8f92b9870f955e475
             })
     }
 
