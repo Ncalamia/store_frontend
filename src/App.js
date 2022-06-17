@@ -21,6 +21,7 @@ const App = () => {
 
 
 
+
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
   // let [view, setView] = useState('main')

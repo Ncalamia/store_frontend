@@ -41,11 +41,9 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-
     const [loginError, setLoginError] = useState(false)
     // const [currentUser, setCurrentUser]= useState()
- 
-   
+
 
 
     // local vs heroku links - deploy with heroku
@@ -152,6 +150,7 @@ const Login = (props) => {
     //      // returning user login
     ////////////////////////////////////////////////////////////
 
+
     // returning user login
     const handleUpdateUser = (userAccount) => {
         axios
@@ -159,10 +158,8 @@ const Login = (props) => {
             .put(herokuLoginUrl, userAccount)
             .catch((error) => {
                 if (error) {
-                    // console.log('wrong')
-                    setLoginError(true)
-                    alert("Email or password does not match records")
-                    setLoginError(true)
+                  alert("Email or password does not match records")
+                  setLoginError(true)
                 }
             })
             .then((response) => {
@@ -170,7 +167,6 @@ const Login = (props) => {
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
                 props.setView('main')
-
             })
     }
 
