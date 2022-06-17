@@ -450,26 +450,24 @@ const Main = (props) => {
                                         >
                                             <CardMedia
                                                 component="img"
-                                                sx={{
-                                                    // 16:9
-                                                    pt: '56.25%',
-                                                }}
+                                              
                                                 image={product.image}
                                                 alt="random"
                                             />
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
-                                                    <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
+                                                    
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
+                                                
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
-                                                
+                                                <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
                                             </CardActions>
                                         </Card>
 
@@ -477,10 +475,11 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                      
-                        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
+                      <Container>
+                        <Typography variant="subtitle1" align="left" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
                         </Typography>
+                        </Container>
 
                     </main>
                     {/* Footer */}

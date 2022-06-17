@@ -31,6 +31,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { OutlinedInput } from '@mui/material'
 
 
 const Welcome = (props) => {
@@ -38,7 +39,7 @@ const Welcome = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-
+    const [query, setQuery] = useState("")
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -211,7 +212,13 @@ const Welcome = (props) => {
             behavior: 'smooth',
         });
     };
-
+    //////////////////////////////////////////////
+    // functions - related to search
+    //////////////////////////////////////////////
+    const handleChange = (e) => {
+        e.preventDefault()
+        setQuery(e.target.value);
+      };
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -301,21 +308,28 @@ const Welcome = (props) => {
 
                                 </Stack>
                             </Container>
+                            <OutlinedInput sx={{width: '100vw', mt: 10}} type="search" id="search"  placeholder="Look up Products" onChange={handleChange} />
                         </Box>
                         <Container ref={productsRef} sx={{ py: 8 }} maxWidth="md">
                             {/* End hero unit */}
                             <Grid container spacing={4}>
-                                {products.map((product) => (
+
+                                {
+                                    products.filter(findOne => {
+                                        if (query == "") {
+                                            return findOne
+                                        } else if (findOne.name.toLowerCase().includes(query.toLowerCase())) {
+                                            return findOne
+                                        }
+
+                                    }).map((product) => (
                                     <Grid item key={product} xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
                                                 component="img"
-                                                sx={{
-                                                    // 16:9
-                                                    pt: '56.25%',
-                                                }}
+                                               
                                                 image={product.image}
                                                 alt="random"
                                             />
@@ -331,9 +345,10 @@ const Welcome = (props) => {
                                         </Card>
 
                                     </Grid>
-                                ))}
+                                ))}  
                             </Grid>
                         </Container>
+                        
                     </main>
                     {/* Footer */}
                     <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
