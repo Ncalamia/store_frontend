@@ -41,10 +41,12 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
+
     const [loginError, setLoginError] = useState(false)
     // const [currentUser, setCurrentUser]= useState()
  
    
+
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -158,6 +160,7 @@ const Login = (props) => {
             .catch((error) => {
                 if (error) {
                     // console.log('wrong')
+                    setLoginError(true)
                     alert("Email or password does not match records")
                     setLoginError(true)
                 }
@@ -167,6 +170,7 @@ const Login = (props) => {
                 console.log(response.data.email)
                 props.setCurrentUser(response.data.email)
                 props.setView('main')
+
             })
     }
 
