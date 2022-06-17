@@ -17,7 +17,8 @@ const App = () => {
   // general states
   let [products, setProducts] = useState([])
   let [users, setUsers] = useState([])
-  let [regulars, setRegulars] = useState([])
+  const [currentUser, setCurrentUser]= useState([])
+
 
 
   // view states
@@ -92,14 +93,14 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome view={view} setView={setView} />
+        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-        <Login view={view} setView={setView} />
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
 
       </>
     )
@@ -107,14 +108,14 @@ const App = () => {
     return (
       <>
 
-        <Signup view={view} setView={setView} />
+        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} setView={setView} />
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
       </>
     )
   }

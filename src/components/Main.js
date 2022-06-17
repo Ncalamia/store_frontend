@@ -45,7 +45,7 @@ const Main = (props) => {
     // let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let [accounts, setAccounts] = useState('old')
+
 
 
     // local vs heroku links - deploy with heroku
@@ -290,6 +290,9 @@ const Main = (props) => {
                                 < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
+                            </Typography>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                Welcome, {props.currentUser}
                             </Typography>
                         </Toolbar>
                     </AppBar>
