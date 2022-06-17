@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import Main from './Main.js'
 
 const AddUser = (props) => {
 
@@ -8,6 +8,7 @@ const AddUser = (props) => {
 
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
+  let [accounts, setAccounts] = useState('new')
 
 
 

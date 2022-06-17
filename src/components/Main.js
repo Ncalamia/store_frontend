@@ -44,7 +44,6 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    let [cart, setCart] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
 
@@ -203,20 +202,20 @@ const Main = (props) => {
     //////////////////////////////////////////////
 
     const getTotalSum = () => {
-        return cart.reduce(
+        return props.cart.reduce(
           (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
-                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
           0
         );
       }
 
       const [open, setOpen] = useState(false);
       const handleOpen = () => {
-      
+
         setOpen(true);
       }
       const handleClose = () => setOpen(false);
-      const style = {  
+      const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -290,10 +289,10 @@ const Main = (props) => {
     } else if (props.view === 'cart'){
         return (
             <>
-            < Cart view={props.view} setView={props.setView} cart={cart}/>
+            < Cart view={props.view} setView={props.setView} cart={props.cart}/>
             </>
         )
-    
+
     } else if (props.view === 'login') {
         return (
             <>
@@ -327,11 +326,11 @@ const Main = (props) => {
                                     Welcome, {props.currentUser}
                                 </Typography>
                                 {/* <Button color="inherit" onClick={()=>setView('cart')}>Go to cart({cart.length})</Button> */}
-                             
-                        <Button variant="h6" color="inherit" onClick={handleOpen}>Test Shopping cart.({cart.length})</Button>
+
+                        <Button color="inherit" onClick={handleOpen}>Test Shopping cart.({props.cart.length})</Button>
                             <Modal
                                 open={open - checkout}
-                                 
+
                                 onClose={handleClose}
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
@@ -342,7 +341,7 @@ const Main = (props) => {
                                     </Typography>
                                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     <ol>
-                        {cart.map((items)=>{
+                        {props.cart.map((items)=>{
                                 return(
                                     <>
                                     <div key={items.id}>
@@ -350,7 +349,7 @@ const Main = (props) => {
                                         {/* <img style={{width:'20%', display:'flex'}} src={items.image}/> */}
                                     </div>
 
-                                    
+
                                     </>
 
                                 )
@@ -359,7 +358,7 @@ const Main = (props) => {
                             <div>Total Cost: ${getTotalSum()} </div>
                             <Button onClick={openCheck}>Checkout</Button>
                             <Button onClick={handleClose}>Close</Button>
-                            
+
                                             <Modal
                                                 hideBackdrop
                                                 open={checkout}
@@ -368,8 +367,8 @@ const Main = (props) => {
                                                 aria-describedby="child-modal-description"
                                             >
                                                 <Box sx={{ ...style, width:'80vw', height: '80vh' }}>
-                                                    
-                                                 <FormControl>
+                                                    <form>
+                                              
                                                         <FormLabel>Name</FormLabel>
                                                         <input type='text'/>
                                                         <FormLabel>Last Name</FormLabel>
@@ -380,23 +379,22 @@ const Main = (props) => {
                                                         <input type="text" id="expmonth" name="expmonth" placeholder="September"></input>
                                                         <FormLabel for="expyear">Exp Year</FormLabel>
                                                         <input type="text" id="expyear" name="expyear" placeholder="2018"/>
-                                                
-                                                        <FormLabel for="cvv">CVV</FormLabel>
+
+                                                        <label for="cvv">CVV</label>
                                                         <input type="text" id="cvv" name="cvv" placeholder="352"/>
-                                                        <h4 id="child-modal-title">Your total is : ${getTotalSum()}</h4>
-                                                        <Button onClick={closeAll}>Checkout</Button>
-                                                        <Button onClick={closeCheck}>Back to Cart</Button>
-                                                    
-                                                        </FormControl>
-                                                  
+                                                        <Button onClick={handleClose}>Checkout</Button>
+                                                        </form>
+
+                                                    <Button onClick={closeCheck}>Back to Cart</Button>
+
                                                 </Box>
                                             </Modal>
                                     </Typography>
                                 </Box>
                             </Modal>
-                          
-                        
-                       
+
+
+
                        <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
                             
                           
@@ -426,9 +424,9 @@ const Main = (props) => {
                                     Welcome!
                                     Pretend you've never heard of Home Goods.
                                     Here you can find everything your home needs!
-                                  
+
                                 </Typography>
-                               
+
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
@@ -445,7 +443,7 @@ const Main = (props) => {
                             <Grid container spacing={4}>
                                 {products.map((product) => (
                                     <Grid key={product.id} item xs={12} sm={6} md={4}>
-                                        <Card 
+                                        <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
@@ -457,7 +455,7 @@ const Main = (props) => {
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
-                                                    
+                                                    <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
@@ -467,7 +465,6 @@ const Main = (props) => {
                                                 
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
-                                                <Button onClick={(e)=>setCart([...cart, product])}>Add to Cart</Button>
                                             </CardActions>
                                         </Card>
 
@@ -475,8 +472,8 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                      <Container>
-                        <Typography variant="subtitle1" align="left" color="text.secondary" component="p">
+                                    <Container>
+                        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                             <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
                         </Typography>
                         </Container>

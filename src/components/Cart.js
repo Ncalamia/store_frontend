@@ -37,13 +37,12 @@ const Cart = (props) => {
 
 	//////States//////
 
-  
-  const [product, setProduct] = useState([])  
-  let [view, setView] = useState('')
+
+  const [product, setProduct] = useState([])
   const getTotalSum = () => {
     return props.cart?.reduce(
       (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
-                                         //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx  
+                                         //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
       0
     );
   }
@@ -73,7 +72,7 @@ const theme = createTheme({
     }
 })
 
-if (view === 'main') {
+if (props.view === 'main') {
     return (
         <>
             <Main />
@@ -93,7 +92,7 @@ if (view === 'main') {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-                            
+
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -123,30 +122,24 @@ if (view === 'main') {
                                 >
                                     <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
                                     <Container>
-                           Test Shopping cart.
-                           {console.log(props.cart)}
-                            <ol>
-                        {props.cart?.map((items)=>{
-                                return(
-                                    <>
-                                    
-                                    <div key={items.id}>
-                                        <li>{items.name}</li>
-                                    </div>
-
-                                    
-                                    </>
-
-                                )
+                                    Shopping cart
+                                    {console.log(props.cart)}
+                            {props.cart.map((item) => {
+                              return (
+                               <div key={item.id}>
+                                   <p>{item.name}</p>
+                              </div>
+                            )
                             })}
-                            </ol>
+
+
                         <div>Total Cost: ${getTotalSum()} </div>
                         </Container>
                                 </Stack>
                             </Container>
-                           
+
                         </Box>
-                      
+
 
                         <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                         <Typography variant="h6" align="center" gutterBottom>
@@ -165,7 +158,7 @@ if (view === 'main') {
 
                 </ThemeProvider>
 
-                        
+
 
     </>
   )

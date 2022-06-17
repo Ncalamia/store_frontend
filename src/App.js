@@ -17,7 +17,9 @@ const App = () => {
   // general states
   let [products, setProducts] = useState([])
   let [users, setUsers] = useState([])
+  let [regulars, setRegulars] = useState([])
   const [currentUser, setCurrentUser]= useState([])
+  let [cart, setCart] = useState([])
 
 
 
@@ -116,13 +118,13 @@ const App = () => {
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart}/>
       </>
     )
   } else if (view === 'cart') {
     return (
       <>
-        <Cart view={view} setView={setView} />
+        <Cart view={view} setView={setView} cart={cart}/>
       </>
     )}
 }
