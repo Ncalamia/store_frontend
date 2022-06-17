@@ -9,10 +9,19 @@ const AddUser = (props) => {
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
   let [accounts, setAccounts] = useState('new')
-
+  const [seePassword, setSeePassword] = useState(false)
 
 
   /////Functions///////
+
+  /////Hide/Show password/////
+  const togglePassword = () => {
+    if (seePassword === false) {
+      setSeePassword(true)
+    } else if (seePassword === true) {
+      setSeePassword(false)
+    }
+  }
 
   const handleChange = (event) => {
     console.log(event);
@@ -34,7 +43,8 @@ const AddUser = (props) => {
           <br />
           <br />
           <label htmlFor="password">Password: </label>
-          <input type="password" name="password" value={user.password} onChange={handleChange} />
+          <input name="password" value={user.password} onChange={handleChange} type={seePassword ? "text" : "password"} />
+          <i onClick={togglePassword}>{props.eye}</i>
           <br />
           <br />
           <input type="submit" />
