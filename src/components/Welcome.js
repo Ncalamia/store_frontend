@@ -261,7 +261,7 @@ const Welcome = (props) => {
                                 </Link>
                             </Typography>
 
-                            <Button varient="text" color="inherit" onClick={userLogin}>Login</Button>
+                            <Button varient="text" color="inherit" onClick={()=>props.setView('login')}>Login</Button>
 
                         </Toolbar>
                     </AppBar>
@@ -306,7 +306,7 @@ const Welcome = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product} xs={12} sm={6} md={4}>
+                                    <Grid item key={product.id} xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >

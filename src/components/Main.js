@@ -290,6 +290,7 @@ const Main = (props) => {
                                 < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
+                                {/* <h2>Welcome,  </h2> */}
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -335,7 +336,7 @@ const Main = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product} xs={12} sm={6} md={4}>
+                                    <Grid item key={product.id} xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
