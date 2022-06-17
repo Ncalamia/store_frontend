@@ -159,6 +159,7 @@ const Login = (props) => {
             .catch((error) => {
                 if (error) {
                   alert("Email or password does not match records")
+                  setLoginError(true)
                 }
             })
             .then((response) => {
