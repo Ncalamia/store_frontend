@@ -3,44 +3,43 @@ import React, { useState, useEffect } from 'react'
 
 const AddUser = (props) => {
 
-	//////States//////
+
+  //////States//////
+
   let emptyUser = { email: '', password: '' }
   const [user, setUser] = useState(emptyUser)
 
 
 
-	/////Functions///////
+  /////Functions///////
 
-    const handleChange = (event) => {
-        console.log(event);
-        setUser({ ...user, [event.target.name]: event.target.value })
-    }
-    
-    
-    const handleSubmit = (event) => {
-      event.preventDefault()
-      console.log(user)
-      props.userSignup(user)
-      setUser({ email: '', password: ''  })
-    }
+  const handleChange = (event) => {
+    console.log(event);
+    setUser({ ...user, [event.target.name]: event.target.value })
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    // console.log(user)
+    props.userSignup(user)
+    setUser({ email: '', password: '' })
+    props.setView('login')
+  }
 
-
-  return (
-    <>    
-        
-              <form onSubmit={handleSubmit}>
-                  <label htmlFor="email">Email: </label>
-                  <input type="text" name="email" value={user.email} onChange={handleChange} />
-                  <br />
-                  <br />
-                  <label htmlFor="password">Password: </label>
-                  <input type="text" name="password" value={user.password} onChange={handleChange} />
-                  <br />
-                  <br />
-                  <input type="submit" />
-              </form>
-    </>
-  )
-}
+    return (
+      <>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email: </label>
+          <input type="text" name="email" value={user.email} onChange={handleChange} />
+          <br />
+          <br />
+          <label htmlFor="password">Password: </label>
+          <input type="password" name="password" value={user.password} onChange={handleChange} />
+          <br />
+          <br />
+          <input type="submit" />
+        </form>
+      </>
+    )
+  }
 
 export default AddUser
