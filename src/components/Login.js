@@ -41,19 +41,10 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-<<<<<<< HEAD
-    const [loggedIn, setLoggedIn] = useState(false)
-    const [loginAlert, setLoginAlert] = useState(false)
-
-    // let [loginError, setLoginError] = useState(false)
-=======
-
     const [loginError, setLoginError] = useState(false)
     // const [currentUser, setCurrentUser]= useState()
- 
-   
 
->>>>>>> 77f3f3dd72c7b240a85a3ea8f92b9870f955e475
+
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -172,7 +163,7 @@ const Login = (props) => {
                 }
             })
             .then((response) => {
-              
+
 =======
                     // console.log('wrong')
                     setLoginError(true)
