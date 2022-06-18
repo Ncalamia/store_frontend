@@ -30,8 +30,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -49,7 +49,7 @@ const Login = (props) => {
 
 
     // Styling variable
-    const eye = <FontAwesomeIcon icon={faEye} />;
+    // const eye = <FontAwesomeIcon icon={faEye} />;
 
 
     // local vs heroku links - deploy with heroku
@@ -171,8 +171,9 @@ const Login = (props) => {
             })
             .then((response) => {
                 // console.log(userAccount)
-                console.log(response.data.email)
+                console.log(response.data)
                 props.setCurrentUser(response.data.email)
+                // props.setCurrentUser(response.data.name)
                 props.setView('main')
            })
     }
@@ -325,7 +326,8 @@ const Login = (props) => {
                                     <Typography variant="h5" color="text.secondary" paragraph>
                                         Login
                                     </Typography>
-                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/>
+                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser}/>
+                                    {/* <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/> */}
                                     <br />
                                     <Typography gutterBottom component="h2"
                                         variant="subtitle1"

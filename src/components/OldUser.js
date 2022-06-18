@@ -5,19 +5,19 @@ const OldUser = (props) => {
 
 	//////States//////
   const [regular, setRegular] = useState({...props.regular})
-  const [seePassword, setSeePassword] = useState(false)
+  // const [seePassword, setSeePassword] = useState(false)
 
 
 	/////Functions///////
 
-  /////Hide/Show password/////
-    const togglePassword = () => {
-      if (seePassword === false) {
-      setSeePassword(true)
-      } else if (seePassword === true) {
-      setSeePassword(false)
-      }
-    }
+  // /////Hide/Show password/////
+  //   const togglePassword = () => {
+  //     if (seePassword === false) {
+  //     setSeePassword(true)
+  //     } else if (seePassword === true) {
+  //     setSeePassword(false)
+  //     }
+  //   }
 
     const handleChange = (event) => {
         // console.log(event);
@@ -40,8 +40,9 @@ const OldUser = (props) => {
                   <br />
                   <br />
                   <label htmlFor="password">Password: </label>
-                  <input name="password" value={regular.password} onChange={handleChange} type={seePassword ? "text" : "password"} />
-                  <i onClick={togglePassword}>{props.eye}</i>
+                  <input name="password" value={regular.password} onChange={handleChange} />
+                  {/* <input name="password" value={regular.password} onChange={handleChange} type={seePassword ? "text" : "password"} /> */}
+                  {/* <i onClick={togglePassword}>{props.eye}</i> */}
                   <br />
                   <br />
                   <input type="submit" />
