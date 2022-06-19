@@ -188,7 +188,7 @@ const NewCart = (props) => {
 
             {/* option 3 */}
 
-            <div>
+            {/* <div>
                 {props.carts.map((cart) => {
                     if (props.carts[props.index].customer === props.currentUserID) {
                         return (
@@ -198,7 +198,7 @@ const NewCart = (props) => {
                                 <h4>Products</h4>
                                     <div className='cart_items'>
                                         {props.carts.map((cart) => {
-                                            
+
                                         })}
                                     </div>
                             </div>
@@ -207,16 +207,16 @@ const NewCart = (props) => {
                         return (
                             <div>
                                 {props.setIndex[i+1]}
-                                {/* {props.setCarts(props.index)} */}
+                                {props.setCarts(props.index)}
                             </div>
                         )
                     }
 
                 })}
-            </div> 
+            </div>  */}
 
             {/* {console.log(props.carts[0].customer)} */}
-            {/* {console.log(props.carts[0].customer)}  */}
+            {console.log(props.carts[0].customer)} 
             {/* {console.log(props.carts[props.index].customer)} */}
             
             {/* {props.currentUserID !== props.carts[0].customer ?
@@ -228,7 +228,7 @@ const NewCart = (props) => {
             } */}
 
 
-            {/* {console.log(props.carts[0].products)} */}
+            {console.log(props.carts[0].products)}
 
         </>
     )
