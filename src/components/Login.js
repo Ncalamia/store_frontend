@@ -162,7 +162,6 @@ const Login = (props) => {
         axios
             // .put(localLoginUrl, userAccount)
             .put(herokuLoginUrl, userAccount)
-
             .catch((error) => {
                 if (error) {
                   alert("Email or password does not match records")
@@ -234,9 +233,9 @@ const Login = (props) => {
         return (
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    Your Website
-                </Link>{' '}
+                <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+                It's basically homegoods.
+            </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
