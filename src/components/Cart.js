@@ -40,6 +40,9 @@ const Cart = (props) => {
 
 
   const [product, setProduct] = useState([])
+  let [cart, setCart] = useState([])  
+  ////////SUM OF ITEMS
+
   const getTotalSum = () => {
     return props.cart?.reduce(
       (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
@@ -72,7 +75,7 @@ const theme = createTheme({
         }
     }
 })
-
+///////OPEN - CLOSE CHECKOUT
 const [open, setOpen] = useState(false);
 const handleOpen = () => {
 
@@ -100,9 +103,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-// const removeItem = (e) =>{
-//     props.setCart([...props.cart, e.target.id])
-// }
+
 if (props.view === 'main') {
     return (
         <>
@@ -164,13 +165,14 @@ if (props.view === 'main') {
                                     flexWrap={'wrap'}
                                 > 
                                 
-                            {props.cart.map((item) => {
+                            {props.cart.map((item, index) => {
                               return (
                                 <Grid key={item.id} sx={{ bgcolor: 'background.paper', p: 2}}>
                                    {/* <button onClick={(e)=>props.setCart([...props.cart, e.target.id])}>Remove</button> */}
                                   <img style={{width: 50, height: 'auto'}} src={item.image}/>
                                    <li>{item.name}</li>
-                                   
+                                  
+                                  {console.log(props.cart)}
                                   </Grid>
                            
                             )
