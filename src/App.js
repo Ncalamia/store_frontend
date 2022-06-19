@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Cart from './components/Cart.js'
+import NewCart from './components/NewCart.js'
 import Welcome from './components/Welcome.js'
 import Login from './components/Login.js'
 import Signup from './components/Signup.js'
@@ -19,16 +20,14 @@ const App = () => {
   let [users, setUsers] = useState([])
   let [regulars, setRegulars] = useState([])
   const [currentUser, setCurrentUser]= useState([])
+  const [currentUserID, setCurrentUserID]= useState([])
   let [cart, setCart] = useState([])
-
-
+  let [carts, setCarts] = useState([])
+  let [index, setIndex] = useState(0)
 
 
   // view states
   //change views without navigating - testing purposes only (deploy view at welcome)
-  // let [view, setView] = useState('main')
-  // let [view, setView] = useState('login')
-  // let [view, setView] = useState('signup')
   let [view, setView] = useState('welcome')
 
   // local vs heroku links - deploy with heroku
@@ -40,6 +39,9 @@ const App = () => {
 
   const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
   const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+  const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+  const localCartUrl = 'http://localhost:8000/api/usercart'
 
 
   //////////////////////////////////////////////
@@ -71,6 +73,19 @@ const App = () => {
   }
 
 
+  //////Fetching user cart/////////
+    const getCarts = () => {
+      axios
+          // .get(localCartUrl)
+          .get(herokuCartUrl)
+          .then(
+              (response) => setCarts(response.data),
+              (err) => console.error(err)
+          )
+          .catch((error) => console.error(error))
+  }
+
+
   //////////////////////////////////////////////
   // useEffect
   //////////////////////////////////////////////
@@ -82,8 +97,9 @@ const App = () => {
       getProducts()
     } else if (view === 'welcome') {
       getProducts()
-    }
-    else {
+    } else if (view === 'newcart') {
+      getCarts()
+    } else {
       getUsers()
     }
   }, [])
@@ -96,14 +112,14 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
+        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
 
       </>
     )
@@ -111,20 +127,30 @@ const App = () => {
     return (
       <>
 
-        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
+        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart}/>
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
       </>
     )
   } else if (view === 'cart') {
     return (
       <>
         <Cart view={view} setView={setView} cart={cart}/>
+      </>
+    )
+  } else if (view === 'newcart') {
+    return (
+      <>
+        <NewCart view={view} setView={setView} 
+        carts={carts} setCarts={setCarts} 
+        currentUser={currentUser} setCurrentUser={setCurrentUser}
+        currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}
+        index={index} setIndex={setIndex}/>
       </>
     )}
 }

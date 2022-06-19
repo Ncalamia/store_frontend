@@ -383,8 +383,9 @@ const Main = (props) => {
                             </Modal>
 
 
-
-                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button>
+{/* 
+                       <Button color="inherit" onClick={()=>props.setView('cart')}>Cart</Button> */}
+                       <Button color="inherit" onClick={()=>props.setView('newcart')}>NEW Cart</Button>
                             </Typography>
                             <Typography variant="h6" color="inherit" noWrap>
                                 Welcome, {props.currentUser}

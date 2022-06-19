@@ -30,8 +30,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -49,7 +49,7 @@ const Login = (props) => {
 
 
     // Styling variable
-    const eye = <FontAwesomeIcon icon={faEye} />;
+    // const eye = <FontAwesomeIcon icon={faEye} />;
 
 
     // local vs heroku links - deploy with heroku
@@ -61,6 +61,9 @@ const Login = (props) => {
 
     const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
     const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+    const herokoCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
 
     ////////////////////////////////////////////////////////////
     // CRUD Functionality - PRODUCTS (api/products)
@@ -171,11 +174,27 @@ const Login = (props) => {
             })
             .then((response) => {
                 // console.log(userAccount)
-                console.log(response.data.email)
+                console.log(response.data)
                 props.setCurrentUser(response.data.email)
+                props.setCurrentUserID(response.data.id)
                 props.setView('main')
            })
     }
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - user cart (api/usercart)
+    ////////////////////////////////////////////////////////////
+
+    //////Fetching user cart/////////
+    // const getUserCart = (currentUser) => {
+    //     axios
+    //         .get(herokoCartUrl)
+    //         .then(
+    //             (response) => {
+    //                 props.setCart(response.data.filter(cartProduct => cartProduct.email === currentUser))
+    //             })
+    // }
+
 
     //////////////////////////////////////////////
     // useEffect
@@ -188,8 +207,7 @@ const Login = (props) => {
             getProducts()
         } else if (props.view === 'welcome') {
             getProducts()
-        }
-        else {
+        } else {
             getUsers()
         }
     }, [])
@@ -325,7 +343,8 @@ const Login = (props) => {
                                     <Typography variant="h5" color="text.secondary" paragraph>
                                         Login
                                     </Typography>
-                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/>
+                                    {/* <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/> */}
+                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser}/>
                                     <br />
                                     <Typography gutterBottom component="h2"
                                         variant="subtitle1"

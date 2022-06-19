@@ -30,10 +30,19 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const Cart = (props) => {
 
-    const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
-    const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
-    const localUrl = 'http://localhost:8000/api/products'
-    const localUsersUrl = 'http://localhost:8000/api/useraccount'
+
+  // local vs heroku links - deploy with heroku
+  const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
+  const localUrl = 'http://localhost:8000/api/products'
+
+  const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
+  const localUsersUrl = 'http://localhost:8000/api/useraccount'
+
+  const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
+  const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+  const herokoCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+  const localCartUrl = 'http://localhost:8000/api/usercart'
 
 	//////States//////
 
