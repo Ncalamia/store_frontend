@@ -80,8 +80,8 @@ const Main = (props) => {
     ///////CREATE PRODUCT//////////
     const handleCreate = (addProduct) => {
         axios
-            .post(localUrl, addProduct)
-            // .post(herokuUrl, addProduct)
+            // .post(localUrl, addProduct)
+            .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
                 // getProducts()
@@ -221,11 +221,11 @@ const Main = (props) => {
             )
             .catch((error) => console.error(error))
     }
-    useEffect(() => {
-
-        getCarts()
-
-    }, [])
+    // useEffect(() => {
+    //
+    //     getCarts()
+    //
+    // }, [])
     const handleCreateCart = (cartId, product) => {
         console.log(cartId)
         console.log(product)
@@ -234,7 +234,7 @@ const Main = (props) => {
             .put(herokuCartUrl + '/' + cartId, product)
             .then((response) => {
 
-                            
+
                 props.setCarts(products.map((product)=>{
                     return product.id != response.data.id ? product : response.data
                 }))
@@ -427,7 +427,7 @@ const Main = (props) => {
                                                                 <Button onClick={handleCreateCart(cart.id, product)}>Add to Cart</Button> : ""}
                                                                 </div>
                                                                 )})} */}
-                                                               
+
                                             </CardActions>
                                         </Card>
 
