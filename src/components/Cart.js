@@ -26,8 +26,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import Modal from '@mui/material/Modal'
-import { FormControl, FormLabel, OutlinedInput } from '@mui/material'
+
 
 const Cart = (props) => {
 
@@ -35,15 +34,11 @@ const Cart = (props) => {
     const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUrl = 'http://localhost:8000/api/products'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
-    const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
-    const localCartUrl = 'http://localhost:8000/api/usercart'
+
 	//////States//////
 
 
   const [product, setProduct] = useState([])
-  let [cart, setCart] = useState([])  
-  ////////SUM OF ITEMS
-
   const getTotalSum = () => {
     return props.cart?.reduce(
       (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
@@ -51,13 +46,13 @@ const Cart = (props) => {
       0
     );
   }
- 
+
   function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
-                It's basically homegoods.
+            <Link color="inherit" href="https://mui.com/">
+                Your Website
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -76,51 +71,6 @@ const theme = createTheme({
         }
     }
 })
-///////OPEN - CLOSE CHECKOUT
-const [open, setOpen] = useState(false);
-const handleOpen = () => {
-
-  setOpen(true);
-}
-const handleClose = () => {
-    setOpen(false)
-    
-}
-
-const handleCheckout = ()=>{
-    props.cart.length = 0
-    props.setView('main')
-    
-}
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-
-const getCarts = () => {
-    axios
-        // .get(localCartUrl)
-        .get(herokuCartUrl)
-        .then(
-            (response) => props.setCarts(response.data),
-            (err) => console.error(err)
-        )
-        .catch((error) => console.error(error))
-}
-useEffect(() => {
-
-    getCarts()
-
-}, [])
 
 if (props.view === 'main') {
     return (
@@ -142,7 +92,7 @@ if (props.view === 'main') {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-                                
+
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -154,7 +104,7 @@ if (props.view === 'main') {
                             }}
                         >
 
-                            <Container >
+                            <Container maxWidth="sm">
                                 <Typography
                                     component="h1"
                                     variant="h2"
@@ -162,7 +112,7 @@ if (props.view === 'main') {
                                     color="text.primary"
                                     gutterBottom
                                 >
-                                   Welcome to Your Cart.
+                                   Welcome to your Cart.
                                 </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -171,81 +121,27 @@ if (props.view === 'main') {
                                     justifyContent="center"
                                 >
                                     <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
-                                   
-                                    </Stack>
-                                    <Box sx={{ bgcolor: 'background.paper', p: 6 }}>
-                                    <ol>
-                                    <Stack
-                                    sx={{ pt: 4 }}
-                                    direction="row"
-                                    spacing={5}
-                                    justifyContent="center"
-                                    flexWrap={'wrap'}
-                                > 
-                                
-                            {props.cart.map((item, index) => {
+                                    <Container>
+                                    Shopping cart
+                                    {console.log(props.cart)} 
+                            {props.cart.map((item) => {
                               return (
-                                <Grid key={item.id} sx={{ bgcolor: 'background.paper', p: 2}}>
-                                   {/* <button onClick={(e)=>props.setCart([...props.cart, e.target.id])}>Remove</button> */}
-                                  <img style={{width: 50, height: 'auto'}} src={item.image}/>
-                                   <li>{item.name}</li>
-                                  
-                                  {console.log(props.cart)}
-                                  </Grid>
-                           
+                               <div key={item.id}>
+                                   <p>{item.name}</p>
+                              </div>
                             )
                             })}
-                            <Container>
-                                   <h3>Total Cost: ${getTotalSum()} </h3>
-                                   <Button  variant="contained" onClick={handleOpen}>CHECKOUT({props.cart.length})</Button>
-                                   </Container>
-                                  
-                            <Modal
-                                open={open}
 
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box sx={{...style, width:'50vw', height: 'auto'}}>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Shopping Cart
-                                    </Typography>
-                                   
-                                    <form>
-                                              <FormControl >
-                                              <FormLabel>First Name</FormLabel>
-                                              <OutlinedInput sx={{height: 30}} type='text'/>
-                                              <FormLabel>Last Name</FormLabel>
-                                              <OutlinedInput sx={{height: 30, width: 300}}  type='text'/>
-                                              <FormLabel>Credit card namber</FormLabel>
-                                              <OutlinedInput sx={{height: 30}}  type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"/>
-                                              <FormLabel for="expmonth">Exp Month</FormLabel>
-                                              <OutlinedInput sx={{height: 30}}  type="text" id="expmonth" name="expmonth" placeholder="September"/>
-                                              <FormLabel for="expyear">Exp Year</FormLabel>
-                                              <OutlinedInput sx={{height: 30, width: 100}}  type="text" id="expyear" name="expyear" placeholder="2022"/>
 
-                                              <FormLabel for="cvv">CVV</FormLabel>
-                                              <OutlinedInput sx={{height: 30, width: 70}} type="text" id="cvv" name="cvv" placeholder="352"/>
-                                              </FormControl>
-                                              </form>
-
-                            <h3>Total: ${getTotalSum()} </h3>
-                            <Button onClick={handleCheckout}>Checkout</Button>
-                            <Button onClick={handleClose}>Back to cart</Button>
-                               
-                                </Box>
-                            </Modal>
-                        
-                      
-                            </Stack>
-                            </ol>
-                            </Box>
+                        <div>Total Cost: ${getTotalSum()} </div>
+                        </Container>
+                                </Stack>
                             </Container>
+
                         </Box>
 
 
-                        <Box sx={{ bgcolor: 'background.paper', p: 6 }}>
+                        <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                         <Typography variant="h6" align="center" gutterBottom>
 
                         </Typography>

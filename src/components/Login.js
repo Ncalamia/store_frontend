@@ -46,6 +46,7 @@ const Login = (props) => {
     let [regulars, setRegulars] = useState([])
     const [loginError, setLoginError] = useState(false)
     const [currentUser, setCurrentUser]= useState()
+    
 
     // Styling variable
     const eye = <FontAwesomeIcon icon={faEye} />;
@@ -174,7 +175,7 @@ const Login = (props) => {
                 // console.log(userAccount)
                 console.log(response.data)
                 props.setCurrentUser(response.data.email)
-                // setCurrentUserId(response.data.id)
+                // props.setCurrentUserId(response.data.id)
                 props.setView('main')
            })
     }
