@@ -35,6 +35,10 @@ const Cart = (props) => {
     const localUrl = 'http://localhost:8000/api/products'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
 
+
+    const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
+
 	//////States//////
 
 
@@ -42,11 +46,11 @@ const Cart = (props) => {
   const getTotalSum = () => {
     return props.cart?.reduce(
       (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
-                                         //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
+                                          //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
       0
     );
   }
-
+console.log(props.carts)
   function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
@@ -71,7 +75,22 @@ const theme = createTheme({
         }
     }
 })
+   //////Fetching user cart/////////
+   const getCarts = () => {
+    axios
+        // .get(localCartUrl)
+        .get(herokuCartUrl)
+        .then(
+            (response) => props.setCarts(response.data),
+            (err) => console.error(err)
+        )
+        .catch((error) => console.error(error))
+}
+useEffect(() => {
 
+    getCarts()
+
+}, [])
 if (props.view === 'main') {
     return (
         <>
@@ -112,7 +131,7 @@ if (props.view === 'main') {
                                     color="text.primary"
                                     gutterBottom
                                 >
-                                   Welcome to your Cart.
+                                   Welcome to your Cart, {props.currentUser}!
                                 </Typography>
                                 <Stack
                                     sx={{ pt: 4 }}
@@ -121,7 +140,8 @@ if (props.view === 'main') {
                                     justifyContent="center"
                                 >
                                     <Button  onClick={()=>props.setView('main')} variant="contained">Back to browsing</Button>
-                                    <Container>
+                                    </Stack>
+                                    {/* <Container>
                                     Shopping cart
                                     {console.log(props.cart)} 
                             {props.cart.map((item) => {
@@ -134,8 +154,45 @@ if (props.view === 'main') {
 
 
                         <div>Total Cost: ${getTotalSum()} </div>
-                        </Container>
-                                </Stack>
+                        </Container> */}
+
+       
+            <h4> useraccount_ID: {props.currentUserID}</h4>
+
+            {/* option 1 */}
+
+            <div>
+                
+                {props.carts.map((cart) => {
+                    return (
+                        
+                        <div className='cart' key={cart.id}>
+
+                            {  props.currentUserID == cart.customer ?  ////show user if id's are the same
+                            <>
+                            <h4>Customer_ID: {cart.customer}</h4>
+                            <ol>
+                            {cart.products.map((current) =>{ ////map inside the current user array
+                                return(
+                                    <>
+                            <li>{current.name}</li>
+                            <img src = {current.image}/>
+                            <h4> Price: {current.price}$</h4>
+                            </>
+                                )
+                                })}
+                          </ol>
+                             </> 
+                    
+                            : "" }
+     
+    
+                        </div>
+                    )
+                })}
+                  <div>Total Cost: ${(getTotalSum())} </div> 
+            </div> 
+                             
                             </Container>
 
                         </Box>

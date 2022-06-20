@@ -175,7 +175,7 @@ const Login = (props) => {
                 // console.log(userAccount)
                 console.log(response.data)
                 props.setCurrentUser(response.data.email)
-                // props.setCurrentUserId(response.data.id)
+                props.setCurrentUserID(response.data.id)
                 props.setView('main')
            })
     }
