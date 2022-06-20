@@ -39,8 +39,7 @@ import { FormControl, FormLabel, FormGroup,TextField, OutlinedInput } from '@mui
 const Edit = (props) => {
 
 	//////States//////
-  let emptyProduct = { id: props.id, image: '', name: '', category: '', price: '' }
-  const [product, setProduct] = useState(emptyProduct)
+const [product, setProduct] = useState({...props.product})
 
 
 

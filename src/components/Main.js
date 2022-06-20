@@ -106,12 +106,12 @@ const Main = (props) => {
 
 
     ///////DELETE PRODUCT//////////
-    const handleDelete = (event, deleted) => {
+    const handleDelete = (deletedProduct) => {
         axios
             // .delete(localUrl + '/' + event.target.value)
-            .delete(herokuUrl + '/' + event.target.value)
+            .delete(herokuUrl + '/' + deletedProduct.id)
             .then((response) => {
-                getProducts()
+                setProducts(products.filter(product => product.id !== deletedProduct.id))
             })
     }
 
@@ -433,8 +433,8 @@ const Main = (props) => {
                                             </CardContent>
                                             <CardActions>
 
-                                                <Button onClick={handleDelete} value={product.id}>Delete</Button>
-                                                <Edit handleUpdate={handleUpdate} id={product.id} product={product}/>
+                                                <Button onClick={()=> handleDelete(product)} value={product.id}>Delete</Button>
+                                                <Edit handleUpdate={handleUpdate} product={product}/>
                                                 {/* <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button> */}
                                                 {/* {props.carts.map((cart) => {
                                                     return (
