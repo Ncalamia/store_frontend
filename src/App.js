@@ -22,6 +22,7 @@ const App = () => {
   let [cart, setCart] = useState([])
   let [carts, setCarts] = useState([])
   const [currentUserID, setCurrentUserID]= useState([])
+  const [currentCartID, setCurrentCartID] = useState()
 
 
 
@@ -116,7 +117,7 @@ const App = () => {
     return (
       <>
 
-        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}  currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}  currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID}/>
 
       </>
     )
@@ -131,13 +132,13 @@ const App = () => {
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} />
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID} carts={carts} setCarts={setCarts}/>
       </>
     )
   } else if (view === 'cart') {
     return (
       <>
-        <Cart view={view} setView={setView} cart={cart} currentUser={currentUser} carts={carts} setCarts={setCarts} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
+        <Cart view={view} setView={setView} cart={cart} currentUser={currentUser} carts={carts} setCarts={setCarts} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID}/>
       </>
     )}
 }

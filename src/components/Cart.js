@@ -157,7 +157,7 @@ if (props.view === 'main') {
                         </Container> */}
 
        
-            <h4> useraccount_ID: {props.currentUserID}</h4>
+            {/* <h4> useraccount_ID: {props.currentUserID}</h4> */}
 
             {/* option 1 */}
 
@@ -170,7 +170,7 @@ if (props.view === 'main') {
 
                             {  props.currentUserID == cart.customer ?  ////show user if id's are the same
                             <>
-                            <h4>Customer_ID: {cart.customer}</h4>
+                            
                             <ol>
                             {cart.products.map((current) =>{ ////map inside the current user array
                                 return(
@@ -190,7 +190,7 @@ if (props.view === 'main') {
                         </div>
                     )
                 })}
-                  <div>Total Cost: ${(getTotalSum())} </div> 
+                  {/* <div>Total Cost: ${(getTotalSum())} </div>  */}
             </div> 
                              
                             </Container>

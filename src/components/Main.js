@@ -46,7 +46,7 @@ const Main = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let[cart, setCart] = useState([])
+    let [cart, setCart] = useState([])
 
 
     // local vs heroku links - deploy with heroku
@@ -206,36 +206,40 @@ const Main = (props) => {
 
     const getTotalSum = () => {
         return props.cart.reduce(
-          (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
-                                             //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
-          0
+            (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
+            //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
+            0
         );
-      }
-      const getCart = () => {
+    }
+    const getCarts = () => {
         axios
             // .get(localCartUrl)
             .get(herokuCartUrl)
             .then(
-                (response) => setCart(response.data),
+                (response) => props.setCarts(response.data),
                 (err) => console.error(err)
             )
             .catch((error) => console.error(error))
     }
     useEffect(() => {
-    
-        getCart()
-    
+
+        getCarts()
+
     }, [])
-    //   const handleCreateCart = (addProduct) => {
-    //     axios
-    //         .post(localCartUrl, addProduct)
-    //         // .post(herokuCartUrl, props.product )
-    //         .then((response) => {
-    //             console.log(response)
-    //             // getProducts()
-    //             props.setCart([...props.cart, product])
-    //         })
-    // }
+    const handleCreateCart = (cartId, product) => {
+        console.log(cartId)
+        console.log(product)
+        axios
+            // .post(localCartUrl, addProduct)
+            .put(herokuCartUrl + '/' + cartId, product)
+            .then((response) => {
+
+                            
+                props.setCarts(products.map((product)=>{
+                    return product.id != response.data.id ? product : response.data
+                }))
+            })
+    }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -245,8 +249,8 @@ const Main = (props) => {
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
-                It's basically homegoods.
-            </Link>{' '}
+                    It's basically homegoods.
+                </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
@@ -265,7 +269,7 @@ const Main = (props) => {
         }
     })
 
-    
+
 
     //////////////////////////////////////////////
     // the return - skeleton
@@ -278,10 +282,10 @@ const Main = (props) => {
                 <Welcome />
             </>
         )
-    } else if (props.view === 'cart'){
+    } else if (props.view === 'cart') {
         return (
             <>
-            < Cart view={props.view} setView={props.setView} cart={props.cart}/>
+                < Cart view={props.view} setView={props.setView} cart={props.cart} currentUser={props.currentUser} carts={props.carts} setCarts={props.setCarts} currentUserID={props.currentUserID} setCurrentUserID={props.setCurrentUserID} />
             </>
         )
 
@@ -313,15 +317,39 @@ const Main = (props) => {
                                 < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
-                                </Typography>
-                                <Typography sx={{ fontSize: 20, ml: 2, float: 'right'}} >
-                                <FaShoppingCart  color="inherit" onClick={()=>props.setView('cart')}/>({props.cart.length})
-                                </Typography>  
-                                <Typography variant="h6" align="center" color="inherit" sx={{marginLeft: 5}}>
-                                    Welcome, {props.currentUser}
-    
-                          </Typography>
-                        
+                            </Typography>
+                            <Typography sx={{ fontSize: 20, ml: 2, float: 'right' }} >
+                                <div className='cart'>
+                                    <FaShoppingCart color="inherit" onClick={() => props.setView('cart')} />
+
+                                    {props.carts.map((cart) => {
+
+                                        return (
+
+                                            <div className='cart' key={cart.id}>
+
+                                                {props.currentUserID == cart.customer ?  ////show user if id's are the same
+
+                                                    <h4>({cart.products.length})</h4>
+
+
+
+                                                    : ""}
+
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+
+
+                                {console.log(props.carts)}
+
+                            </Typography>
+                            <Typography variant="h6" align="center" color="inherit" sx={{ marginLeft: 5 }}>
+                                Welcome, {props.currentUser}
+
+                            </Typography>
+
                         </Toolbar>
                     </AppBar>
                     <main>
@@ -372,25 +400,34 @@ const Main = (props) => {
                                         >
                                             <CardMedia
                                                 component="img"
-                                              
+
                                                 image={product.image}
                                                 alt="random"
                                             />
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
-                                                    
+
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                
+
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
-                                                <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
-                                                {/* <Button onClick={handleCreateCart}>Add to Cart</Button> */}
+                                                {/* <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button> */}
+                                                {/* {props.carts.map((cart) => {
+                                                    return (
+
+                                                        <div className='cart' key={cart.id}>
+
+                                                            {props.currentUserID == cart.customer ?
+                                                                <Button onClick={handleCreateCart(cart.id, product)}>Add to Cart</Button> : ""}
+                                                                </div>
+                                                                )})} */}
+                                                               
                                             </CardActions>
                                         </Card>
 
@@ -398,10 +435,10 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                                    <Container>
-                        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
-                            <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
-                        </Typography>
+                        <Container>
+                            <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
+                                <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
+                            </Typography>
                         </Container>
 
                     </main>

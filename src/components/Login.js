@@ -176,6 +176,7 @@ const Login = (props) => {
                 console.log(response.data)
                 props.setCurrentUser(response.data.email)
                 props.setCurrentUserID(response.data.id)
+                // props.setCurrentCartID(response.data.id)
                 props.setView('main')
            })
     }
