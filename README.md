@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# Essentials - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## App Production & Deployment Timeline - June 13th, 2022 - June 20th, 2022
 
-## Available Scripts
+##  Collaborators: Nikki Calamia, Yulia Glushenko, Jacqueline Schmidt
 
-In the project directory, you can run:
+##  Tech: 
 
-### `npm start`
+This app was built using the following stack: SQL (PostgreSQL), Django, React, Node.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+##  App Background & User stores: 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Programmed and deployed a full-stack application that demonstrates the understanding of RESTful routes (CRUD - create, read, update, and delete). Our app was designed to depict an ecommerce store specific to homegoods and decor. 
 
-### `npm test`
+The app is a single page application (SPA) that will render different views depending on the user interactions. The default view is our 'welcome' page which allows users to 'read' (the R in CRUD) the products that our fictional website sells. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+![Screen Shot 2022-06-20 at 5 21 21 PM](https://user-images.githubusercontent.com/103516159/174679216-d8be8e82-8610-4d7b-9a17-72d996502e92.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app also includes user auth that was configured in the backend using the RESTful routes (CRUD). A user will be redirected to the 'login' view where they can either login in or signup (depending if they are a returning or new user, respectively).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If a new user decides to sign up, they will be redirected to a 'signup' view. Once they complete the form they will have 'created' a new account that will be added to the backend database. Once compelted the user will be redirected automatically to the 'login' view.
 
-### `npm run eject`
+The 'login' view promps the user to fill out the form with their email and password. In the backend we have configured this to be an 'update' route which will check to see if the user exists (i.e., the email entered exists in the backend database) and if the login credentials are accurate (i.e., the correct email/password combination was entered). 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Screen Shot 2022-06-20 at 5 22 10 PM](https://user-images.githubusercontent.com/103516159/174679314-d740d6fe-2ebd-4383-8b28-063ee7ea915a.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Assuming a returning user has sucessfully logged in they will be redirected to the 'main' page view. Here, a user can perform the remaining CRUD operations on the stores' products (i.e., create, update, and/or delete).
 
-## Learn More
+![Screen Shot 2022-06-20 at 5 23 05 PM](https://user-images.githubusercontent.com/103516159/174679381-b4fa26e6-4ff0-4826-b0d2-fc06f48422e2.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Improvements for the future: 
 
-### Code Splitting
+`Implement user cart functionality on the frontend` - currently we have 3 models (user accounts, products, user cart) in our backend that reflect 3 tables in our sql database. The cart model has a one to one relationship with the customer ID and a many to many relationship with the products. We have successfully added products to the users cart in the backend and rendered (in production - not deployed) the products in a seperate 'cart' view. Our team is still currently working through the full cart functionality. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+ ![Screen Shot 2022-06-20 at 5 20 15 PM](https://user-images.githubusercontent.com/103516159/174679109-0a50d16f-c0f5-4e60-b9c4-741dea13fb18.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+`Save State to LocalStorage & Persist on Refresh` - Currently, if a user refreshes the page, the view will automatically be directed to 'welcome'. This is because in React.js, a page refresh will automatically set each state back to its default value. Our team is planning to revisit on saving state to local storage in order to persist on refresh. 
 
-### Making a Progressive Web App
+## What went well 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Implemented GitHub best practices when collaborating on projects - I.e., created branches specific to features and/or certain functionality. Tested each before merging to dev/ main branches and eventually deploying. 
 
-### Advanced Configuration
+Utilized project management best practices to help prioritize daily sprint goals in order to complete MVP (minimum viable product) and stretch goals. Planned our user stories to clearly communicate functioanality and app design. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Links 
 
-### Deployment
+Front-end repo - https://homegoods-store.herokuapp.com/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Front-end Heroku (deployed app) - https://github.com/Ncalamia/store_frontend/tree/master
 
-### `npm run build` fails to minify
+Back-end repo - https://github.com/jschmidt108/Django_backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Back-end Heroku (products) - https://arcane-sea-71685.herokuapp.com/api/products
+
+Back-end Heroku (user accounts) - https://arcane-sea-71685.herokuapp.com/api/useraccount
+
+Back-end heroku (user carts) - https://arcane-sea-71685.herokuapp.com/api/usercart
