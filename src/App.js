@@ -20,7 +20,9 @@ const App = () => {
   let [regulars, setRegulars] = useState([])
   const [currentUser, setCurrentUser]= useState([])
   let [cart, setCart] = useState([])
-
+  let [carts, setCarts] = useState([])
+  const [currentUserID, setCurrentUserID]= useState([])
+  const [currentCartID, setCurrentCartID] = useState()
 
 
 
@@ -40,6 +42,9 @@ const App = () => {
 
   const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
   const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+  const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+  const localCartUrl = 'http://localhost:8000/api/usercart'
 
 
   //////////////////////////////////////////////
@@ -69,7 +74,16 @@ const App = () => {
       )
       .catch((error) => console.error(error))
   }
-
+  const getCarts = () => {
+    axios
+        // .get(localCartUrl)
+        .get(herokuCartUrl)
+        .then(
+            (response) => setCarts(response.data),
+            (err) => console.error(err)
+        )
+        .catch((error) => console.error(error))
+}
 
   //////////////////////////////////////////////
   // useEffect
@@ -96,14 +110,14 @@ const App = () => {
   if (view === 'welcome') {
     return (
       <>
-        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
+        <Welcome view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} />
       </>
     )
   } else if (view === 'login') {
     return (
       <>
 
-        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}  currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID}/>
 
       </>
     )
@@ -111,20 +125,20 @@ const App = () => {
     return (
       <>
 
-        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
+        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID}/>
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart}/>
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID} carts={carts} setCarts={setCarts}/>
       </>
     )
   } else if (view === 'cart') {
     return (
       <>
-        <Cart view={view} setView={setView} cart={cart}/>
+        <Cart view={view} setView={setView} cart={cart} currentUser={currentUser} carts={carts} setCarts={setCarts} currentUserID={currentUserID} setCurrentUserID={setCurrentUserID} currentCartID={currentCartID} setCurrentCartID={setCurrentCartID}/>
       </>
     )}
 }

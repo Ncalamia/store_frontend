@@ -42,7 +42,7 @@ const Signup = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let [accounts, setAccounts] = useState('old')
+    // let [accounts, setAccounts] = useState('old')
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'

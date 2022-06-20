@@ -35,12 +35,19 @@ const OldUser = (props) => {
   return (
     <>
               <form onSubmit={handleSubmit}>
+                  {/* <label htmlFor="name">Name: </label>
+                  <input type="text" name="name" value={regular.name} onChange={handleChange} />
+                  <br />
+                  <br /> */}
+                  
+
                   <label htmlFor="email">Email: </label>
                   <input type="text" name="email" value={regular.email} onChange={handleChange} />
                   <br />
                   <br />
                   <label htmlFor="password">Password: </label>
                   <input name="password" value={regular.password} onChange={handleChange} type={seePassword ? "text" : "password"} />
+                  {/* <input name="password" value={regular.password} onChange={handleChange}/> */}
                   <i onClick={togglePassword}>{props.eye}</i>
                   <br />
                   <br />
