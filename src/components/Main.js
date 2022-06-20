@@ -7,6 +7,7 @@ import axios from 'axios'
 
 import Login from './Login.js'
 import Welcome from './Welcome.js'
+import Cart from './Cart.js'
 import Signup from './Signup.js'
 
 
@@ -16,7 +17,7 @@ import Edit from './Edit.js'
 import AddUser from './AddUser.js'
 import OldUser from './OldUser.js'
 
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaShoppingCart } from 'react-icons/fa';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -32,7 +33,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
+import Modal from '@mui/material/Modal'
+import { FormControl, FormLabel } from '@mui/material'
 
 const Main = (props) => {
 
@@ -42,10 +44,9 @@ const Main = (props) => {
 
     // general states
     let [products, setProducts] = useState([])
-    // let [view, setView] = useState('main')
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    let [accounts, setAccounts] = useState('old')
+    let [cart, setCart] = useState([])
 
 
     // local vs heroku links - deploy with heroku
@@ -58,6 +59,8 @@ const Main = (props) => {
     const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
     const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
+    const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
     ////////////////////////////////////////////////////////////
     // CRUD Functionality - PRODUCTS (api/products)
     ////////////////////////////////////////////////////////////
@@ -77,8 +80,8 @@ const Main = (props) => {
     ///////CREATE PRODUCT//////////
     const handleCreate = (addProduct) => {
         axios
-            // .post(localUrl, addProduct)
-            .post(herokuUrl, addProduct)
+            .post(localUrl, addProduct)
+            // .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
                 // getProducts()
@@ -147,29 +150,6 @@ const Main = (props) => {
     }
 
 
-    ////////////////////////////////////////////////////////////
-    // CRUD Functionality - USERS (api/useraccount/login)
-    //      // returning user login
-    ////////////////////////////////////////////////////////////
-
-    // returning user login
-    const handleUpdateUser = (userAccount) => {
-        axios
-            // .put(localLoginUrl, userAccount)
-            .put(herokuLoginUrl, userAccount)
-            .catch((error) => {
-                if (error) {
-                    // console.log('wrong')
-                    alert("Email or password does not match records")
-                }
-            })
-            .then((response) => {
-                // console.log(userAccount)
-                // console.log(response.data)
-                // setRegulars(response.data)
-                props.setView('main')
-            })
-    }
 
     //////////////////////////////////////////////
     // useEffect
@@ -221,6 +201,46 @@ const Main = (props) => {
     };
 
     //////////////////////////////////////////////
+    // functions - related to add to cart
+    //////////////////////////////////////////////
+
+    const getTotalSum = () => {
+        return props.cart.reduce(
+            (sum, { price }) => sum + price,   //// https://stackoverflow.com/questions/62358365/react-js-get-sum-of-numbers-in-array
+            //// https://github.com/codyseibert/youtube/blob/master/react-shopping-cart/src/Cart.jsx
+            0
+        );
+    }
+    const getCarts = () => {
+        axios
+            // .get(localCartUrl)
+            .get(herokuCartUrl)
+            .then(
+                (response) => props.setCarts(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+    useEffect(() => {
+
+        getCarts()
+
+    }, [])
+    const handleCreateCart = (cartId, product) => {
+        console.log(cartId)
+        console.log(product)
+        axios
+            // .post(localCartUrl, addProduct)
+            .put(herokuCartUrl + '/' + cartId, product)
+            .then((response) => {
+
+                            
+                props.setCarts(products.map((product)=>{
+                    return product.id != response.data.id ? product : response.data
+                }))
+            })
+    }
+    //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
 
@@ -228,8 +248,8 @@ const Main = (props) => {
         return (
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    Your Website
+                <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+                    It's basically homegoods.
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
@@ -262,6 +282,13 @@ const Main = (props) => {
                 <Welcome />
             </>
         )
+    } else if (props.view === 'cart') {
+        return (
+            <>
+                < Cart view={props.view} setView={props.setView} cart={props.cart} currentUser={props.currentUser} carts={props.carts} setCarts={props.setCarts} currentUserID={props.currentUserID} setCurrentUserID={props.setCurrentUserID} />
+            </>
+        )
+
     } else if (props.view === 'login') {
         return (
             <>
@@ -287,11 +314,43 @@ const Main = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                < Link color="inherit" href="https://homegoods-store.herokuapp.com/" sx={{ fontSize: 40 }} >
+                                < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
                                 {/* <h2>Welcome,  </h2> */}
                             </Typography>
+                            <Typography sx={{ fontSize: 20, ml: 2, float: 'right' }} >
+                                <div className='cart'>
+                                    <FaShoppingCart color="inherit" onClick={() => props.setView('cart')} />
+
+                                    {props.carts.map((cart) => {
+
+                                        return (
+
+                                            <div className='cart' key={cart.id}>
+
+                                                {props.currentUserID == cart.customer ?  ////show user if id's are the same
+
+                                                    <h4>({cart.products.length})</h4>
+
+
+
+                                                    : ""}
+
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+
+
+                                {console.log(props.carts)}
+
+                            </Typography>
+                            <Typography variant="h6" align="center" color="inherit" sx={{ marginLeft: 5 }}>
+                                Welcome, {props.currentUser}
+
+                            </Typography>
+
                         </Toolbar>
                     </AppBar>
                     <main>
@@ -314,13 +373,13 @@ const Main = (props) => {
                                 >
                                     Essentials.
                                 </Typography>
-                                {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                     Welcome!
-                                    <div>
-                                    <p>Pretend you've never heard of Home Goods.</p>
-                                    <p>Here you can find everything your home needs!</p>
-                                    </div>
-                                </Typography> */}
+                                    Pretend you've never heard of Home Goods.
+                                    Here you can find everything your home needs!
+
+                                </Typography>
+
                                 <Stack
                                     sx={{ pt: 4 }}
                                     direction="row"
@@ -336,30 +395,40 @@ const Main = (props) => {
                             {/* End hero unit */}
                             <Grid container spacing={4}>
                                 {products.map((product) => (
-                                    <Grid item key={product.id} xs={12} sm={6} md={4}>
+                                    <Grid key={product.id} item xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                         >
                                             <CardMedia
                                                 component="img"
-                                                sx={{
-                                                    // 16:9
-                                                    pt: '56.25%',
-                                                }}
+
                                                 image={product.image}
                                                 alt="random"
                                             />
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {product.name}
+
                                                 </Typography>
                                                 <Typography>
                                                     Price: {product.price}$
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
+
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
+                                                {/* <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button> */}
+                                                {/* {props.carts.map((cart) => {
+                                                    return (
+
+                                                        <div className='cart' key={cart.id}>
+
+                                                            {props.currentUserID == cart.customer ?
+                                                                <Button onClick={handleCreateCart(cart.id, product)}>Add to Cart</Button> : ""}
+                                                                </div>
+                                                                )})} */}
+                                                               
                                             </CardActions>
                                         </Card>
 
@@ -367,9 +436,11 @@ const Main = (props) => {
                                 ))}
                             </Grid>
                         </Container>
-                        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
-                            <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
-                        </Typography>
+                        <Container>
+                            <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
+                                <Button variant="outlined"><Add handleCreate={handleCreate} /></Button>
+                            </Typography>
+                        </Container>
 
                     </main>
                     {/* Footer */}

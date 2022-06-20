@@ -30,6 +30,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
 
 
 const Login = (props) => {
@@ -41,9 +44,13 @@ const Login = (props) => {
     let [products, setProducts] = useState([])
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
-    const [loginAlert, setLoginAlert] = useState(false)
-    // const [loggedIn, setLoggedIn] = useState(false)
-    let [login, setLogin] = useState()
+    const [loginError, setLoginError] = useState(false)
+    const [currentUser, setCurrentUser]= useState()
+    
+
+    // Styling variable
+    const eye = <FontAwesomeIcon icon={faEye} />;
+
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -54,6 +61,9 @@ const Login = (props) => {
 
     const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
     const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
+
+    const herokoCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
 
     ////////////////////////////////////////////////////////////
     // CRUD Functionality - PRODUCTS (api/products)
@@ -149,6 +159,7 @@ const Login = (props) => {
     //      // returning user login
     ////////////////////////////////////////////////////////////
 
+
     // returning user login
     const handleUpdateUser = (userAccount) => {
         axios
@@ -156,31 +167,51 @@ const Login = (props) => {
             .put(herokuLoginUrl, userAccount)
             .then((response, error) => {
                 if (error) {
-                    return
-                }else{
-                    props.setView('main')
-               
+                  alert("Email or password does not match records")
+                  setLoginError(true)
                 }
             })
-            
-        }
-    
-   
+            .then((response) => {
+                // console.log(userAccount)
+                console.log(response.data)
+                props.setCurrentUser(response.data.email)
+                props.setCurrentUserID(response.data.id)
+                // props.setCurrentCartID(response.data.id)
+                props.setView('main')
+           })
+    }
+
+    ////////////////////////////////////////////////////////////
+    // CRUD Functionality - user cart (api/usercart)
+    ////////////////////////////////////////////////////////////
+
+    //////Fetching user cart/////////
+    // const getUserCart = (currentUser) => {
+    //     axios
+    //         .get(herokoCartUrl)
+    //         .then(
+    //             (response) => {
+    //                 props.setCart(response.data.filter(cartProduct => cartProduct.email === currentUser))
+    //             })
+    // }
+
+
     //////////////////////////////////////////////
     // useEffect
     //////////////////////////////////////////////
 
     useEffect(() => {
-        // if (props.view === 'signup') {
-        //     getUsers()
-        // } else if (props.view === 'main') {
-        //     getProducts()
-        // } else if (props.view === 'welcome') {
-        //     getProducts()
-        // }
-        // else {
+        if (props.view === 'signup') {
+            getUsers()
+        } else if (props.view === 'main') {
+            getProducts()
+        } else if (props.view === 'welcome') {
+            getProducts()
+        }
+        else {
             getUsers()
         
+        }
     }, [])
 
 
@@ -223,9 +254,9 @@ const Login = (props) => {
         return (
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    Your Website
-                </Link>{' '}
+                <Link color="inherit" href="https://homegoods-store.herokuapp.com/">
+                It's basically homegoods.
+            </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
@@ -243,6 +274,7 @@ const Login = (props) => {
             }
         }
     })
+
 
 
 
@@ -313,7 +345,8 @@ const Login = (props) => {
                                     <Typography variant="h5" color="text.secondary" paragraph>
                                         Login
                                     </Typography>
-                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} />
+                                    {/* <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/> */}
+                                    <OldUser view={props.view} setView={props.setView} handleUpdateUser={handleUpdateUser} eye={eye}/>
                                     <br />
                                     <Typography gutterBottom component="h2"
                                         variant="subtitle1"
@@ -323,8 +356,15 @@ const Login = (props) => {
                                 </CardContent>
 
                             </Card>
-                        
-                                
+                            {loginError ?
+                                <Typography gutterBottom component="h2"
+                                    variant="subtitle1"
+                                    color="text.secondary">
+                                    Oops, wrong email or password!
+                                </Typography>
+                                :
+                                null
+                            }
                         </Container>
 
                     </main>

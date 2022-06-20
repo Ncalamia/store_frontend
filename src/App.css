@@ -44,3 +44,25 @@ img {
 body{
   color: black;
 }
+
+.submit{
+  height: 30px;
+  font-size: 20px;
+  background-color: #f3b7a1;
+  border: 1px solid rgb(130, 125, 125, 0.5);
+  border-radius: 5px;
+  color:#282c34;
+  margin-top: 5px;
+}
+details > summary {
+  list-style-type: '+';
+}
+
+details[open] > summary {
+  list-style-type: '—';
+}
+
+.cart{
+  display: inline-block;
+  padding: 1px;
+}
