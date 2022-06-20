@@ -396,7 +396,7 @@ const Main = (props) => {
                                     <Button onClick={scrollDown} variant="contained">Browse Products</Button>
 
                                 </Stack>
-                                
+
                             </Container>
                         </Box>
                         <OutlinedInput sx={{width: '100vw', mt: 10}} type="search" id="search"  placeholder="Look up Products" onChange={handleChange} />
@@ -434,7 +434,7 @@ const Main = (props) => {
                                             <CardActions>
 
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
-                                                <Edit handleUpdate={handleUpdate} id={product.id} />
+                                                <Edit handleUpdate={handleUpdate} id={product.id} product={product}/>
                                                 {/* <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button> */}
                                                 {/* {props.carts.map((cart) => {
                                                     return (

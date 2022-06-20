@@ -63,7 +63,7 @@ const handleOpen = () => {
   setOpen(true);
 }
 const handleClose = () => setOpen(false);
-const style = {  
+const style = {
   position: 'relative',
   top: '50%',
   left: '50%',
@@ -107,28 +107,28 @@ const style = {
       >
         <Box sx={{ ...style, width: 400, height: 'auto' }}>
 
-      
+
 
           <form onSubmit={handleSubmit}>
             <FormControl sx={{ml:'20%'}}>
         <FormLabel htmlFor="image">Image: </FormLabel>
         <OutlinedInput sx={{height: 30}} type="url" name="image" value={product.image} onChange={handleChange}/>
-			
+
         <FormLabel htmlFor="name">Name: </FormLabel>
         <OutlinedInput sx={{height: 30}} type="text" name="name" value={product.name} onChange={handleChange}/>
-            
+
 				<FormLabel htmlFor="category">Category: </FormLabel>
         <OutlinedInput sx={{height: 30}}type="text" name="category" value={product.category} onChange={handleChange}/>
-		
+
 				<FormLabel htmlFor="price">Price: </FormLabel>
         <OutlinedInput sx={{height: 30}} type="number" name="price" value={product.price} onChange={handleChange}/>
-        
+
         <Button type="submit">Submit</Button>
         </FormControl>
       </form>
-      
+
           <Button onClick={handleClose}>Close</Button>
-          
+
 
         </Box>
       </Modal>
