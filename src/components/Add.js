@@ -47,21 +47,21 @@ const handleSubmit = (event) => {
   <summary>ADD MORE STUFF</summary>
 <form  onSubmit={handleSubmit} className='createForm'>
   
-<FormControl align='left' sx={{height: 'auto', width: '80vw'}}>
+<FormGroup align='left' sx={{height: 'auto', width: '80vw'}}>
         <FormLabel htmlFor="image">Image: </FormLabel>
-        <OutlinedInput sx={{height: 30}} type="url" name="image" value={product.image} onChange={handleChange}/>
+        <Input sx={{height: 30}} type="url" name="image" value={product.image} onChange={handleChange}/>
 			
         <FormLabel htmlFor="name">Name: </FormLabel>
-        <OutlinedInput sx={{height: 30}} type="text" name="name" value={product.name} onChange={handleChange}/>
+        <Input sx={{height: 30}} type="text" name="name" value={product.name} onChange={handleChange}/>
             
 				<FormLabel htmlFor="category">Category: </FormLabel>
-        <OutlinedInput sx={{height: 30}}type="text" name="category" value={product.category} onChange={handleChange}/>
+        <Input sx={{height: 30}}type="text" name="category" value={product.category} onChange={handleChange}/>
 		
 				<FormLabel htmlFor="price">Price: </FormLabel>
-        <OutlinedInput sx={{height: 30}} type="number" name="price" value={product.price} onChange={handleChange}/>
+        <Input sx={{height: 30}} type="number" name="price" value={product.price} onChange={handleChange}/>
         <input className='submit' type="submit" value='submit'/>
 
-        </FormControl>
+        </FormGroup>
       </form>
       </details>
     {/* <details>

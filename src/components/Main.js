@@ -35,7 +35,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Modal from '@mui/material/Modal'
 import { FormControl, FormLabel } from '@mui/material'
-
+import { OutlinedInput } from '@mui/material'
 const Main = (props) => {
 
     //////////////////////////////////////////////
@@ -47,7 +47,7 @@ const Main = (props) => {
     let [users, setUsers] = useState([])
     let [regulars, setRegulars] = useState([])
     let [cart, setCart] = useState([])
-    
+    const [query, setQuery] = useState("")
 
     // local vs heroku links - deploy with heroku
     const herokuUrl = 'https://arcane-sea-71685.herokuapp.com/api/products'
@@ -241,6 +241,13 @@ const Main = (props) => {
             })
     }
     //////////////////////////////////////////////
+    // functions - related to search
+    //////////////////////////////////////////////
+    const handleChange = (e) => {
+        e.preventDefault()
+        setQuery(e.target.value);
+      };
+    //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
 
@@ -389,12 +396,22 @@ const Main = (props) => {
                                     <Button onClick={scrollDown} variant="contained">Browse Products</Button>
 
                                 </Stack>
+                                
                             </Container>
                         </Box>
+                        <OutlinedInput sx={{width: '100vw', mt: 10}} type="search" id="search"  placeholder="Look up Products" onChange={handleChange} />
                         <Container ref={productsRef} sx={{ py: 8 }} maxWidth="md">
                             {/* End hero unit */}
                             <Grid container spacing={4}>
-                                {products.map((product) => (
+                            {
+                                    products.filter(findOne => {
+                                        if (query == "") {
+                                            return findOne
+                                        } else if (findOne.name.toLowerCase().includes(query.toLowerCase())) {
+                                            return findOne
+                                        }
+
+                                    }).map((product) => (
                                     <Grid key={product.id} item xs={12} sm={6} md={4}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
