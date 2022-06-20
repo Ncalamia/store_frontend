@@ -59,6 +59,8 @@ const Main = (props) => {
     const herokuLoginUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount/login'
     const localLoginUrl = 'http://localhost:8000/api/useraccount/login'
 
+    const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
     ////////////////////////////////////////////////////////////
     // CRUD Functionality - PRODUCTS (api/products)
     ////////////////////////////////////////////////////////////
@@ -78,8 +80,8 @@ const Main = (props) => {
     ///////CREATE PRODUCT//////////
     const handleCreate = (addProduct) => {
         axios
-            // .post(localUrl, addProduct)
-            .post(herokuUrl, addProduct)
+            .post(localUrl, addProduct)
+            // .post(herokuUrl, addProduct)
             .then((response) => {
                 console.log(response)
                 // getProducts()
@@ -209,8 +211,31 @@ const Main = (props) => {
           0
         );
       }
-
-
+      const getCart = () => {
+        axios
+            // .get(localCartUrl)
+            .get(herokuCartUrl)
+            .then(
+                (response) => setCart(response.data),
+                (err) => console.error(err)
+            )
+            .catch((error) => console.error(error))
+    }
+    useEffect(() => {
+    
+        getCart()
+    
+    }, [])
+    //   const handleCreateCart = (addProduct) => {
+    //     axios
+    //         .post(localCartUrl, addProduct)
+    //         // .post(herokuCartUrl, props.product )
+    //         .then((response) => {
+    //             console.log(response)
+    //             // getProducts()
+    //             props.setCart([...props.cart, product])
+    //         })
+    // }
     //////////////////////////////////////////////
     // functions - related to styling
     //////////////////////////////////////////////
@@ -365,6 +390,7 @@ const Main = (props) => {
                                                 <Button onClick={handleDelete} value={product.id}>Delete</Button>
                                                 <Edit handleUpdate={handleUpdate} id={product.id} />
                                                 <Button onClick={(e)=>props.setCart([...props.cart, product])}>Add to Cart</Button>
+                                                {/* <Button onClick={handleCreateCart}>Add to Cart</Button> */}
                                             </CardActions>
                                         </Card>
 

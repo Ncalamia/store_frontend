@@ -35,7 +35,8 @@ const Cart = (props) => {
     const herokuUsersUrl = 'https://arcane-sea-71685.herokuapp.com/api/useraccount'
     const localUrl = 'http://localhost:8000/api/products'
     const localUsersUrl = 'http://localhost:8000/api/useraccount'
-
+    const herokuCartUrl = 'https://arcane-sea-71685.herokuapp.com/api/usercart'
+    const localCartUrl = 'http://localhost:8000/api/usercart'
 	//////States//////
 
 
@@ -103,6 +104,23 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+
+const getCarts = () => {
+    axios
+        // .get(localCartUrl)
+        .get(herokuCartUrl)
+        .then(
+            (response) => props.setCarts(response.data),
+            (err) => console.error(err)
+        )
+        .catch((error) => console.error(error))
+}
+useEffect(() => {
+
+    getCarts()
+
+}, [])
 
 if (props.view === 'main') {
     return (

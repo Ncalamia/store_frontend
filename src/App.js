@@ -103,7 +103,7 @@ const App = () => {
     return (
       <>
 
-        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}/>
+        <Login view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
 
       </>
     )
@@ -111,20 +111,20 @@ const App = () => {
     return (
       <>
 
-        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} />
+        <Signup view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser}  />
 
       </>
     )
   } else if (view === 'main') {
     return (
       <>
-        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart}/>
+        <Main view={view} currentUser={currentUser} setView={setView} setCurrentUser={setCurrentUser} cart={cart} setCart={setCart} />
       </>
     )
   } else if (view === 'cart') {
     return (
       <>
-        <Cart view={view} setView={setView} cart={cart}/>
+        <Cart view={view} setView={setView} cart={cart} currentUser={currentUser} />
       </>
     )}
 }
