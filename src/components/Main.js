@@ -321,7 +321,9 @@ const Main = (props) => {
                         <Toolbar>
 
                             <Typography variant="h6" color="inherit" noWrap>
-                                < Link color="inherit" href={localUrl} sx={{ fontSize: 40 }} >
+
+                                < Link color="inherit" href='#'
+                                sx={{ fontSize: 40 }} >
                                     < FaHome />
                                 </Link>
                                 {/* <h2>Welcome,  </h2> */}
