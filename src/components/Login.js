@@ -165,7 +165,7 @@ const Login = (props) => {
         axios
             // .put(localLoginUrl, userAccount)
             .put(herokuLoginUrl, userAccount)
-            .then((response, error) => {
+            .catch((error) => {
                 if (error) {
                   alert("Email or password does not match records")
                   setLoginError(true)
